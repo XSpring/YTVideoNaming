@@ -79,7 +79,9 @@ Our crawler continues to work, but thus far we have gathered a decent amount of 
 \item Size of "bag of words" dictionary produced for the titles: 129,553 entries.
 \end{itemize}
 
-\includegraphics[totalheight=1\textheight,width=1\textwidth,viewport=0 0 580 480,clip]{DistributionOfViews.png}
+\begin{center}
+\includegraphics[width=.75\textwidth,clip]{DistributionOfViews.png}
+\end{center}
 
 \section{First Steps Taken}
 
@@ -87,34 +89,27 @@ The data gathering required significant time, and is a big part of the project, 
 
 \subsection{Technique Details}
 
-We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best \beta for Y  = \beta * X.  We also use the log of the number of in our loss function rather than using the number of views directly.
+We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best \beta for Y  = \beta * X.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
 
 The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be abailiable before the video's publishing is ever used, we temporarily reduce thse number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
 
-We then randomly select 80% of our data for training, and reserve the other 20% for testing.  We train a linear regression model for each of our three outputs on the following features:
-
+We train a linear regression model for each of our three outputs on the following features:
 \begin{itemize}
 \item
-Many features extracted via a bag-of-words model on the title, using Tf-Idf.
+Many features extracted via a bag-of-words model on the title, using Tf-idf.
 \item
-The \# of videos uploaded by the uploader, minus 1.
+The \# of videos uploaded by the uploader prior to the current video's upload date.
 \item
-total \# of views for uploader's videos – views for this video
+The total \# of views for an uploader due to videos released prior to the current video's upload date.
 \item
-log(total \# of views for uploader's videos – views for this video)
-\item
-(total \# of views for uploader's videos – views for this video) / (\# of videos uploaded by the uploader, minus 1)
-Special care taken when the denominator is zero: for now, we output the average number of views per video, averaged over all videos.
-\item
-log((total \# of views for uploader's videos – views for this video) / (\# of videos uploaded by the uploader, minus 1))
-Special care taken when the denominator is zero: for now, we output the average number of views per video, averaged over all videos.
+The fraction of the previous two features (the average number of views per video for videos uploaded by the same uploader prior to the current video's upload date).
 \item
 The runtime of the video, in seconds.
 \item
 The age of the video at the time of crawling, in days.
 \end{itemize}
 
-Once the training is finished, we run the other 20% of our data into the trained model, and consider how much loss was observed.
+We then randomly select 80% of our data for training, and reserve the other 20% for testing.  Once the training is finished, we run the other 20% of our data into the trained model, and consider how much loss was observed.
 
 \section{Results}
 
@@ -122,36 +117,5 @@ Once the training is finished, we run the other 20% of our data into the trained
 
 
 \section{Related work}
-
-\subsubsection*{Acknowledgments}
-
-Use unnumbered third level headings for the acknowledgments. All
-acknowledgments go at the end of the paper. Do not include 
-acknowledgments in the anonymized submission, only in the 
-final paper. 
-
-\subsubsection*{References}
-
-References follow the acknowledgments. Use unnumbered third level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to `small' (9-point) 
-when listing the references. {\bf Remember that this year you can use
-a ninth page as long as it contains \emph{only} cited references.}
-
-\small{
-[1] Alexander, J.A. \& Mozer, M.C. (1995) Template-based algorithms
-for connectionist rule extraction. In G. Tesauro, D. S. Touretzky
-and T.K. Leen (eds.), {\it Advances in Neural Information Processing
-Systems 7}, pp. 609-616. Cambridge, MA: MIT Press.
-
-[2] Bower, J.M. \& Beeman, D. (1995) {\it The Book of GENESIS: Exploring
-Realistic Neural Models with the GEneral NEural SImulation System.}
-New York: TELOS/Springer-Verlag.
-
-[3] Hasselmo, M.E., Schnell, E. \& Barkai, E. (1995) Dynamics of learning
-and recall at excitatory recurrent synapses and cholinergic modulation
-in rat hippocampal region CA3. {\it Journal of Neuroscience}
-{\bf 15}(7):5249-5262.
-}
 
 \end{document}
