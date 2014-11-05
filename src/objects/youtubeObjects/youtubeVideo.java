@@ -1,8 +1,6 @@
 package objects.youtubeObjects;
 
 import java.util.ArrayList;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import utilities.Configuration;
 
 /**
