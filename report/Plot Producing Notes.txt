@@ -1,0 +1,5 @@
+binRightEdges = [ 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000 ];
+numVidsPerSize = [ 139, 188, 1948, 10277, 42196, 99028, 113545, 55436, 11271, 1335, 10 ];
+logSizes = logbinRightEdges
+log10Sizes = log10binRightEdges
+bar(log10Sizes,numVidsPerSize);
