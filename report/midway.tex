@@ -26,72 +26,39 @@ Pittsburgh PA, 15213 \\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-%\nipsfinalcopy % Uncomment for camera-ready version
+\nipsfinalcopy % Uncomment for camera-ready version
 
 \begin{document}
 
 \maketitle
 
-\section{Revised Plans}
+\section*{Forewords from the authors}
 
-As a result of our feedback on the proposal, as well as a meeting with Anthony, we have changed the scope of our project significantly‚Äîthough we ensured that we could still use our web-crawler data, since the crawler has been running for weeks, now.
+As a result of our feedback on the proposal, as well as follow-up meetings with our TA mentor, Anthony, we propose some changes in the scope of our project. There are two main reasons: 1) The new goal can be qualitatively and quantitatively measured with existing metrics and 2) These changes are made to ensure our project would fit well to the course's theme.
 
-Our previous plan was to generate a pandora-radio-like playlist based on a user input ‚Äúseed‚Äù video, where the list was supposed to appeal to a viewer who enjoyed the seed video.  However, since viewer opinion is highly subjective and since evaluating our results would be extremely expensive, we found that this was no practical.  As well, were we to merely cluster videos by similarity and evaluate our clustering without considering user enjoyment, the only easily available labeling we could use to evaluate is the set of YouTube-recommended links for each video‚Äîand if that is our standard of success, we would at best be mimicking an existing functionality, but with far less data to help us.
+Our previous plan was to generate a pandora-radio-like playlist based on a user input ÄúÄùvideo, where the list was supposed to appeal to a viewer who enjoyed the seed video.  However, this task poses several challenges in evaluation metrics, which are not trivial given our current available sources such as time, efforts, etc. First, viewer opinion is highly subjective and diverse. Hence, to make an objective judgment on effectiveness of our algorithms, we do require a significant amount of user study. Two possible solutions are 1) running a real services and record user's feedback on the system and 2) using Amazon Mechanical Turk to evaluate the result. Both solutions are either costly or time-consuming, and not easy to achieve within our remaining time to final submission. 
 
-Our new goal is to make predictions concerning the popularity (number of views, percentage of likes, and percentage of dislikes) of a youtube video given the rest of its metadata ‚Äì this is both simpler and more easily evaluated than our old goal, and yet should still involve plenty of machine learning and make use of topics covered during the course.
+Yet another metrics, not involving human objects but less objective, is to compare our results with YouTube's recommended videos (located at the sidebar on each video's site). Although it is reasonable to do so since algorithmic outputs from YouTube recommender systems can be treated as a proxy to reflect majority's preferences, we only observe a small samples of them at a point of time (i.e. YouTube caters their recommended outputs regarding to each user's history view). Therefore, it is hard to judge the correctness of our algorithms. Our results which do not match with the existing recommended links can be interpreted in both ways: 1) the results are not really relevant or similar to the seed video and 2) our crawler cannot capture these observations since we only crawl a video and its recommended videos once. More importantly, in terms of practicality we have less novelty by just mimicking an existing functionality, rather than predict the true tastes of YouTube users.
 
-\section{Evaluation Metric}
+Our new goal is to make predictions concerning the popularity (number of views, percentage of likes, and percentage of dislikes) of a youtube video given the rest of its metadata. We formulate the goal as a ranking prediction, which Äìcan be efficiently measured by popular methods such as Recall@K, etc., and yet should still involve plenty of machine learning and make use of topics covered during the course. Details are described in following sections, which are organised as follows. First, we briefly introduce the ranking problem in the YouTube settings in Section \ref{sec:intro}. Section \ref{sec:solution} describes some of plausible directions and our first-steps to solve the problem. Experimental study including basic statistics on dataset, as well as evaluation metrics is mentioned in Section \ref{sec:experiment}. Related work is summarised in Section \ref{sec:related}. Finally, we conclude this report with a list of to-do things and our stretch goals.
 
-\subsection{Two Types of Predictors}
+\section{Introduction}
+\label{sec:intro}
+YouTube is one of the most popular video-sharing online platform in the Internet. It attracts billion of unique user visit monthly and has diverse topics in their video content. YouTube users can earn money from the number of views of their uploaded videos. Hence, understanding the secrets of making a popular YouTube video is essential for people who want to make benefits from the site. There are many factors to determine popularity of a video, but in general we can pin down to have the following two: having good content and good marketing plan. One of the techniques to attract more viewerships is to make the video's "visual appearance" look appealing such as catchy keywords, informative cover picture, etc. Our approach is to utilise a video's metadata to predict their popularity.
 
-We will learn two types of predictors for each of our three outputs (number of views, percentage of likes, and percentage of dislikes):  The first will predict these values directly, and the second will take a pair of videos and predict which will be more popular.  The comparing of videos could be done indirectly by comparing the predicted values, but we are interested to see whether directly training a comparison predictor will yield more accurate results or not.
 
-\subsection{Comapring Order-of-Magnitude}
+\section{Proposed solution}
+\label{sec:solution}
 
-It is important to decide what we will consider as being "close to correct".  0-1 loss is sufficient for our comparison-based version, and for our predictors of the percentage of likes and dislikes, we can simply consider our loss in terms of the square of the difference between our prediction and the true value.  When predicting the number of views, however, we must deal with the gigantic variance in our observed data.
-
-Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000.  This will prevent petty among between the most popular videos from drowning out the differences in all others.
-
-The decision to use a log-number-of-views-based loss function may be reversed at a later time if we find better results without it.
-
-Currently we are using a linear regression to predict the number of views, and we deal with the number of views in log scale for the regression.  One anticipated effect of this is that features will be expected to contribute multiplicitively, rather than additively, to the popularity of a video.  While this certainly seems interesting, it is something that we may ultimately change our minds about as we hone our results to finer detail.  As our model grows more sophisticated than mere linear regression, it may be possible to achieve multiplicitive effects when needed even while working directly with the number of views rather than its log.
-
-\subsection{Stretch Goals}
-
-We certainly hope to attempt increasingly sophisticated learning techniques to reduce our loss as much as possible.  Time allowing, there are also other interesting results we can persue.  Chief among these in our mind is to make more time-dependent predictions.  It may be, for example, that video A is very popular at first, but that video B maintains it's popularity better over time, eventually overtaking video A in terms of the numbers of views and of likes.
-
-\section{Data Set}
-
-We have, for several weeks, been collecting data by crawling YouTube.  We initialize the crawler with a (hopefully) random "seed" video, and it recursively explores all other videos that YouTube suggests as being related to that vide.  Periodically, we restart the crawler over with a new seed video, to ensure a broader sampling.  (We began that practice relatively late, so some video categories are more fully explored than others).  For each video, we grab the title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as the list of the first 40 videos YouTube recommends as being similar.
-
-There is one additional piece of information that we decided our crawler should collect, which still needs to be added: the number of subscribers for each user.  Since this was not needed for our original proposal, we will need to go back and gather this information, which may take some time considering the vast quantity of videos crawled.
-
-\subsection{Preliminary Data Statistics}
-
-Our crawler continues to work, but thus far we have gathered a decent amount of data:
-
-\begin{itemize}
-\item Number of videos crawled: 335,373
-\item Number of uploaders: 146,655
-\item Most viewed video: 2,107,560,304 views.
-\item Most "liked" video: 8,647,905 likes.
-\item Most "disliked" video: 4,184,459 dislikes.
-\item Size of "bag of words" dictionary produced for the titles: 129,553 entries.
-\end{itemize}
-
-\begin{center}
-\includegraphics[width=.75\textwidth,clip]{DistributionOfViews.png}
-\end{center}
-
-\section{First Steps Taken}
+	\subsection{First Steps Taken}
 
 The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload date.  We consider only the number-predicting version, not the direct-comparison-prediction version.
 
 \subsection{Technique Details}
 
-We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best \beta for Y  = \beta * X.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
+We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best $\beta$ for $Y  = \beta * X$.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
 
-The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be abailiable before the video's publishing is ever used, we temporarily reduce thse number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
+The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
 
 We train a linear regression model for each of our three outputs on the following features:
 \begin{itemize}
@@ -109,13 +76,81 @@ The runtime of the video, in seconds.
 The age of the video at the time of crawling, in days.
 \end{itemize}
 
-We then randomly select 80% of our data for training, and reserve the other 20% for testing.  Once the training is finished, we run the other 20% of our data into the trained model, and consider how much loss was observed.
+We then randomly select 80\% of our data for training, and reserve the other 20\% for testing.  Once the training is finished, we run the other 20\% of our data into the trained model, and consider how much loss was observed.
 
-\section{Results}
+\section{Experimental study}
+\label{sec:experiment}
 
-\section{Next Steps}
+	\subsection{Dataset}
+	We implemented our own crawler in Java and started to collect information from YouTube since October, 1st, 2014. Our crawling strategy is to initialize the crawler with several random "seed" videos, which mostly are in the \textit{Movie} and \textit{Music} category, , and recursively explores all other videos that YouTube suggests as being related to that videos. For each video, we extract all of its metadata such as title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as a list of around 30 videos YouTube recommends as being similar. 
 
+		\subsubsection{Preliminary Data Statistics}
 
+		Although the crawler was suspended twice due to technical issues and upgrades, thus far we have gathered a decent amount of data:
+
+		\begin{itemize}
+			\item Number of videos crawled: 335,373
+			\item Number of uploaders: 146,655
+			\item Most viewed video: 2,107,560,304 views.
+			\item Most "liked" video: 8,647,905 likes.
+			\item Most "disliked" video: 4,184,459 dislikes.
+			\item Size of "bag of words" dictionary produced for the titles: 129,553 entries.
+		\end{itemize}
+
+		As the statistics show, we have a large magnitude in ranges of number of view, likes and dislikes. This motivates us to do some preprocessing on data, such as feature normalisation or data standardization, to ensure the numerical stability and good speed of convergence on the learning algorithm. We discuss more on this step in the Section \ref{sec:preprocessing}.
+		
+		We plot in Figure \ref{fig:logNoOfViews} the distribution of number of views in our current data. Interestingly, the distribution is in the shape of Gaussians, instead of following the Power Law distribution as frequently observed in social network. We guess this observation is due to the way we sample the data, by following the recommended links, and imply that popularity of a video is one of the highly-impacted factors in YouTube recommender systems. Whether we can uncover the underlying reasons of links suggested by YouTube, namely, based on similarity or popularity or both, is an interesting question and may be addressed in our future work.
+		
+		\begin{figure}[!h]
+			\begin{center}
+				\includegraphics[width=.75\textwidth,clip]{DistributionOfViews.png}				
+			\end{center}
+			\caption{Histogram on the distribution of number of views (in log-scale).}
+			\label{fig:logNoOfViews}
+		\end{figure}
+				
+		\subsubsection{Pre-processing data}
+		\label{sec:preprocessing}
+		To Joseph: can you help me to work on this part ? You can revise from your section comparing order-of-magnitude and put them here.
+		
+	\subsection{Evaluation Metrics}
+	
+\subsection{Two Types of Predictors}
+
+We will learn two types of predictors for each of our three outputs (number of views, percentage of likes, and percentage of dislikes):  The first will predict these values directly, and the second will take a pair of videos and predict which will be more popular.  The comparing of videos could be done indirectly by comparing the predicted values, but we are interested to see whether directly training a comparison predictor will yield more accurate results or not.
+
+\subsection{Comparing Order-of-Magnitude}
+
+It is important to decide what we will consider as being "close to correct".  0-1 loss is sufficient for our comparison-based version, and for our predictors of the percentage of likes and dislikes, we can simply consider our loss in terms of the square of the difference between our prediction and the true value.  When predicting the number of views, however, we must deal with the gigantic variance in our observed data.
+
+Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000.  This will prevent petty among between the most popular videos from drowning out the differences in all others.
+
+The decision to use a log-number-of-views-based loss function may be reversed at a later time if we find better results without it.
+
+Currently we are using a linear regression to predict the number of views, and we deal with the number of views in log scale for the regression.  One anticipated effect of this is that features will be expected to contribute multiplicitively, rather than additively, to the popularity of a video.  While this certainly seems interesting, it is something that we may ultimately change our minds about as we hone our results to finer detail.  As our model grows more sophisticated than mere linear regression, it may be possible to achieve multiplicitive effects when needed even while working directly with the number of views rather than its log.
+
+	\subsection{Preliminary Results}
+	Here we show some of our preliminary results using a simple linear regression.
+	
 \section{Related work}
+\label{sec:related}
+To be updated
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+	\subsection{To-do list}
+	There is one additional piece of information that we decided our crawler should collect, which still needs to be added: the number of subscribers for each user.  Since this was not needed for our original proposal, we will need to go back and gather this information, which may take some time considering the vast quantity of videos crawled.
+
+	\subsection{Stretch Goals}
+	We certainly hope to attempt increasingly sophisticated learning techniques to reduce our loss as much as possible.  Time allowing, there are also other interesting results we can persue.  Chief among these in our mind is to make more time-dependent predictions.  It may be, for example, that video A is very popular at first, but that video B maintains it's popularity better over time, eventually overtaking video A in terms of the numbers of views and of likes.
+
+\subsubsection*{Acknowledgments}
+
+Our sincere thanks to Anthony for his patience and value inputs to improve our project.
+
+\subsubsection*{References}
+\small{
+[1] Joonseok Lee, Samy Bengio, Seungyeon Kim, Guy Lebanon and Yoram Singer. Local Collaborative Ranking. Proceedings of the 23rd International World Wide Web Conference (WWW) 2014
 
 \end{document}

@@ -1,12 +1,16 @@
-\BOOKMARK [1][-]{section.1}{Revised Plans}{}% 1
-\BOOKMARK [1][-]{section.2}{Evaluation Metric}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Two Types of Predictors}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Comapring Order-of-Magnitude}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Stretch Goals}{section.2}% 5
-\BOOKMARK [1][-]{section.3}{Data Set}{}% 6
-\BOOKMARK [2][-]{subsection.3.1}{Preliminary Data Statistics}{section.3}% 7
-\BOOKMARK [1][-]{section.4}{First Steps Taken}{}% 8
-\BOOKMARK [2][-]{subsection.4.1}{Technique Details}{section.4}% 9
-\BOOKMARK [1][-]{section.5}{Results}{}% 10
-\BOOKMARK [1][-]{section.6}{Next Steps}{}% 11
-\BOOKMARK [1][-]{section.7}{Related work}{}% 12
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Proposed solution}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{First Steps Taken}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Technique Details}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Experimental study}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Dataset}{section.3}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Preliminary Data Statistics}{subsection.3.1}% 7
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Pre-processing data}{subsection.3.1}% 8
+\BOOKMARK [2][-]{subsection.3.2}{Evaluation Metrics}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Two Types of Predictors}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.4}{Comparing Order-of-Magnitude}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.5}{Preliminary Results}{section.3}% 12
+\BOOKMARK [1][-]{section.4}{Related work}{}% 13
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{To-do list}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Stretch Goals}{section.5}% 16
