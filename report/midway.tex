@@ -5,7 +5,8 @@
 %\documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 
 
-\title{Predicting Popularity of YouTube Video}
+\title{Predicting Popularity of YouTube Video\\
+Midway Report}
 
 \author{
 Loc Do \\
@@ -15,18 +16,11 @@ Pittsburgh PA, 15213\\
 \texttt{halocd@andrew.cmu.edu} \\
 \And
 Joseph Richardson \\
-School of Computer Science \\
+School of Computer Science,
+Carnegie Mellon University \\
 Pittsburgh PA, 15213 \\
 \texttt{jmrichar@andrew.cmu.edu} \\
 }
-
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to \LaTeX{} to determine where to break
-% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
-% puts 3 of 4 authors names on the first line, and the last on the second
-% line, try using \AND instead of \And before the third author name.
 
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
@@ -37,15 +31,64 @@ Pittsburgh PA, 15213 \\
 
 \maketitle
 
-\begin{abstract}
+\section{Revised Plans}
 
-\end{abstract}
+As a result of our feedback on the proposal, as well as a meeting with our TA, we have changed the scope of our project significantly—though we ensured that we could still use our web-crawler data, since the crawler has been running for weeks, now.
 
-\section{Introduction}
+Our previous plan was to generate a pandora-radio-like playlist based on a user input “seed” video, where the list was supposed to appeal to a viewer who enjoyed the seed video.  However, since viewer opinion is highly subjective and since evaluating our results would be extremely expensive, we found that this was no practical.  As well, were we to merely cluster videos by similarity and evaluate our clustering without considering user enjoyment, the only easily available labeling we could use to evaluate is the set of YouTube-recommended links for each video—and if that is our standard of success, we would at best be mimicking an existing functionality but with far less data to help us.
 
-\section{}
+Our new goal is to successfully predict the popularity (number of views, percentage of likes, and percentage of dislikes) of a youtube video given the rest of its metadata – this is both simpler and more easily evaluated than our old goal, and yet should still involve plenty of machine learning and make use of topics covered during the course.
 
-\section{
+\section{Evaluation Metric}
+
+We will evaluate our results for each of our three outputs – number of views, percentage of likes, and percentage of dislikes – against the true numbers associated with each at the time of our crawler's visit.  Because views increase over time, we will separately build predictors for different time scales (one day old, one week old, one month old, one year old, older) – we believe that this will help significantly, because certain topics of videos are more likely to continue attracting new views over time than others, and because to view them together would be difficult.  For the number of views, we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  This will ensure that order of magnitude is more important than precise number (there is more of a difference between 5 and 1000 than there is between 1,000,000 and 1,100,000, in terms of how popular we would say a video is, and we do not want the few extremely popular videos to drown out all differences in the others).  For likes and dislikes, we will simply consider a loss given by the square of the difference between the predicted percentage of viewers to like/dislike a video and the observed percentages.
+
+\subsection{Goals}
+
+Our minimum goal will be to achieve an average loss of no more than 1 for the number of views (we hope to get the correct order of magnitude) and of no more than 0.5% for the number of likes/dislikes (since these numbers tend to be very small).
+
+Our stretch goal will be
+
+\section{Data Set}
+
+We have, for several weeks, been collecting data by crawling YouTube.  We initialize the crawler with a video and it explores all other videos that YouTube suggests as being related; periodically we restart the crawler anew with a new starting destination, to ensure a broad sampling.  (We began that practice relatively late, so some video categories are more fully explored than others).  For each video, we grab the title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as the list of the first 40 videos YouTube recommends as being similar.
+
+There is one additional piece of information that we decided our crawler should collect: the number of subscribers for each user.  Since this was not needed for our original proposal, we will need to go back and gather this information, which may take some time considering the vast quantity of videos crawled.
+
+\section{First Steps Taken}
+
+The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload data.  We here describe the process in detail before commenting on our observations and our plans to adjust our technique before running the full dataset.
+
+For all data, we first build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have.  Before each time we actually use these numbers to make predictions for a video, we subtract the values of the current video from these numbers – this is because we do not want videos produced by an uploader who uploaded only one (or very few) videos to be predictable based on this field alone: the idea is to use only such information as would have already been available before the video is uploaded to predict its future popularity.
+
+We then randomly select 80% of our data for training, and reserve the other 20% for testing.  We train a linear regression model for each of our three outputs on the following features:
+
+Features extracted via a bag-of-words model on the title, using Tf-Idf.
+
+\begin{itemize}
+\item
+The \# of videos uploaded by the uploader, minus 1.
+\item
+total \# of views for uploader's videos – views for this video
+\item
+log(total \# of views for uploader's videos – views for this video)
+\item
+(total \# of views for uploader's videos – views for this video) / (\# of videos uploaded by the uploader, minus 1)
+Special care taken when the denominator is zero: for now, we output the average number of views per video, averaged over all videos.
+\item
+log((total \# of views for uploader's videos – views for this video) / (\# of videos uploaded by the uploader, minus 1))
+Special care taken when the denominator is zero: for now, we output the average number of views per video, averaged over all videos.
+\item
+The runtime of the video, in seconds.
+\item
+The age of the video at the time of crawling, in days.
+\end{itemize}
+
+Once the training is finished, we run the other 20% of our data into the trained model, and consider how much loss was observed.
+
+\section{Results}
+
+\section{Next Steps}
 
 \section{Related work}
 
