@@ -52,7 +52,7 @@ Ranking problem (aka. Learning to rank\footnote{http://en.wikipedia.org/wiki/Lea
 
 \textbf{Problem statement.} Given a set of videos, each is associated with a set of bag-of-word and numeric features. A pair of videos is said to have an order on their popularity by comparing their number of views. Video with more viewership is considered to be more popular than the other. Given two videos with their features, the ranking problem here is to construct a model to well predict the exact order between the two videos.
 
-\section{Proposed solution}
+\section{Proposed solutions}
 \label{sec:solution}
 
 	\subsection{Logistic Regression on binary classification}
@@ -98,36 +98,13 @@ Ranking problem (aka. Learning to rank\footnote{http://en.wikipedia.org/wiki/Lea
 	 \end{equation}
 	 where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
 	 
-	\subsection{First Steps Taken}
-	The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload date.  We consider only the number-predicting version, not the direct-comparison-prediction version.
+	%\subsection{First Steps Taken}
+	%The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload date.  We consider only the number-predicting version, not the direct-comparison-prediction version.
 
-	\subsection{Technique Details}
-	We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best $\beta$ for $Y  = \beta * X$.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
+	%\subsection{Technique Details}
+	%We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best $\beta$ for $Y  = \beta * X$.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
 
-	The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
-
-	We train a linear regression model for each of our three outputs on the following features:
-	\begin{itemize}
-		\item
-		Many features extracted via a bag-of-words model on the title, using TF-IDF.
-	
-		\item
-		The \# of videos uploaded by the uploader prior to the current video's upload date.
-
-		\item
-		The total \# of views for an uploader due to videos released prior to the current video's upload date.
-		
-		\item
-		The fraction of the previous two features (the average number of views per video for videos uploaded by the same uploader prior to the current video's upload date).
-		
-		\item
-		The runtime of the video, in seconds.
-	
-		\item
-		The age of the video at the time of crawling, in days.
-	\end{itemize}
-
-We then randomly select 80\% of our data for training, and reserve the other 20\% for testing.  Once the training is finished, we run the other 20\% of our data into the trained model, and consider how much loss was observed.
+	%We then randomly select 80\% of our data for training, and reserve the other 20\% for testing.  Once the training is finished, we run the other 20\% of our data into the trained model, and consider how much loss was observed.
 
 \section{Experimental study}
 \label{sec:experiment}
@@ -162,23 +139,51 @@ We then randomly select 80\% of our data for training, and reserve the other 20\
 				
 		\subsubsection{Pre-processing data}
 		\label{sec:preprocessing}
-		To Joseph: can you help me to work on this part ? You can revise from your section comparing order-of-magnitude and put them here.
+		To Joseph: can you help me to work on this part ? You can revise from your discussion of taking the log-form and put it here.
 		
-	\subsection{Evaluation Metrics}
+		\subsubsection{Feature extraction}
+		The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
+
+	We train a linear regression model for each of our three outputs on the following features:
+	\begin{itemize}
+		\item
+		Many features extracted via a bag-of-words model on the title, using TF-IDF.
 	
-\subsection{Two Types of Predictors}
+		\item
+		The \# of videos uploaded by the uploader prior to the current video's upload date.
 
-We will learn two types of predictors for each of our three outputs (number of views, percentage of likes, and percentage of dislikes):  The first will predict these values directly, and the second will take a pair of videos and predict which will be more popular.  The comparing of videos could be done indirectly by comparing the predicted values, but we are interested to see whether directly training a comparison predictor will yield more accurate results or not.
+		\item
+		The total \# of views for an uploader due to videos released prior to the current video's upload date.
+		
+		\item
+		The fraction of the previous two features (the average number of views per video for videos uploaded by the same uploader prior to the current video's upload date).
+		
+		\item
+		The runtime of the video, in seconds.
+	
+		\item
+		The age of the video at the time of crawling, in days.
+	\end{itemize}
+	
+	\subsection{Evaluation Metrics}
+	Three evaluation measures widely used to evaluate ranking approaches are 0-1 loss function, Area under Curve (AUC). \textbf{0-1 loss function} is the ratio of correctly ordered video pairs over total number of pairs in testing set.
+	\begin{equation}
+		0/1_{loss} = \sum_{(u, v)_{test}} \frac{1}{|(u,v)_{test}|} \textbf{1}[\hat{Y}_{uv} - Y_{uv} == 0]
+	\end{equation}
+	Since our label values in \{0, 1\}, we use  \textbf{AUC Loss} as another ranking-based performance metric.
+	\begin{equation}
+		AUC_{loss} = 1 - AUC,
+	\end{equation}
+	where AUC is the area under the ROC curve.
+%\subsection{Comparing Order-of-Magnitude}
 
-\subsection{Comparing Order-of-Magnitude}
+%It is important to decide what we will consider as being "close to correct".  0-1 loss is sufficient for our comparison-based version, and for our predictors of the percentage of likes and dislikes, we can simply consider our loss in terms of the square of the difference between our prediction and the true value.  When predicting the number of views, however, we must deal with the gigantic variance in our observed data.
 
-It is important to decide what we will consider as being "close to correct".  0-1 loss is sufficient for our comparison-based version, and for our predictors of the percentage of likes and dislikes, we can simply consider our loss in terms of the square of the difference between our prediction and the true value.  When predicting the number of views, however, we must deal with the gigantic variance in our observed data.
+%Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000.  This will prevent petty among between the most popular videos from drowning out the differences in all others.
 
-Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000.  This will prevent petty among between the most popular videos from drowning out the differences in all others.
+%The decision to use a log-number-of-views-based loss function may be reversed at a later time if we find better results without it.
 
-The decision to use a log-number-of-views-based loss function may be reversed at a later time if we find better results without it.
-
-Currently we are using a linear regression to predict the number of views, and we deal with the number of views in log scale for the regression.  One anticipated effect of this is that features will be expected to contribute multiplicitively, rather than additively, to the popularity of a video.  While this certainly seems interesting, it is something that we may ultimately change our minds about as we hone our results to finer detail.  As our model grows more sophisticated than mere linear regression, it may be possible to achieve multiplicitive effects when needed even while working directly with the number of views rather than its log.
+%Currently we are using a linear regression to predict the number of views, and we deal with the number of views in log scale for the regression.  One anticipated effect of this is that features will be expected to contribute multiplicitively, rather than additively, to the popularity of a video.  While this certainly seems interesting, it is something that we may ultimately change our minds about as we hone our results to finer detail.  As our model grows more sophisticated than mere linear regression, it may be possible to achieve multiplicitive effects when needed even while working directly with the number of views rather than its log.
 
 	\subsection{Preliminary Results}
 	Here we show some of our preliminary results using a simple linear regression.
@@ -187,9 +192,12 @@ Currently we are using a linear regression to predict the number of views, and w
 \label{sec:related}
 
 	\begin{itemize}
-	\item Logits model for sets of ranked items
+	\item Local Collaborative Ranking [1]
+	\item Logits model for sets of ranked items [2]
+	\item AdaRank [3]
 	\end{itemize}
-To be updated fully later
+
+To be updated fully later with brief summary on each work
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -207,5 +215,9 @@ Our sincere thanks to Anthony for his patience and value inputs to improve our p
 \subsubsection*{References}
 \small{
 [1] Joonseok Lee, Samy Bengio, Seungyeon Kim, Guy Lebanon and Yoram Singer. Local Collaborative Ranking. Proceedings of the 23rd International World Wide Web Conference (WWW) 2014
+
 [2] Allison, Paul D., and Nicholas A. Christakis. "Logit models for sets of ranked items." Sociological methodology 24.1994 (1994): 199-228.
+
+[3] Xu, Jun, and Hang Li. "Adarank: a boosting algorithm for information retrieval." Proceedings of the 30th annual international ACM SIGIR conference on Research and development in information retrieval. ACM, 2007.
+}
 \end{document}
