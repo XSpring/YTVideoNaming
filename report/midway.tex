@@ -3,6 +3,8 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
 %\documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 
 
@@ -46,35 +48,65 @@ Our new goal is to make predictions concerning the popularity (number of views, 
 \label{sec:intro}
 YouTube is one of the most popular video-sharing online platform in the Internet. It attracts billion of unique user visit monthly and has diverse topics in their video content. YouTube users can earn money from the number of views of their uploaded videos. Hence, understanding the secrets of making a popular YouTube video is essential for people who want to make benefits from the site. There are many factors to determine popularity of a video, but in general we can pin down to have the following two: having good content and good marketing plan. One of the techniques to attract more viewerships is to make the video's "visual appearance" look appealing such as catchy keywords, informative cover picture, etc. Our approach is to utilise a video's metadata to predict their popularity.
 
+Ranking problem (aka Learning to rank\footnote{http://en.wikipedia.org/wiki/Learning\_to\_rank}) is a typical supervised learning problem of predicting the rank of a set of items regarding to a set of criteria. It has a numerous applications in a broad domains such as web search, multimedia retrieval, recommender systems, etc. Results from these such problems can bring benefits to Internet users such as saving their time by introducing the most relevant products/articles/web pages to their interests. In YouTube context, ranking problems can be raised to recommend most relevant videos to a given video. Another application is to predict the ranking of videos w.r.t to their popularity. This can reveal the most important visual factors in determine a popularity of a video.
+
+\textbf{Problem statement.} Given a set of videos, each is associated with a set of bag-of-word and numeric features. A pair of videos is said to have an order on their popularity by comparing their number of views. Video with more viewership is considered to be more popular than the other. Given two videos with their features, the ranking problem here is to construct a model to well predict the exact order between the two videos.
 
 \section{Proposed solution}
 \label{sec:solution}
 
+	\subsection{Logistic Regression on binary classification}
+	We can reformulate the ranking problem between two videos as a binary classification. To be specific, let $\mathcal{X}_u \in \mathbb{R}^d$ and $\mathcal{X}_v \in \mathbb{R}^d$ represent features of video $u$ and $v$. We can form a representative vector of the two as follows
+
+	\begin{equation}
+		\mathcal{X}_{uv} = f (X_u, X_v),
+	\end{equation}
+	where $f: (\mathcal{R}^d, \mathcal{R}^d) \rightarrow \mathcal{R}^k$ is a transformation function. 
+
+	Let define $Y_{uv}$, the label associated with the video pair $(u, v)$, as follow
+		
+	\begin{equation}
+		Y_{uv} = \begin{cases}
+				   1, & \text{if } \text{\#\_of\_view\_u} \geq \text{\#\_of\_view\_v} \\
+				   0, & \text{otherwise}
+				\end{cases} 
+	\end{equation}
+	 
+	 We can assume the function form of classifier $P(Y_{uv}|X_{uv})$ as follows
+	 \begin{equation}
+		 P(Y_{uv}=0|X_{uv}) = \frac{1}{1 + \exp { w_0 + \sum_i w_i X_{uv}^i }}
+	 \end{equation}
+	 
+	The model parameters \textbf{$w$} can be learnt efficiently using Gradient Descent algorithm. In this work we consider AdaGrad to improve the model earning performance.
+	 
 	\subsection{First Steps Taken}
+	The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload date.  We consider only the number-predicting version, not the direct-comparison-prediction version.
 
-The data gathering required significant time, and is a big part of the project, but apart from this we had to change most of our plans regarding first steps.  Therefore, what we will present in this report is the results of our first attempt to predict the popularity of a video.  For this, we have considered the data from just five days of crawling, and we have reduced the number of fields considered to the title, uploader, video length, and upload date.  We consider only the number-predicting version, not the direct-comparison-prediction version.
+	\subsection{Technique Details}
+	We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best $\beta$ for $Y  = \beta * X$.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
 
-\subsection{Technique Details}
+	The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
 
-We perform  a linear regression on the log of the number of views ("Y") and some features extracted from our video data ("X"), to find the best $\beta$ for $Y  = \beta * X$.  We also use the log of the number of views as our loss function, rather than using the number of views directly.
+	We train a linear regression model for each of our three outputs on the following features:
+	\begin{itemize}
+		\item
+		Many features extracted via a bag-of-words model on the title, using TF-IDF.
+	
+		\item
+		The \# of videos uploaded by the uploader prior to the current video's upload date.
 
-The first step is to build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
-
-We train a linear regression model for each of our three outputs on the following features:
-\begin{itemize}
-\item
-Many features extracted via a bag-of-words model on the title, using Tf-idf.
-\item
-The \# of videos uploaded by the uploader prior to the current video's upload date.
-\item
-The total \# of views for an uploader due to videos released prior to the current video's upload date.
-\item
-The fraction of the previous two features (the average number of views per video for videos uploaded by the same uploader prior to the current video's upload date).
-\item
-The runtime of the video, in seconds.
-\item
-The age of the video at the time of crawling, in days.
-\end{itemize}
+		\item
+		The total \# of views for an uploader due to videos released prior to the current video's upload date.
+		
+		\item
+		The fraction of the previous two features (the average number of views per video for videos uploaded by the same uploader prior to the current video's upload date).
+		
+		\item
+		The runtime of the video, in seconds.
+	
+		\item
+		The age of the video at the time of crawling, in days.
+	\end{itemize}
 
 We then randomly select 80\% of our data for training, and reserve the other 20\% for testing.  Once the training is finished, we run the other 20\% of our data into the trained model, and consider how much loss was observed.
 
@@ -134,7 +166,11 @@ Currently we are using a linear regression to predict the number of views, and w
 	
 \section{Related work}
 \label{sec:related}
-To be updated
+
+	\begin{itemize}
+	\item Logits model for sets of ranked items
+	\end{itemize}
+To be updated fully later
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -152,5 +188,5 @@ Our sincere thanks to Anthony for his patience and value inputs to improve our p
 \subsubsection*{References}
 \small{
 [1] Joonseok Lee, Samy Bengio, Seungyeon Kim, Guy Lebanon and Yoram Singer. Local Collaborative Ranking. Proceedings of the 23rd International World Wide Web Conference (WWW) 2014
-
+[2] Allison, Paul D., and Nicholas A. Christakis. "Logit models for sets of ranked items." Sociological methodology 24.1994 (1994): 199-228.
 \end{document}
