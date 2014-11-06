@@ -28,7 +28,7 @@ public class model {
      */
     void createListVideos(String folderName) {
 	try {
-	    lstVideo = utilities.DatafileGrabber.createListOfVideos(folderName);
+	    lstVideo = utilities.DatafileGrabber.readListOfVideos(folderName);
 	    System.out.println("Finished reading all the videos in folder "+folderName);
 	    System.out.println("There are "+lstVideo.size()+" videos.");
 	} catch (java.io.IOException e) {

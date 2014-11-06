@@ -8,7 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.util.Collections;
+import java.util.List;
 import objects.youtubeObjects.*;
 
 public class Common {
@@ -92,5 +93,28 @@ public class Common {
      */
     public static String strPreprocessing(String strRaw) {
         return strRaw.replaceAll("[^0-9\\p{L}.]"," ").toLowerCase();
+    }
+    
+    public static class Pair<F, S> {
+	public F first;
+	public S second;
+	public Pair() {
+	    first = null; second = null;
+	}
+	public Pair(F f, S s) {
+	    first = f; second = s;
+	}
+    }
+    public static <E> Pair<List<E>,List<E>> splitToTestAndTraining(List<E> fullList, int sizeOfFirst, java.util.Random rand) {
+	if (sizeOfFirst < 0)
+	    sizeOfFirst = 0;
+	if (sizeOfFirst > fullList.size())
+	    sizeOfFirst = fullList.size();
+	Collections.shuffle(fullList, rand);
+	Pair<List<E>,List<E>> pair;
+	pair = new Common.Pair<List<E>,List<E>>();
+	pair.first = fullList.subList(0, sizeOfFirst);
+	pair.second = fullList.subList(sizeOfFirst, fullList.size());
+	return pair;
     }
 }
