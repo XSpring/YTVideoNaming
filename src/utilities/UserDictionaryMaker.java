@@ -24,7 +24,7 @@ public class UserDictionaryMaker {
     /* Saves the results of makeListOfUsersFromVideos using saveListOfUsersToFile */
     public static void runUserDictionaryMaker(String videoFolder, String outputFilename) throws java.io.IOException {
 	System.out.println("Reading in video data...");
-	List<youtubeVideo> vidList = utilities.DatafileGrabber.createListOfVideos(videoFolder);
+	List<youtubeVideo> vidList = utilities.DatafileGrabber.readListOfVideos(videoFolder);
 	System.out.println("" + vidList.size() + " videos found.");
 	System.out.println("Creating user map data from video files...");
 	HashMap<String,youtubeUser> map = makeListOfUsersFromVideos(vidList);
@@ -50,7 +50,7 @@ public class UserDictionaryMaker {
     }
     
     public static HashMap<String,youtubeUser> readListOfUsersFromFile(String filename) throws java.io.IOException {
-	return utilities.DatafileGrabber.createMapOfUsers(filename);
+	return utilities.DatafileGrabber.readMapOfUsers(filename);
     }
     
     public static void saveListOfUsersToFile(HashMap<String,youtubeUser> map, String filename) throws java.io.IOException {

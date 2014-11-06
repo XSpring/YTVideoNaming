@@ -15,18 +15,18 @@ public class DatafileGrabber {
      * If folder is a JSON file, create a video from that json and put to the lstVideo
      * @param folder
      */
-    public static List<youtubeVideo> createListOfVideos(String folderName) throws IOException {
+    public static List<youtubeVideo> readListOfVideos(String folderName) throws IOException {
         final File folder = new File(folderName);
 	List<youtubeVideo> list = new java.util.LinkedList<>();
-        createListOfVideosRecursive(list, folder);
+        readListOfVideosRecursive(list, folder);
 	return list;
     }
     
     /* A helper for createListOfVideos */
-    private static void createListOfVideosRecursive(List<youtubeVideo> list, final File folder) throws IOException {
+    private static void readListOfVideosRecursive(List<youtubeVideo> list, final File folder) throws IOException {
 	for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
-                createListOfVideosRecursive(list, fileEntry);
+                readListOfVideosRecursive(list, fileEntry);
             } else if (fileEntry.getName().indexOf(".json")>-1) {
 		BufferedReader br = null;
                 try {
@@ -54,8 +54,20 @@ public class DatafileGrabber {
         }
     }
 
+    /* 
+     */
+    public static HashMap<String,youtubeVideo> readMapOfVideos(String folderName) throws IOException {
+        final File folder = new File(folderName);
+	List<youtubeVideo> list = new java.util.LinkedList<>();
+        readListOfVideosRecursive(list, folder);
+	HashMap<String,youtubeVideo> map = new java.util.HashMap<>();
+	for (youtubeVideo v : list)
+	    map.put(v.getKey(), v);
+	return map;
+    }
+    
     /* Reads in user info from a single file */
-    public static HashMap<String,youtubeUser> createMapOfUsers(String fileName) throws IOException {
+    public static HashMap<String,youtubeUser> readMapOfUsers(String fileName) throws IOException {
 	final File file = new File(fileName);
 	HashMap<String,youtubeUser> map = new java.util.HashMap<>();
 	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));

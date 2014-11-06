@@ -2,14 +2,7 @@ package models;
 
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
-import utilities.Configuration;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 /**
