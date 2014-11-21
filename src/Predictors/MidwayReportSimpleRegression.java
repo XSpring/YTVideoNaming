@@ -91,14 +91,14 @@ public class MidwayReportSimpleRegression extends Predictor {
     private ArrayList<Double> getNonBagOfWordsFeatures(youtubeVideo vid) {
 	ArrayList<Double> features = new ArrayList<>();
 	int duration = Common.getSecondsLong(vid.getDuration());
-	long daysAgoPublished = Common.getDaysAgo(vid.getPublishedDate());
+	long daysAgoPublished = vid.getHowLongAgoUploaded();
 	String uploaderStr = vid.getChannelID();
 	youtubeUser uploader = uploaderMap.get(uploaderStr);
 	long totalUploaderNumVidViews = uploader.getVideoWatchCount();
 	long totalUploaderNumVids = 0;
 	for (String vName : uploader.getUploads()) {
 	    youtubeVideo v = allVidMap.get(vName);
-	    long v_daysAgoPublished = Common.getDaysAgo(v.getPublishedDate());
+	    long v_daysAgoPublished = v.getHowLongAgoUploaded();
 	    if (v_daysAgoPublished < daysAgoPublished)
 		totalUploaderNumVidViews -= v.getViewCount();
 	    else

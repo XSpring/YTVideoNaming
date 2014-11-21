@@ -122,9 +122,4 @@ public class Common {
 	System.err.println("Common.getSecondsLong() not yet finished.  Input: "  + lengthAsString);
 	return 1;
     }
-    
-    public static int getDaysAgo(String dayAsString) {
-	System.err.println("Common.getDaysAgo() not yet finished.  Input: " + dayAsString);
-	return 1;
-    }
 }

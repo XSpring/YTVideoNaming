@@ -1,7 +1,10 @@
 package objects.youtubeObjects;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import utilities.Configuration;
+import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by larcuser on 2/10/14.
@@ -36,6 +39,8 @@ public class youtubeVideo {
 
     private boolean isPaid;
     private boolean unlisted;
+    
+    private long howLongAgoUploaded;
 
     public boolean isPaid() {
         return isPaid;
@@ -245,5 +250,41 @@ public class youtubeVideo {
 
     public void setLicence(String licence) {
         this.licence = licence;
+    }
+    
+    public long getHowLongAgoUploaded() {
+	return howLongAgoUploaded;
+    }
+    
+    public void setHowLongAgoUploaded(long l) {
+	howLongAgoUploaded = l;
+    }
+    
+    public void calculateHowLongAgoUploaded(String crawlFolderName) throws ParseException {
+	Calendar cCal = new java.util.GregorianCalendar();
+	Date cDate = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.ENGLISH).parse(crawlFolderName);
+	cCal.setTime(cDate);
+	//parse upload date.  Things get ugly...
+	String uDateAsString = this.getPublishedDate();
+	Calendar uCal = new java.util.GregorianCalendar();
+	java.util.Locale locale = java.util.Locale.ENGLISH;
+	String formatExpected = "MMMM d, yyyy";
+	if (uDateAsString.startsWith("Published on")) {
+	    uDateAsString = uDateAsString.replaceAll("Published on ", "");
+	} else if (uDateAsString.startsWith("Uploaded on")) {
+	    uDateAsString = uDateAsString.replaceAll("Uploaded on ", "");
+	} else {
+	    System.out.println("Unparsable format found: " + uDateAsString);
+	    formatExpected = "";
+	}
+	if (! formatExpected.isEmpty()) {
+	    Date uDate = new java.text.SimpleDateFormat(formatExpected, locale).parse(uDateAsString);
+	    uCal.setTime(uDate);
+	    long diffInMs = cCal.getTimeInMillis() - uCal.getTimeInMillis();
+	    long diffInDays = diffInMs/(1000*60*60*24);
+	    howLongAgoUploaded = diffInDays;
+	} else {
+	    howLongAgoUploaded = 0;
+	}
     }
 }

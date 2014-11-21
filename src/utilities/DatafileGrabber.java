@@ -18,16 +18,22 @@ public class DatafileGrabber {
     public static List<youtubeVideo> readListOfVideos(String folderName) throws IOException {
         final File folder = new File(folderName);
 	List<youtubeVideo> list = new java.util.LinkedList<>();
-        readListOfVideosRecursive(list, folder);
+	long numFailedDateReads = 0;
+	for (final File dateFolder : folder.listFiles()) {
+	    if (dateFolder.isDirectory())
+		numFailedDateReads += readListOfVideosFromDayFolder(list, dateFolder);
+        }
+	if (numFailedDateReads != 0)
+	    System.out.println("numFailedDateReads: " + numFailedDateReads + "/" + (list.size()+numFailedDateReads));
 	return list;
     }
     
     /* A helper for createListOfVideos */
-    private static void readListOfVideosRecursive(List<youtubeVideo> list, final File folder) throws IOException {
-	for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                readListOfVideosRecursive(list, fileEntry);
-            } else if (fileEntry.getName().indexOf(".json")>-1) {
+    private static long readListOfVideosFromDayFolder(List<youtubeVideo> list, final File dateFolder) throws IOException {
+	String dateFolderName = dateFolder.getName();
+	long numFailedDateReads = 0;
+	for (final File fileEntry : dateFolder.listFiles()) {
+            if (! fileEntry.isDirectory() && fileEntry.getName().indexOf(".json")>-1) {
 		BufferedReader br = null;
                 try {
                     br = new BufferedReader(new FileReader(fileEntry.getAbsolutePath()));
@@ -37,14 +43,13 @@ public class DatafileGrabber {
                         content += sCurrentLine+"\n";
                     }
                     youtubeVideo videoObj = Common.getInstance().getYTVideoObjectFromJSON(content);
-                    if (videoObj!=null)
-                        list.add(videoObj);
-		    //System.out.println(fileEntry.getName()+" "+videoObj.getTitle()+" "+videoObj.getKey());
-                    /*
-                    System.out.println(videoObj.getTitle()+" "+videoObj.getNoOfLikes()
-                            +" "+videoObj.getNoOfDislikes()
-                            +" "+videoObj.getViewCount());
-                    */
+                    if (videoObj!=null) {
+			videoObj.calculateHowLongAgoUploaded(dateFolderName);
+			if (videoObj.getHowLongAgoUploaded() == 0L)
+			    numFailedDateReads++;
+			else
+			    list.add(videoObj);
+		    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
 		    if (br != null)
@@ -52,14 +57,13 @@ public class DatafileGrabber {
                 }
             }
         }
+	return numFailedDateReads;
     }
 
     /* 
      */
     public static HashMap<String,youtubeVideo> readMapOfVideos(String folderName) throws IOException {
-        final File folder = new File(folderName);
-	List<youtubeVideo> list = new java.util.LinkedList<>();
-        readListOfVideosRecursive(list, folder);
+	List<youtubeVideo> list = readListOfVideos(folderName);
 	HashMap<String,youtubeVideo> map = new java.util.HashMap<>();
 	for (youtubeVideo v : list)
 	    map.put(v.getKey(), v);
