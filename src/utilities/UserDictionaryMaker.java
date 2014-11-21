@@ -40,8 +40,10 @@ public class UserDictionaryMaker {
 	for (youtubeVideo vid : vidList) {
 	    String username = vid.getChannelID();
 	    youtubeUser user = userMap.get(username);
-	    if (user == null)
+	    if (user == null) {
 		user = new youtubeUser(username);
+		user.setSubscriberCount(Crawler.getYTUserSubscriptions(username));
+	    }
 	    user.setViewCount(user.getViewCount() + vid.getViewCount());
 	    user.getUploads().add(vid.getKey());
 	    userMap.put(username, user);

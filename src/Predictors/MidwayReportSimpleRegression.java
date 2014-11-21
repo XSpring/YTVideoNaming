@@ -78,7 +78,7 @@ public class MidwayReportSimpleRegression extends Predictor {
     
     @Override
     public void train(List<youtubeVideo> trainVids) {
-	dfsdfsdfds
+	System.err.println("MidwayReportSimpleRegression.train() not yet finished.");
     }
 
     private ArrayList<Double> getFeatures(youtubeVideo vid) {
@@ -116,5 +116,7 @@ public class MidwayReportSimpleRegression extends Predictor {
     private ArrayList<Double> getBagOfWordsFeatures(youtubeVideo vid) {
 	ArrayList<Double> features = new ArrayList<>();
 	String title = vid.getTitle();
+	System.err.println("MidwayReportSimpleRegression.getBagOfWordsFeatures() not done.");
+	return features;
     }
 }

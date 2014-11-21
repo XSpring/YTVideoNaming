@@ -117,4 +117,14 @@ public class Common {
 	pair.second = fullList.subList(sizeOfFirst, fullList.size());
 	return pair;
     }
+    
+    public static int getSecondsLong(String lengthAsString) {
+	System.err.println("Common.getSecondsLong() not yet finished.  Input: "  + lengthAsString);
+	return 1;
+    }
+    
+    public static int getDaysAgo(String dayAsString) {
+	System.err.println("Common.getDaysAgo() not yet finished.  Input: " + dayAsString);
+	return 1;
+    }
 }
