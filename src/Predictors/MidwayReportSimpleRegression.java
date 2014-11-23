@@ -25,7 +25,7 @@ public class MidwayReportSimpleRegression extends Predictor {
 	int splitPercent = 80;
 	
 	List<youtubeVideo> vidList = DatafileGrabber.readListOfVideos(videoFolderName);
-	List<Common.Pair<Predictor,Double>> predictors = new ArrayList<>(numRuns);  //precitors and their losses
+	List<Common.Pair<Predictor,Double>> predictors = new ArrayList<Common.Pair<Predictor,Double>>(numRuns);  //precitors and their losses
 	java.util.Random rand = new java.util.Random();	
 	for (int i=0; i<numRuns; i++) {
 	    Common.Pair<List<youtubeVideo>,List<youtubeVideo>> trainingAndTesting = Common.splitToTestAndTraining(vidList, vidList.size()*splitPercent/100, rand);
@@ -34,7 +34,7 @@ public class MidwayReportSimpleRegression extends Predictor {
 	    Predictor pred = new MidwayReportSimpleRegression(videoFolderName, uploaderFileName);
 	    pred.train(trainingVids);
 	    double loss = pred.getLossLogNumViews(testingVids);
-	    predictors.add(new Common.Pair<>(pred, loss));
+	    predictors.add(new Common.Pair<Predictor,Double>(pred, loss));
 	}
 	//do what we want with predictors, now.
     }
@@ -89,7 +89,7 @@ public class MidwayReportSimpleRegression extends Predictor {
     }
     
     private ArrayList<Double> getNonBagOfWordsFeatures(youtubeVideo vid) {
-	ArrayList<Double> features = new ArrayList<>();
+	ArrayList<Double> features = new ArrayList<Double>();
 	int duration = Common.getSecondsLong(vid.getDuration());
 	long daysAgoPublished = vid.getHowLongAgoUploaded();
 	String uploaderStr = vid.getChannelID();
@@ -114,7 +114,7 @@ public class MidwayReportSimpleRegression extends Predictor {
     }
     
     private ArrayList<Double> getBagOfWordsFeatures(youtubeVideo vid) {
-	ArrayList<Double> features = new ArrayList<>();
+	ArrayList<Double> features = new ArrayList<Double>();
 	String title = vid.getTitle();
 	System.err.println("MidwayReportSimpleRegression.getBagOfWordsFeatures() not done.");
 	return features;

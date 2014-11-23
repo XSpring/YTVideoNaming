@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by larcuser on 1/11/14.
+ * Created by Loc Do on 1/11/14.
  */
 public class regressionModel extends model {
 

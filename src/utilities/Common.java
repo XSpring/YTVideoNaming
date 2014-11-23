@@ -94,7 +94,15 @@ public class Common {
     public static String strPreprocessing(String strRaw) {
         return strRaw.replaceAll("[^0-9\\p{L}.]"," ").toLowerCase();
     }
-    
+
+    public static String convertDateTimeIndoToEn(String original) {
+        original = original.replaceAll("Agt", "Aug");
+        original = original.replaceAll("Des", "Dec");
+        original = original.replaceAll("Okt", "Oct");
+        original = original.replaceAll("Mei", "May");
+        return original;
+    }
+
     public static class Pair<F, S> {
 	public F first;
 	public S second;

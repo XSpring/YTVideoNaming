@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by larcuser on 1/11/14.
+ * Created on 1/11/14.
+ * @author Loc Do
  */
+
 public class model {
 
     /**

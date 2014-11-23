@@ -2,9 +2,14 @@ package objects.youtubeObjects;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+
+import utilities.Common;
 import utilities.Configuration;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by larcuser on 2/10/14.
@@ -41,6 +46,7 @@ public class youtubeVideo {
     private boolean unlisted;
     
     private long howLongAgoUploaded;
+    private long lengthInSeconds;
 
     public boolean isPaid() {
         return isPaid;
@@ -90,6 +96,8 @@ public class youtubeVideo {
 
         isPaid = false;
         unlisted = false;
+
+        lengthInSeconds = 0;
     }
 
     public String getKey() {
@@ -160,7 +168,8 @@ public class youtubeVideo {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void set
+            (String category) {
         this.category = category;
     }
 
@@ -261,30 +270,72 @@ public class youtubeVideo {
     }
     
     public void calculateHowLongAgoUploaded(String crawlFolderName) throws ParseException {
-	Calendar cCal = new java.util.GregorianCalendar();
-	Date cDate = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.ENGLISH).parse(crawlFolderName);
-	cCal.setTime(cDate);
-	//parse upload date.  Things get ugly...
-	String uDateAsString = this.getPublishedDate();
-	Calendar uCal = new java.util.GregorianCalendar();
-	java.util.Locale locale = java.util.Locale.ENGLISH;
-	String formatExpected = "MMMM d, yyyy";
-	if (uDateAsString.startsWith("Published on")) {
-	    uDateAsString = uDateAsString.replaceAll("Published on ", "");
-	} else if (uDateAsString.startsWith("Uploaded on")) {
-	    uDateAsString = uDateAsString.replaceAll("Uploaded on ", "");
-	} else {
-	    System.out.println("Unparsable format found: " + uDateAsString);
-	    formatExpected = "";
-	}
-	if (! formatExpected.isEmpty()) {
-	    Date uDate = new java.text.SimpleDateFormat(formatExpected, locale).parse(uDateAsString);
-	    uCal.setTime(uDate);
-	    long diffInMs = cCal.getTimeInMillis() - uCal.getTimeInMillis();
-	    long diffInDays = diffInMs/(1000*60*60*24);
-	    howLongAgoUploaded = diffInDays;
-	} else {
-	    howLongAgoUploaded = 0;
-	}
+	    Calendar cCal = new java.util.GregorianCalendar();
+	    Date cDate = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.ENGLISH).parse(crawlFolderName);
+	    cCal.setTime(cDate);
+
+	    //parse upload date.  Things get ugly...
+	    String uDateAsString = this.getPublishedDate();
+	    Calendar uCal = new java.util.GregorianCalendar();
+	    java.util.Locale locale = java.util.Locale.ENGLISH;
+	    String formatExpected = "MMMM d, yyyy";
+	    if (uDateAsString.startsWith("Published on")) {
+    	    uDateAsString = uDateAsString.replaceAll("Published on ", "");
+	    } else if (uDateAsString.startsWith("Uploaded on")) {
+	        uDateAsString = uDateAsString.replaceAll("Uploaded on ", "");
+	    } else if (uDateAsString.startsWith("Diterbitkan tanggal")) {
+            uDateAsString = uDateAsString.replaceAll("Diterbitkan tanggal ", "");
+            uDateAsString = Common.convertDateTimeIndoToEn(uDateAsString);
+            formatExpected = "dd MMM yyyy";
+        } else if (uDateAsString.startsWith("Diupload tanggal")) {
+            uDateAsString = uDateAsString.replaceAll("Diupload tanggal ", "");
+            uDateAsString = Common.convertDateTimeIndoToEn(uDateAsString);
+            formatExpected = "dd MMM yyyy";
+        } else if (uDateAsString.startsWith("Streamed live on")) {
+            uDateAsString = uDateAsString.replaceAll("Streamed live on ", "");
+        }
+        else {
+	        System.out.println("Unparsable format found: " + uDateAsString);
+	        formatExpected = "";
+	    }
+
+	    if (! formatExpected.isEmpty()) {
+	        Date uDate = new java.text.SimpleDateFormat(formatExpected, locale).parse(uDateAsString);
+	        uCal.setTime(uDate);
+	        long diffInMs = cCal.getTimeInMillis() - uCal.getTimeInMillis();
+	        long diffInDays = diffInMs/(1000*60*60*24);
+	        howLongAgoUploaded = diffInDays;
+	    } else {
+	        howLongAgoUploaded = 0;
+	    }
+    }
+
+    public long getVideoLengthInSeconds() {
+        return lengthInSeconds;
+    }
+
+    public void calculatedVideoLengthInSeconds() {
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        String length = duration;
+        //String mydata = "some string with 'the data i want' inside";
+        Pattern pattern = Pattern.compile("PT(.*?)M");
+        Matcher matcher = pattern.matcher(duration);
+        if (matcher.find())
+        {
+            //System.out.println(matcher.group(1));
+            minute = Integer.parseInt(matcher.group(1));
+        }
+
+        pattern = Pattern.compile("M(.*?)S");
+        matcher = pattern.matcher(duration);
+        if (matcher.find())
+        {
+            //System.out.println(matcher.group(1));
+            second = Integer.parseInt(matcher.group(1));
+        }
+
+        lengthInSeconds = hour * 3600 + minute * 60 + second;
     }
 }

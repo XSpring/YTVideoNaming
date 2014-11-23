@@ -255,23 +255,23 @@ public class youtubeUser {
     
     /* Serialization methods */
     public void serializeMinimal(java.io.BufferedWriter os) throws java.io.IOException {
-	os.write(this.key);
-	os.write("   ;   ");
-	os.write("" + this.getViewCount());
-	os.newLine();
-	for (String uploadedVid : this.getUploads())
-	    os.write(uploadedVid + "  ;  ");
-	os.newLine();
+	    os.write(this.key);
+	    os.write("   ;   ");
+	    os.write("" + this.getViewCount());
+	    os.newLine();
+	    for (String uploadedVid : this.getUploads())
+	        os.write(uploadedVid + "  ;  ");
+	    os.newLine();
     }
     public static youtubeUser deserializeMinimal(java.io.BufferedReader is) throws java.io.IOException {
-	youtubeUser user = new youtubeUser("");
-	String[] pieces = is.readLine().split("   ;   ");
-	user.setKey(pieces[0]);
-	user.setViewCount(Long.parseLong(pieces[1]));
-	String[] vidNames = is.readLine().split("   ;   ");
-	java.util.ArrayList<String> uploadedVids = new java.util.ArrayList<>();
-	uploadedVids.addAll(Arrays.asList(vidNames));
-	user.setUploads(uploadedVids);
-	return user;
+	    youtubeUser user = new youtubeUser("");
+	    String[] pieces = is.readLine().split("   ;   ");
+	    user.setKey(pieces[0]);
+	    user.setViewCount(Long.parseLong(pieces[1]));
+	    String[] vidNames = is.readLine().split("   ;   ");
+	    java.util.ArrayList<String> uploadedVids = new java.util.ArrayList<String>();
+	    uploadedVids.addAll(Arrays.asList(vidNames));
+	    user.setUploads(uploadedVids);
+	    return user;
     }
 }

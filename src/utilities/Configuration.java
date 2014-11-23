@@ -7,7 +7,13 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * Created by larcuser on 2/10/14.
+ * Created on 2/10/14
+ * @author Loc Do (larcuser)
+ *
+ */
+
+/**
+ * This class contains all the project settings
  */
 public class Configuration {
     private static Configuration ourInstance = new Configuration();
