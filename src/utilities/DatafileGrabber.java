@@ -20,8 +20,10 @@ public class DatafileGrabber {
 	    List<youtubeVideo> list = new java.util.LinkedList<youtubeVideo>();
 	    long numFailedDateReads = 0;
 	    for (final File dateFolder : folder.listFiles()) {
-	    if (dateFolder.isDirectory())
-		    numFailedDateReads += readListOfVideosFromDayFolder(list, dateFolder);
+	        if (dateFolder.isDirectory()) {
+                System.out.println(dateFolder.getName());
+                numFailedDateReads += readListOfVideosFromDayFolder(list, dateFolder);
+            }
         }
 	    if (numFailedDateReads != 0)
 	        System.out.println("numFailedDateReads: " + numFailedDateReads + "/" + (list.size()+numFailedDateReads));
@@ -29,7 +31,7 @@ public class DatafileGrabber {
     }
     
     /* A helper for createListOfVideos */
-    private static long readListOfVideosFromDayFolder(List<youtubeVideo> list, final File dateFolder) throws IOException {
+    public static long readListOfVideosFromDayFolder(List<youtubeVideo> list, final File dateFolder) throws IOException {
 	    String dateFolderName = dateFolder.getName();
 	    long numFailedDateReads = 0;
 	    for (final File fileEntry : dateFolder.listFiles()) {
@@ -54,6 +56,8 @@ public class DatafileGrabber {
 			            else
 			                list.add(videoObj);
 		            }
+
+                    br.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
 		            if (br != null)

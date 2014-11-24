@@ -291,6 +291,14 @@ public class youtubeVideo {
             uDateAsString = uDateAsString.replaceAll("Diupload tanggal ", "");
             uDateAsString = Common.convertDateTimeIndoToEn(uDateAsString);
             formatExpected = "dd MMM yyyy";
+        } else if (uDateAsString.startsWith("Streaming langsung tanggal")) {
+            uDateAsString = uDateAsString.replaceAll("Streaming langsung tanggal ", "");
+            uDateAsString = Common.convertDateTimeIndoToEn(uDateAsString);
+            formatExpected = "dd MMM yyyy";
+        } else if (uDateAsString.startsWith("Dijadwalkan untuk tanggal")) {
+            uDateAsString = uDateAsString.replaceAll("Dijadwalkan untuk tanggal ", "");
+            uDateAsString = Common.convertDateTimeIndoToEn(uDateAsString);
+            formatExpected = "dd MMM yyyy";
         } else if (uDateAsString.startsWith("Streamed live on")) {
             uDateAsString = uDateAsString.replaceAll("Streamed live on ", "");
         }

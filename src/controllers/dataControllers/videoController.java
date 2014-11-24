@@ -4,10 +4,11 @@ import objects.youtubeObjects.youtubeUser;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
+import utilities.DatafileGrabber;
 /**
  * Create on 23/11/14
  *
@@ -15,18 +16,38 @@ import java.util.List;
  */
 public class videoController {
 
-    /* Saves the results of makeListOfUsersFromVideos using saveListOfUsersToFile */
-    public static void run(String videoFolder, String outputFilename) throws java.io.IOException {
+    /*
+     * Main method of the class
+     * @param videoFolder : path to the directory contains date folders
+     */
+    public static void run(String videoFolder) throws java.io.IOException {
         System.out.println("Reading in video data...");
-        List<youtubeVideo> vidList = utilities.DatafileGrabber.readListOfVideos(videoFolder);
+        //List<youtubeVideo> vidList = utilities.DatafileGrabber.readListOfVideos(videoFolder);
 
-        System.out.println("" + vidList.size() + " videos found.");
-        System.out.println("Creating user map data from video files...");
+        final File folder = new File(videoFolder);
+        List<youtubeVideo> list = new java.util.LinkedList<youtubeVideo>();
 
-        HashMap<String, youtubeVideo> map = makeVideoMap(vidList);
-        System.out.println("" + map.size() + " unique videos crawled.");
-        System.out.println("Exporting video data to CSV...");
-        exportToCSV(map, outputFilename);
+        long numFailedDateReads = 0;
+        long numExtractedVideo = 0;
+
+        for (final File dateFolder : folder.listFiles()) {
+            if (dateFolder.isDirectory()) {
+                list.clear();
+                String outputFilename = dateFolder.getName()+".txt";
+                System.out.println("Wrapping data at folder " + dateFolder.getName());
+
+                numFailedDateReads += DatafileGrabber.readListOfVideosFromDayFolder(list, dateFolder);
+
+                // Remove duplicated videos
+                HashMap<String, youtubeVideo> map = makeVideoMap(list);
+                numExtractedVideo += map.size();
+
+                exportToCSV(map, outputFilename);
+            }
+        }
+
+        System.out.println("Cannot extract " + numFailedDateReads + " videos over " + numExtractedVideo);
+
         System.out.println("Done.");
     }
 
@@ -95,6 +116,7 @@ public class videoController {
 
                     newLine += processedStr.substring(0, processedStr.length()-1)+";";
 
+                    // Category
                     if (vid.getCategory().trim().length()>0)
                         newLine += vid.getCategory()+"\n";
                     else

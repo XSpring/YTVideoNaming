@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="YTVideoNaming:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/YTVideoNaming_jar</output-path>
+    <root id="archive" name="YTVideoNaming.jar">
+      <element id="module-output" name="YTVideoNaming" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../google-api-java-client/libs/gson-2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jsoup-1.7.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
