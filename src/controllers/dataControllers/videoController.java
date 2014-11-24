@@ -82,7 +82,10 @@ public class videoController {
                     for (String str:strArr)
                         processedStr+=str+",";
 
-                    newLine += processedStr.substring(0, processedStr.length()-1)+";";
+                    if (processedStr.length()>0)
+                        newLine += processedStr.substring(0, processedStr.length()-1)+";";
+                    else
+                        newLine += ";";
 
                     // Uploader
                     newLine+= vid.getChannelID()+";";
@@ -114,7 +117,10 @@ public class videoController {
                     for (String str:strArr)
                         processedStr+=str+",";
 
-                    newLine += processedStr.substring(0, processedStr.length()-1)+";";
+                    if (processedStr.length()>0)
+                        newLine += processedStr.substring(0, processedStr.length()-1)+";";
+                    else
+                        newLine += ";";
 
                     // Category
                     if (vid.getCategory().trim().length()>0)
