@@ -10,12 +10,31 @@ import objects.youtubeObjects.youtubeUser;
  * @author Richardson
  */
 public class DatafileGrabber {
-    /**
-     * If folder is a folder, read all the files in that folder
-     * If folder is a JSON file, create a video from that json and put to the lstVideo
-     * @param folderName
-     */
     public static List<youtubeVideo> readListOfVideos(String folderName) throws IOException {
+	return readListOfVideos_fromDayFiles(folderName);
+    }
+    
+    private static List<youtubeVideo> readListOfVideos_fromDayFiles(String folderName) throws IOException {
+	final File folder = new File(folderName);
+	List<youtubeVideo> list = new java.util.LinkedList<>();
+	for (final File file : folder.listFiles()) {
+	    if (! file.isDirectory() && file.getName().indexOf(".csv")>-1) {
+		System.out.println(file.getName());
+		BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+		while (true) {
+		    youtubeVideo vid = youtubeVideo.deserializeMinimal(br);
+		    if (vid == null)
+			break;
+		    else
+			list.add(vid);
+		}
+		br.close();
+	    }
+	}
+	return list;
+    }
+
+    private static List<youtubeVideo> readListOfVideos_oldFolderVersion(String folderName) throws IOException {
         final File folder = new File(folderName);
 	    List<youtubeVideo> list = new java.util.LinkedList<youtubeVideo>();
 	    long numFailedDateReads = 0;
@@ -25,16 +44,16 @@ public class DatafileGrabber {
                 numFailedDateReads += readListOfVideosFromDayFolder(list, dateFolder);
             }
         }
-	    if (numFailedDateReads != 0)
-	        System.out.println("numFailedDateReads: " + numFailedDateReads + "/" + (list.size()+numFailedDateReads));
-	    return list;
+	if (numFailedDateReads != 0)
+	    System.out.println("numFailedDateReads: " + numFailedDateReads + "/" + (list.size()+numFailedDateReads));
+	return list;
     }
     
     /* A helper for createListOfVideos */
     public static long readListOfVideosFromDayFolder(List<youtubeVideo> list, final File dateFolder) throws IOException {
-	    String dateFolderName = dateFolder.getName();
-	    long numFailedDateReads = 0;
-	    for (final File fileEntry : dateFolder.listFiles()) {
+	String dateFolderName = dateFolder.getName();
+	long numFailedDateReads = 0;
+	for (final File fileEntry : dateFolder.listFiles()) {
             if (! fileEntry.isDirectory() && fileEntry.getName().indexOf(".json")>-1) {
 	        	BufferedReader br = null;
                 try {
@@ -60,12 +79,12 @@ public class DatafileGrabber {
                     br.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
-		            if (br != null)
-			            br.close();
+		    if (br != null)
+			br.close();
                 }
             }
         }
-	    return numFailedDateReads;
+	return numFailedDateReads;
     }
 
     /* 
