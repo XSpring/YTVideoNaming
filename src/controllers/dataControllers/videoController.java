@@ -21,16 +21,13 @@ public class videoController {
      * @param videoFolder : path to the directory contains data
      */
 
-
-
-    public static void run(String videoFolder) throws java.io.IOException {
-        HashMap<String, youtubeVideo> hmVideo = readDataFromCSV(videoFolder);
-
+    public static void run() throws java.io.IOException {
         //FileWriter fw = new FileWriter("videoAge1.txt");
         //BufferedWriter bw = new BufferedWriter(fw);
 
         //HashMap<Long, Integer> hmVideoAge = new HashMap<Long, Integer>();
         HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
+        HashMap<String, youtubeVideo> hmVideo = dataController.getHmVideo();
 
         for (String vID:hmVideo.keySet()) {
             youtubeVideo video = hmVideo.get(vID);
@@ -56,75 +53,14 @@ public class videoController {
             List<String> lstVideos = hmVideoBins.get(age);
             if (lstVideos.size()>=10) {
                 modelController model = new modelController();
-
+                model.loadData(lstVideos);
+                model.run();
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
 
         }
         //bw.close();
         //readAndExportToCSV(videoFolder);
-    }
-
-    static HashMap<String, youtubeVideo> readDataFromCSV(String videoFolder) throws IOException {
-        System.out.println("Reading in video data...");
-        //List<youtubeVideo> vidList = utilities.DatafileGrabber.readListOfVideos(videoFolder);
-
-        final File folder = new File(videoFolder);
-
-        HashMap<String, youtubeVideo> hmVideo = new HashMap<String, youtubeVideo>();
-
-        HashSet<String> hsChannel = new HashSet<String>();
-
-        for (final File file : folder.listFiles()) {
-            String outputFilename = file.getName()+".txt";
-            System.out.println("Wrapping data at file " + file.getName());
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            for(String line; (line = br.readLine()) != null; ) {
-                String[] fields = line.split(";");
-
-                String vID = fields[0];
-                youtubeVideo newVideo = new youtubeVideo(vID);
-
-                String title = fields[1];
-                newVideo.setTitle(title);
-
-                String uploaderID = fields[2];
-                newVideo.setChannelID(uploaderID);
-                hsChannel.add(uploaderID);
-
-                String strHowLongUploaded = fields[3];
-                newVideo.setHowLongAgoUploaded(Long.parseLong(strHowLongUploaded));
-
-                String strLenInSeconds = fields[4];
-                newVideo.setVideoLengthInSeconds(Long.parseLong(strLenInSeconds));
-
-                String strViewCount = fields[5];
-                newVideo.setViewCount(Long.parseLong(strViewCount));
-
-                String strNoOfLikes = fields[6];
-                newVideo.setNoOfLikes(Integer.parseInt(strNoOfLikes));
-
-                String strNoOfDislikes = fields[7];
-                newVideo.setNoOfDislikes(Integer.parseInt(strNoOfDislikes));
-
-                String description = fields[8];
-                newVideo.setDescription(description);
-
-                String category = fields[9];
-                newVideo.setCategory(category);
-
-                hmVideo.put(vID, newVideo);
-            }
-            br.close();
-        }
-
-        System.out.println("Finished loading data from files...");
-        System.out.println("No of videos: "+hmVideo.size());
-        System.out.println("No of channels: "+hsChannel.size());
-        System.out.println("Start analysing the data...");
-        //dataAnalysis(hmVideo);
-        return hmVideo;
     }
 
     static void dataAnalysis(HashMap<String, youtubeVideo> hmVideo) {

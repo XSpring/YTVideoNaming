@@ -4,6 +4,7 @@
 
 package controllers;
 
+import controllers.dataControllers.dataController;
 import controllers.dataControllers.videoController;
 
 /**
@@ -18,8 +19,8 @@ public class mainController {
         String videoFolder = "YTData";
         //String videoFolder = "youtube";
         try {
-            videoController.run(videoFolder);
-
+            dataController.run(videoFolder);
+            videoController.run();
 
         } catch (java.io.IOException e) {
             System.err.println("Could not run UserDictionaryMaker: ");

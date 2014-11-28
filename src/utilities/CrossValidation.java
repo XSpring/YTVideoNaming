@@ -12,7 +12,10 @@ import java.util.Set;
 
 public class CrossValidation {
     Object[] arr;
+
     int maxFold = 5;
+
+    int testSize = 0;
 
     public CrossValidation() {
         arr = null;
@@ -36,7 +39,7 @@ public class CrossValidation {
         return true;
     }
 
-    public boolean loadData(List<Object> objectList) {
+    public boolean loadData(List<String> objectList) {
 
         arr = new Object[objectList.size()];
 
@@ -44,18 +47,39 @@ public class CrossValidation {
         for (Object obj:objectList)
             arr[id++] = obj;
 
+        testSize = arr.length / maxFold ;
+
         return true;
     }
 
     public List<Object> getTestingDataInFold(int numFold) {
-        List<Object> listTest = new ArrayList<Object>();
+        List<Object> lstTest = new ArrayList<Object>();
 
-        int testSize = arr.length / maxFold ;
-        return null;
+        int start = (numFold - 1)*testSize;
+        int end = numFold*testSize;
+        if (numFold==maxFold)
+            end = arr.length;
+
+        for (int id = start; id < end; id++)
+            lstTest.add(arr[id]);
+
+        return lstTest;
     }
 
     public List<Object>  getTrainingDataInFold(int numFold) {
-        return null;
+        List<Object> lstTrain = new ArrayList<Object>();
+
+        int start = (numFold - 1)*testSize;
+        int end = numFold*testSize;
+        if (numFold==maxFold)
+            end = arr.length;
+
+        for (int id = 0; id < start; id++)
+            lstTrain.add(arr[id]);
+
+        for (int id = end; id < arr.length; id++)
+            lstTrain.add(arr[id]);
+        return lstTrain;
 
     }
 
