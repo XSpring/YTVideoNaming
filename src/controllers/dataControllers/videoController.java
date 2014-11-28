@@ -1,14 +1,12 @@
 package controllers.dataControllers;
 
+import controllers.modelControllers.modelController;
 import objects.youtubeObjects.youtubeUser;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import utilities.DatafileGrabber;
 /**
@@ -22,13 +20,52 @@ public class videoController {
      * Main method of the class
      * @param videoFolder : path to the directory contains data
      */
-    public static void run(String videoFolder) throws java.io.IOException {
-        computeStatistics(videoFolder);
-        //readAndExportToCSV(videoFolder);
 
+
+
+    public static void run(String videoFolder) throws java.io.IOException {
+        HashMap<String, youtubeVideo> hmVideo = readDataFromCSV(videoFolder);
+
+        //FileWriter fw = new FileWriter("videoAge1.txt");
+        //BufferedWriter bw = new BufferedWriter(fw);
+
+        //HashMap<Long, Integer> hmVideoAge = new HashMap<Long, Integer>();
+        HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
+
+        for (String vID:hmVideo.keySet()) {
+            youtubeVideo video = hmVideo.get(vID);
+
+            //bw.write(vID+"\t"+video.getHowLongAgoUploaded()+"\n");
+            //bw.write(video.getHowLongAgoUploaded()+"\n");
+            //Integer counter = hmVideoAge.get(video.getHowLongAgoUploaded());
+            //if (counter == null)
+            //    counter = 0;
+
+            //counter ++;
+            //hmVideoAge.put(video.getHowLongAgoUploaded(), counter);
+            List <String> lstBin = hmVideoBins.get(video.getHowLongAgoUploaded());
+            if (lstBin == null)
+                lstBin = new ArrayList<String>();
+
+            lstBin.add(vID);
+            hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
+        }
+
+
+        for (Long age:hmVideoBins.keySet()) {
+            List<String> lstVideos = hmVideoBins.get(age);
+            if (lstVideos.size()>=10) {
+                modelController model = new modelController();
+
+            }
+            //System.out.println(age + "\t" + hmVideoBins.get(age).size());
+
+        }
+        //bw.close();
+        //readAndExportToCSV(videoFolder);
     }
 
-    static void computeStatistics(String videoFolder) throws IOException {
+    static HashMap<String, youtubeVideo> readDataFromCSV(String videoFolder) throws IOException {
         System.out.println("Reading in video data...");
         //List<youtubeVideo> vidList = utilities.DatafileGrabber.readListOfVideos(videoFolder);
 
@@ -87,6 +124,7 @@ public class videoController {
         System.out.println("No of channels: "+hsChannel.size());
         System.out.println("Start analysing the data...");
         //dataAnalysis(hmVideo);
+        return hmVideo;
     }
 
     static void dataAnalysis(HashMap<String, youtubeVideo> hmVideo) {

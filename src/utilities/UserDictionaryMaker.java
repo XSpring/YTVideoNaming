@@ -36,7 +36,7 @@ public class UserDictionaryMaker {
     
     /* Takes all videos in a list, and uses their data to construct a map of user names to youtubeUsers. */
     public static HashMap<String,youtubeUser> makeListOfUsersFromVideos(List<youtubeVideo> vidList) throws java.io.IOException {
-	HashMap<String,youtubeUser> userMap = new java.util.HashMap<>();
+	HashMap<String,youtubeUser> userMap = new java.util.HashMap<String, youtubeUser>();
 	for (youtubeVideo vid : vidList) {
 	    String username = vid.getChannelID();
 	    youtubeUser user = userMap.get(username);
