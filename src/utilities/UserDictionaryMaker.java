@@ -96,7 +96,9 @@ public class UserDictionaryMaker {
 	System.out.println("Done.");
     }
     
-    /* Takes all videos in a list, and uses their data to construct a map of user names to youtubeUsers. */
+    /* Used by runUserDictionaryMaker_allAtOnce.  Takes all videos in a list, and uses their data to construct a map of user names to youtubeUsers. */
+    private static HashMap<String,youtubeUser> makeListOfUsersFromVideos(List<youtubeVideo> vidList) {
+	HashMap<String,youtubeUser> userMap = new java.util.HashMap<>();
 	int counter = 0;
 	for (youtubeVideo vid : vidList) {
 	    String username = vid.getChannelID();
