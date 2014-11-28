@@ -15,10 +15,12 @@ public class mainController {
     public static void main(String[] args) {
         System.out.println("This is the main controllers...");
 
-        String videoFolder = "/data/YouTube";
+        String videoFolder = "YTData";
         //String videoFolder = "youtube";
         try {
             videoController.run(videoFolder);
+
+
         } catch (java.io.IOException e) {
             System.err.println("Could not run UserDictionaryMaker: ");
             e.printStackTrace();

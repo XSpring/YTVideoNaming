@@ -322,6 +322,10 @@ public class youtubeVideo {
         return lengthInSeconds;
     }
 
+    public void setVideoLengthInSeconds(long lengthInSeconds) {
+        this.lengthInSeconds = lengthInSeconds;
+    }
+
     public void calculatedVideoLengthInSeconds() {
         int hour = 0;
         int minute = 0;
@@ -345,5 +349,9 @@ public class youtubeVideo {
         }
 
         lengthInSeconds = hour * 3600 + minute * 60 + second;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
