@@ -21,7 +21,7 @@ public class videoController {
      * @param videoFolder : path to the directory contains data
      */
 
-    public static void run() throws java.io.IOException {
+    public static void run() throws java.io.IOException, Exception {
         //FileWriter fw = new FileWriter("videoAge1.txt");
         //BufferedWriter bw = new BufferedWriter(fw);
 
