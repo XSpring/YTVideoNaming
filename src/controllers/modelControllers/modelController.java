@@ -1,6 +1,7 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
+import utilities.Configuration;
 import utilities.CrossValidation;
 
 import java.util.List;
@@ -12,19 +13,39 @@ import java.util.List;
  */
 public class modelController {
 
-    CrossValidation cv = new CrossValidation();
+    CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
 
     public void loadData(List<String> lstVideos) {
         cv.loadData(lstVideos);
     }
 
-    public void run() {
+    public void run() throws Exception {
+
+        for (int id = 1; id < 6; id++) {
+            List<Object> train = cv.getTrainingDataInFold(id);
+            List<Object> test = cv.getTestingDataInFold(id);
+
+            System.out.println("Training data...");
+            for (Object obj:train)
+                System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
+
+            System.out.println("Testing data...");
+            for (Object obj:test)
+                System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
+        }
+
+        System.out.println("Stop");
+        Thread.sleep(999999);
+    }
+
+    public void testDataValidity() {
         System.out.println("Test overlapping between training and testing set at each fold.");
 
         for (int id=1; id<6; id++) {
             List<Object> train = cv.getTrainingDataInFold(id);
             List<Object> test = cv.getTestingDataInFold(id);
 
+            //
             for (Object obj:train)
                 if (test.contains(obj)) {
                     System.out.println("Found duplicate entries in training and testing set");
