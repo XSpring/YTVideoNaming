@@ -354,4 +354,37 @@ public class youtubeVideo {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    /* Serialization methods */
+    public void serializeMinimal(java.io.BufferedWriter os) throws java.io.IOException {
+	os.write(this.getKey() + ";");
+	os.write(this.getTitle() + ";");
+	os.write(this.getChannelID()+ ";");
+	os.write(this.getHowLongAgoUploaded()+ ";");
+	os.write(this.getVideoLengthInSeconds()+ ";");
+	os.write(this.getViewCount()+ ";");
+	os.write(this.getNoOfLikes()+ ";");
+	os.write(this.getNoOfDislikes()+ ";");
+	os.write(this.getCategory());
+	os.newLine();
+    }
+    public static youtubeVideo deserializeMinimal(java.io.BufferedReader is) {
+	String s;
+	try { s = is.readLine(); }
+	catch (java.io.IOException e) { return null; }
+	if (s == null)
+	    return null;
+	youtubeVideo vid = new youtubeVideo("");
+	String[] pieces = s.split(";");
+	vid.setKey(pieces[0]);
+	vid.setTitle(pieces[1]);
+	vid.setChannelID(pieces[2]);
+	vid.setHowLongAgoUploaded(Long.parseLong(pieces[3]));
+	vid.setVideoLengthInSeconds(Long.parseLong(pieces[4]));
+	vid.setViewCount(Long.parseLong(pieces[5]));
+	vid.setNoOfLikes(Integer.parseInt(pieces[6]));
+	vid.setNoOfDislikes(Integer.parseInt(pieces[7]));
+	vid.setCategory(pieces[8]);
+	return vid;
+    }
 }
