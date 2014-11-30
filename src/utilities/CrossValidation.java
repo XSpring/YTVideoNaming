@@ -22,7 +22,6 @@ public class CrossValidation {
     }
 
     public CrossValidation(int newMaxFold) {
-
         arr = null;
 
         maxFold = newMaxFold;

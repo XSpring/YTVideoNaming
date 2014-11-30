@@ -32,6 +32,8 @@ public class Configuration {
     private int noOfConcurrentThreads;
     private final ExecutorService executor;
     private final int noOfVideosBeforeResting;
+    private int maxFold;
+    private int noOfIterations;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -45,6 +47,12 @@ public class Configuration {
         crawledIDs = Collections.synchronizedSet(new HashSet<String>());
         noOfConcurrentThreads = 7; // No of *real* cores
         executor = Executors.newFixedThreadPool(noOfConcurrentThreads);
+        maxFold = 5;
+        noOfIterations = 10;
+    }
+
+    public int getMaxFold() {
+        return maxFold;
     }
 
     public int getDelayTimeInSeconds() {
@@ -87,4 +95,5 @@ public class Configuration {
 
     public int getNoOfVideosBeforeResting() { return noOfVideosBeforeResting; };
 
+    public int getNoOfIterations() { return noOfIterations; };
 }

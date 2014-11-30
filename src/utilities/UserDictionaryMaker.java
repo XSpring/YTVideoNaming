@@ -14,10 +14,11 @@ public class UserDictionaryMaker {
 	String videoFolder = "data_all";
 	String outputFileName = "data_all/userMapSave.txt";
 	try {
+        System.out.println("Running the UserDictionaryMaker.java");
 	    //old version
 		//runUserDictionaryMaker(videoFolder, outputFileName);
 	    //new version
-		java.util.Set<String> alreadyCrawled = new java.util.HashSet<>();
+		java.util.Set<String> alreadyCrawled = new java.util.HashSet<String>();
 		//alreadyCrawled = resumeFromEarlier();
 		runGetSubscribers_oneAtATime(videoFolder, alreadyCrawled, outputFileName + "_subscribers");
 		//runUserDictionaryMaker_precrawled(videoFolder, outputFileName + "_subscribers", outputFileName);
@@ -32,6 +33,7 @@ public class UserDictionaryMaker {
 	final java.io.File folder = new java.io.File(videoFolder);
 	java.io.File outFile = new java.io.File(outputFilename);
 	int counter = 0;
+    int crawled = 0;
 	for (final java.io.File file : folder.listFiles()) {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
 		java.io.File subscribersFile = new java.io.File(file.getAbsolutePath() + "_subscribers");
@@ -61,6 +63,7 @@ public class UserDictionaryMaker {
 				String username = vid.getChannelID();
 				if (! alreadyCrawled.contains(username)) {
 				    long subscriptions = Crawler.getYTUserSubscriptions(username);
+                    crawled++;
 				    bw.write(username + ";" + subscriptions);
 				    bw.newLine();
 				    alreadyCrawled.add(username);
@@ -68,7 +71,10 @@ public class UserDictionaryMaker {
 				counter++;
 				if (counter % 100 == 0)
 				    System.out.println("makeListOfUsersFromVideos has finished " + counter + " videos so far...");
+                    bw.flush();
 			    }
+                if (crawled % 7 == 0)
+                    Thread.sleep(2000);
 			}
 		    } catch (Exception e) {
 		    } finally {
@@ -98,7 +104,7 @@ public class UserDictionaryMaker {
     
     /* Used by runUserDictionaryMaker_allAtOnce.  Takes all videos in a list, and uses their data to construct a map of user names to youtubeUsers. */
     private static HashMap<String,youtubeUser> makeListOfUsersFromVideos(List<youtubeVideo> vidList) {
-	HashMap<String,youtubeUser> userMap = new java.util.HashMap<>();
+	HashMap<String,youtubeUser> userMap = new java.util.HashMap<String, youtubeUser>();
 	int counter = 0;
 	for (youtubeVideo vid : vidList) {
 	    String username = vid.getChannelID();

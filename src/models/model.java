@@ -9,32 +9,24 @@ import java.util.List;
  * @author Loc Do
  */
 
-public class model {
+public abstract class model {
 
-    /**
-     * List of videos in the folder
-     */
-    List<youtubeVideo> lstVideo;
+    List<Object> trainData = null;
+    List<Object> testData = null;
 
     public model() {
-        lstVideo = new LinkedList<youtubeVideo>();
+
     }
 
     public void run() {
-        createListVideos("youtube");
+
     }
 
-    /**
-     * Read all the json files in the folderName
-     * @param folderName
-     */
-    void createListVideos(String folderName) {
-	try {
-	    lstVideo = utilities.DatafileGrabber.readListOfVideos(folderName);
-	    System.out.println("Finished reading all the videos in folder "+folderName);
-	    System.out.println("There are "+lstVideo.size()+" videos.");
-	} catch (java.io.IOException e) {
-	    e.printStackTrace();
-	}
+    void train() throws Exception {
+
+    }
+
+    void test() throws Exception {
+
     }
 }

@@ -16,7 +16,7 @@ public class DatafileGrabber {
     
     private static List<youtubeVideo> readListOfVideos_fromDayFiles(String folderName) throws IOException {
 	final File folder = new File(folderName);
-	List<youtubeVideo> list = new java.util.LinkedList<>();
+	List<youtubeVideo> list = new java.util.LinkedList<youtubeVideo>();
 	for (final File file : folder.listFiles()) {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv")>-1) {
 		System.out.println(file.getName());

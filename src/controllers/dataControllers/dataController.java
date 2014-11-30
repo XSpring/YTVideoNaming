@@ -30,7 +30,7 @@ public class dataController {
 
         HashMap<String, youtubeVideo> hmVideo = new HashMap<String, youtubeVideo>();
 
-        HashSet<String> hsChannel = new HashSet<String>();
+        //HashSet<String> hsChannel = new HashSet<String>();
 
         for (final File file : folder.listFiles()) {
             String outputFilename = file.getName()+".txt";
@@ -48,7 +48,7 @@ public class dataController {
 
                 String uploaderID = fields[2];
                 newVideo.setChannelID(uploaderID);
-                hsChannel.add(uploaderID);
+                //hsChannel.add(uploaderID);
 
                 String strHowLongUploaded = fields[3];
                 newVideo.setHowLongAgoUploaded(Long.parseLong(strHowLongUploaded));
@@ -78,7 +78,7 @@ public class dataController {
 
         System.out.println("Finished loading data from files...");
         System.out.println("No of videos: "+hmVideo.size());
-        System.out.println("No of channels: "+hsChannel.size());
+        //System.out.println("No of channels: "+hsChannel.size());
         System.out.println("Start analysing the data...");
         //dataAnalysis(hmVideo);
         return hmVideo;

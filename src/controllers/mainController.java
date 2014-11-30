@@ -21,9 +21,10 @@ public class mainController {
         try {
             dataController.run(videoFolder);
             videoController.run();
-
         } catch (java.io.IOException e) {
             System.err.println("Could not run UserDictionaryMaker: ");
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
