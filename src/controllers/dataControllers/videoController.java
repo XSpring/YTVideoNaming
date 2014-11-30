@@ -52,6 +52,7 @@ public class videoController {
         for (Long age:hmVideoBins.keySet()) {
             List<String> lstVideos = hmVideoBins.get(age);
             if (lstVideos.size()>=10) {
+                System.out.println("Learning model with bin ("+age+").");
                 modelController model = new modelController();
                 model.loadData(lstVideos);
                 model.run();

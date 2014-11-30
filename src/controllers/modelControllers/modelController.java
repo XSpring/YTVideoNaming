@@ -1,6 +1,7 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
+import models.LRGradDescModel;
 import utilities.Configuration;
 import utilities.CrossValidation;
 
@@ -25,6 +26,7 @@ public class modelController {
             List<Object> train = cv.getTrainingDataInFold(id);
             List<Object> test = cv.getTestingDataInFold(id);
 
+            /*
             System.out.println("Training data...");
             for (Object obj:train)
                 System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
@@ -32,10 +34,13 @@ public class modelController {
             System.out.println("Testing data...");
             for (Object obj:test)
                 System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
+            */
+
+            LRGradDescModel model = new LRGradDescModel();
+            model.run(train, test);
         }
 
-        System.out.println("Stop");
-        Thread.sleep(999999);
+        System.out.println("Done with training/testing data...");
     }
 
     public void testDataValidity() {

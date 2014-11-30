@@ -34,6 +34,7 @@ public class Configuration {
     private final int noOfVideosBeforeResting;
     private int maxFold;
     private int noOfIterations;
+    private double eta;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -48,7 +49,12 @@ public class Configuration {
         noOfConcurrentThreads = 7; // No of *real* cores
         executor = Executors.newFixedThreadPool(noOfConcurrentThreads);
         maxFold = 5;
-        noOfIterations = 10;
+        noOfIterations = 20;
+        eta = 0.01;
+    }
+
+    public double getEta() {
+        return eta;
     }
 
     public int getMaxFold() {
