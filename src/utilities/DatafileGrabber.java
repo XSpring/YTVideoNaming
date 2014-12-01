@@ -49,7 +49,7 @@ public class DatafileGrabber {
 	return list;
     }
     
-    /* A helper for createListOfVideos */
+    /* A helper for readListOfVideos_oldFolderVersion */
     public static long readListOfVideosFromDayFolder(List<youtubeVideo> list, final File dateFolder) throws IOException {
 	String dateFolderName = dateFolder.getName();
 	long numFailedDateReads = 0;
