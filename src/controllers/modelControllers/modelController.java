@@ -1,10 +1,12 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
-import models.LRGradDescModel;
+import models.LRAdaGradModel;
+import models.genericModel;
 import utilities.Configuration;
 import utilities.CrossValidation;
 
+import java.io.BufferedWriter;
 import java.util.List;
 
 /**
@@ -16,8 +18,14 @@ public class modelController {
 
     CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
 
+    BufferedWriter bw = null;
+
     public void loadData(List<String> lstVideos) {
         cv.loadData(lstVideos);
+    }
+
+    public void setBw(BufferedWriter bw) {
+        this.bw = bw;
     }
 
     public void run() throws Exception {
@@ -36,10 +44,13 @@ public class modelController {
                 System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
             */
 
-            LRGradDescModel model = new LRGradDescModel();
+            //LRGradDescModel model = new LRGradDescModel();
+            genericModel model = new LRAdaGradModel();
+            model.setBw(bw);
             model.run(train, test);
         }
-
+        bw.write("\n");
+        bw.flush();
         System.out.println("Done with training/testing data...");
     }
 

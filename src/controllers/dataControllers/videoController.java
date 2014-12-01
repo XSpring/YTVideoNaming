@@ -48,19 +48,26 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
+        FileWriter fw = new FileWriter("LRAdaGA_result.txt");
+        BufferedWriter bw = new BufferedWriter(fw);
 
+        int count = 0;
         for (Long age:hmVideoBins.keySet()) {
+            count ++;
             List<String> lstVideos = hmVideoBins.get(age);
-            if (lstVideos.size()>=10) {
+            if (lstVideos.size()>=10 && lstVideos.size()<=100) {
                 System.out.println("Learning model with bin ("+age+").");
+                bw.write("Bin "+age+" ");
                 modelController model = new modelController();
+                model.setBw(bw);
                 model.loadData(lstVideos);
                 model.run();
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
-
+            //if (count==1) break;
         }
-        //bw.close();
+        bw.close();
+
         //readAndExportToCSV(videoFolder);
     }
 

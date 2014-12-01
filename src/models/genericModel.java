@@ -1,6 +1,8 @@
 package models;
 
 import objects.youtubeObjects.youtubeVideo;
+
+import java.io.BufferedWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,16 +11,22 @@ import java.util.List;
  * @author Loc Do
  */
 
-public abstract class model {
+public abstract class genericModel {
 
     List<Object> trainData = null;
     List<Object> testData = null;
 
-    public model() {
+    BufferedWriter bw = null;
+
+    public genericModel() {
 
     }
 
-    public void run() {
+    public void setBw(BufferedWriter bw) {
+        this.bw = bw;
+    }
+
+    public void run(List<Object> train, List<Object> test) {
 
     }
 

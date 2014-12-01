@@ -10,13 +10,12 @@ import java.util.List;
  * Create on 30/11/14
  *
  * @author Loc Do
- *
- * Logistic Regression using Gradient Descent
  */
-
-public class LRGradDescModel extends genericModel {
+public class LRAdaGradModel extends genericModel {
 
     featureController modelParams = null;
+
+    featureController stackedGradients = null;
 
     public void run(List<Object> trainData, List<Object> testData) {
         // Initialize the data
@@ -25,6 +24,7 @@ public class LRGradDescModel extends genericModel {
 
         // Initialize the parameters
         modelParams = new featureController();
+        stackedGradients = new featureController();
 
         try {
             //System.out.println("Training...");
@@ -42,7 +42,7 @@ public class LRGradDescModel extends genericModel {
         Object[] arr = trainData.toArray();
 
         for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
-                 idLoop++)
+             idLoop++)
         {
             featureController gradient = new featureController();
 
@@ -66,10 +66,10 @@ public class LRGradDescModel extends genericModel {
                     // 1. Numeric features
                     // 1.1 No of likes
                     X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
-                                                            dataController.getHmVideo().get(item2).getNoOfLikes()));
+                            dataController.getHmVideo().get(item2).getNoOfLikes()));
                     // 1.2 No of dislikes
                     X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
-                                                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
+                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
 
                     // 2. Bag of Words (from Title only)
                     String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
@@ -163,11 +163,23 @@ public class LRGradDescModel extends genericModel {
 
             // Update the parameter
             double w_d = 0.0;
+            double learningRateCoeff = 0.0;
+
             for (Integer idF:modelParams.getHmNumericFeatures().keySet())
             {
                 w_d = modelParams.getOrInitFeature(0, idF);
-                w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(0, idF);
+                learningRateCoeff = stackedGradients.getOrInitFeature(0, idF);
+                if (learningRateCoeff == 0.0)
+                    w_d +=  Configuration.getInstance().getEta() *
+                            gradient.getOrInitFeature(0, idF);
+                    else
+                    w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) *
+                             gradient.getOrInitFeature(0, idF);
+
+                learningRateCoeff += gradient.getOrInitFeature(0, idF) * gradient.getOrInitFeature(0, idF);
+
                 modelParams.setFeature(0, idF, w_d);
+                stackedGradients.setFeature(0, idF, learningRateCoeff);
                 //System.out.print(w_d + " ");
             }
 
@@ -178,8 +190,18 @@ public class LRGradDescModel extends genericModel {
                 for (String key:modelParams.getStringFeatures(featureType).keySet())
                 {
                     w_d = modelParams.getOrInitFeature(featureType, key);
-                    w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key);
+                    learningRateCoeff = stackedGradients.getOrInitFeature(featureType, key);
+                    if (learningRateCoeff == 0.0)
+                        w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key);
+                    else
+                        w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) *
+                                gradient.getOrInitFeature(featureType, key);
+
+                    learningRateCoeff += gradient.getOrInitFeature(featureType, key) *
+                                            gradient.getOrInitFeature(featureType, key);
+
                     modelParams.setFeature(featureType, key, w_d);
+                    stackedGradients.setFeature(featureType, key, learningRateCoeff);
                     //System.out.print(w_d + " ");
                 }
             }
