@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public class DirectGradDescModel extends genericModel {
-
     FeatureController modelParams = null;
 
     @Override
@@ -112,6 +111,11 @@ public class DirectGradDescModel extends genericModel {
 	    bw.write("  sqrtErrSq = " + sqrtErrSq);
 	    bw.write("  # correct = " + correct + "/" + count);
 	} catch (Exception e) { }
+    }
+    
+    @Override
+    public void output(String filename) {
+	modelParams.output(filename);
     }
     
     private java.util.List<Double> getPredictions(java.util.List<Object> vids) {

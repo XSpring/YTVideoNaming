@@ -1,9 +1,6 @@
 package models;
 
-import objects.youtubeObjects.youtubeVideo;
-
 import java.io.BufferedWriter;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,23 +15,12 @@ public abstract class genericModel {
 
     BufferedWriter bw = null;
 
-    public genericModel() {
-
-    }
-
     public void setBw(BufferedWriter bw) {
         this.bw = bw;
     }
 
-    public void run(List<Object> train, List<Object> test) {
-
-    }
-
-    void train() throws Exception {
-
-    }
-
-    void test() throws Exception {
-
-    }
+    public abstract void run(List<Object> train, List<Object> test);
+    abstract void train() throws Exception;
+    abstract void test() throws Exception;
+    public abstract void output(String filename);
 }

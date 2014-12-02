@@ -99,4 +99,30 @@ public class FeatureController {
     public HashMap<String, Double> getHmCategoryFeatures() {
         return hmCategoryFeatures;
     }
+    
+    public void output(String filename) {
+	java.io.FileWriter fw = null;
+	java.io.BufferedWriter bw = null;
+	try {
+	    fw = new java.io.FileWriter(filename);
+	    bw = new java.io.BufferedWriter(fw);
+	    for (Integer j : hmNumericFeatures.keySet()) {
+		bw.write("0." + j + ";" + hmNumericFeatures.get(j));
+		bw.newLine();
+	    }
+	    for (int i=1; i<4; i++) {
+		for (String j : getStringFeatures(i).keySet()) {
+		    bw.write(i + "." + j + ";" + getOrInitFeature(i, j));
+		    bw.newLine();
+		}
+	    }
+	} catch (java.io.IOException e) {
+	    System.err.println("Failed to finish output file " + filename);
+	} finally {
+	    try {
+		bw.close();
+		fw.close();
+	    } catch (java.io.IOException e) {};
+	}
+    }
 }

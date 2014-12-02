@@ -15,10 +15,9 @@ import java.util.List;
  * @author Loc Do
  */
 public class modelController {
-
     CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
-
     BufferedWriter bw = null;
+    genericModel model = null;
 
     public void loadData(List<String> lstVideos) {
         cv.loadData(lstVideos);
@@ -29,23 +28,11 @@ public class modelController {
     }
 
     public void run() throws Exception {
-
         for (int id = 1; id < 6; id++) {
             List<Object> train = cv.getTrainingDataInFold(id);
             List<Object> test = cv.getTestingDataInFold(id);
-
-            /*
-            System.out.println("Training data...");
-            for (Object obj:train)
-                System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
-
-            System.out.println("Testing data...");
-            for (Object obj:test)
-                System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
-            */
-
-            //LRGradDescModel model = new LRGradDescModel();
-            genericModel model = new LRAdaGradModel();
+            //model = new LRGradDescModel();
+            model = new LRAdaGradModel();
             model.setBw(bw);
             model.run(train, test);
         }
@@ -54,6 +41,10 @@ public class modelController {
         System.out.println("Done with training/testing data...");
     }
 
+    public void output(String filename) {
+	model.output(filename);
+    }
+    
     public void testDataValidity() {
         System.out.println("Test overlapping between training and testing set at each fold.");
 

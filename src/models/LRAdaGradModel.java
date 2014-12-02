@@ -324,4 +324,9 @@ public class LRAdaGradModel extends genericModel {
         //System.out.println("Error ratio: "+errorRatio+" ("+correct+" over "+count+").");
         bw.write(errorRatio+" ("+correct+"/"+count+") ");
     }
+    
+    @Override
+    public void output(String filename) {
+	modelParams.output(filename);
+    }
 }

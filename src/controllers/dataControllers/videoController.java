@@ -48,7 +48,7 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRAdaGA_result.txt");
+        FileWriter fw = new FileWriter("results/LRAdaGA_result.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
         int count = 0;
@@ -62,6 +62,7 @@ public class videoController {
                 model.setBw(bw);
                 model.loadData(lstVideos);
                 model.run();
+		model.output("results/LRAdaGA_" + age + ".txt");
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
             //if (count==1) break;
