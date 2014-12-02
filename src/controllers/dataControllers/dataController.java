@@ -1,6 +1,6 @@
 package controllers.dataControllers;
 
-import objects.youtubeObjects.youtubeVideo;
+import objects.youtubeObjects.*;
 
 import java.io.*;
 import java.util.HashMap;
@@ -13,13 +13,19 @@ import java.util.HashSet;
 public class dataController {
 
     static HashMap<String, youtubeVideo> hmVideo = null;
+    static HashMap<String, youtubeUser> hmUser = null;
 
     public static void run(String videoFolder) throws IOException {
-        hmVideo  = readDataFromCSV(videoFolder);
+        hmVideo  = readDataFromCSV(videoFolder);    //utilities.DatafileGrabber.readListOfVideos(videoFolder);
+	hmUser = utilities.DatafileGrabber.readMapOfUsers(videoFolder + "/userMapSave.txt");
     }
 
     public static HashMap<String, youtubeVideo> getHmVideo() {
         return hmVideo;
+    }
+    
+    public static HashMap<String, youtubeUser> getHmUser() {
+        return hmUser;
     }
 
     static HashMap<String, youtubeVideo> readDataFromCSV(String videoFolder) throws IOException {

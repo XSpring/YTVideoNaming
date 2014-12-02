@@ -1,7 +1,7 @@
 package models;
 
 import controllers.dataControllers.dataController;
-import controllers.dataControllers.featureController;
+import controllers.dataControllers.FeatureController;
 import utilities.Configuration;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class LRAdaGradModel extends genericModel {
 
-    featureController modelParams = null;
+    FeatureController modelParams = null;
 
-    featureController stackedGradients = null;
+    FeatureController stackedGradients = null;
 
     public void run(List<Object> trainData, List<Object> testData) {
         // Initialize the data
@@ -23,8 +23,8 @@ public class LRAdaGradModel extends genericModel {
         this.testData = testData;
 
         // Initialize the parameters
-        modelParams = new featureController();
-        stackedGradients = new featureController();
+        modelParams = new FeatureController();
+        stackedGradients = new FeatureController();
 
         try {
             //System.out.println("Training...");
@@ -44,7 +44,7 @@ public class LRAdaGradModel extends genericModel {
         for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
              idLoop++)
         {
-            featureController gradient = new featureController();
+            FeatureController gradient = new FeatureController();
 
             // For all pairs (i, j) such that views_i > views_j
             for (int idI1=0; idI1 < arr.length-1; idI1++)
@@ -61,7 +61,7 @@ public class LRAdaGradModel extends genericModel {
                     }
 
                     // Create representative feature vector
-                    featureController X_ij = new featureController();
+                    FeatureController X_ij = new FeatureController();
 
                     // 1. Numeric features
                     // 1.1 No of likes
@@ -225,7 +225,7 @@ public class LRAdaGradModel extends genericModel {
                 count++;
 
                 // Create representative feature vector
-                featureController X_ij = new featureController();
+                FeatureController X_ij = new FeatureController();
 
                 // 1. Numeric features
                 // 1.1 No of likes

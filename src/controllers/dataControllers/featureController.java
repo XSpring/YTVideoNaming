@@ -7,14 +7,18 @@ import java.util.HashMap;
  *
  * @author Loc Do
  */
-public class featureController {
-
+public class FeatureController {
+    public static final int NUMERICFEATURES = 0;
+    public static final int BAGOFWORDSFEATURES = 1;
+    public static final int CHANNELIDFEATURES = 2;
+    public static final int CATEGORYFEATURES = 3;
+    
     HashMap<Integer, Double> hmNumericFeatures = null; // type = 0
     HashMap<String, Double> hmBoWFeatures = null; // type = 1
     HashMap<String, Double> hmChannelIDFeatures = null; // type = 2
     HashMap<String, Double> hmCategoryFeatures = null; // type = 3
 
-    public featureController() {
+    public FeatureController() {
         hmNumericFeatures = new HashMap<Integer, Double>();
         hmBoWFeatures = new HashMap<String, Double>();
         hmChannelIDFeatures = new HashMap<String, Double>();
