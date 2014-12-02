@@ -1,7 +1,7 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
-import models.LRAdaGradModel;
+import models.LRGradDescModel;
 import models.genericModel;
 import utilities.Configuration;
 import utilities.CrossValidation;
@@ -44,8 +44,8 @@ public class modelController {
                 System.out.println(obj+" "+dataController.getHmVideo().get(obj).getViewCount());
             */
 
-            //LRGradDescModel model = new LRGradDescModel();
-            genericModel model = new LRAdaGradModel();
+            genericModel model = new LRGradDescModel(train, test);
+            //genericModel model = new LRAdaGradModel();
             model.setBw(bw);
             model.run(train, test);
         }

@@ -49,7 +49,7 @@ public class Configuration {
         noOfConcurrentThreads = 7; // No of *real* cores
         executor = Executors.newFixedThreadPool(noOfConcurrentThreads);
         maxFold = 5;
-        noOfIterations = 2;
+        noOfIterations = 5;
         eta = 0.01;
     }
 

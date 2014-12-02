@@ -48,6 +48,11 @@ public class CrossValidation {
 
         testSize = arr.length / maxFold ;
 
+        if (arr.length % maxFold >= maxFold)
+            testSize++;
+
+        if (testSize == 1)
+            System.out.println(arr.length+" "+maxFold+" "+arr.length/maxFold);
         return true;
     }
 
