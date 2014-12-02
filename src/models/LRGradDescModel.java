@@ -16,15 +16,16 @@ import java.util.List;
 
 public class LRGradDescModel extends genericModel {
 
-    public LRGradDescModel(List<Object> trainData, List<Object> testData) {
+    featureController modelParams = null;
+
+    public void run(List<Object> trainData, List<Object> testData) {
+        // Initialize the data
         this.trainData = trainData;
         this.testData = testData;
 
         // Initialize the parameters
         modelParams = new featureController();
-    }
 
-    public void run(List<Object> trainData, List<Object> testData) {
         try {
             //System.out.println("Training...");
             train();
@@ -37,7 +38,7 @@ public class LRGradDescModel extends genericModel {
         }
     }
 
-    public void train() throws Exception {
+    void train() throws Exception {
         Object[] arr = trainData.toArray();
 
         for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
@@ -61,53 +62,16 @@ public class LRGradDescModel extends genericModel {
 
                     // Create representative feature vector
                     featureController X_ij = new featureController();
-                    // 0. Intercept
-                    X_ij.getHmNumericFeatures().put(0, 1.0);
 
                     // 1. Numeric features
-                    /*
-                    double ratioOfLikesOfV1 = 1.0*dataController.getHmVideo().get(item1).getNoOfLikes();
-                    double ratioOfDislikesOfV1 = 1.0*dataController.getHmVideo().get(item1).getNoOfDislikes();
-
-
-                    double ratioOfLikesOfV2 = 1.0*dataController.getHmVideo().get(item2).getNoOfLikes();
-                    double ratioOfDislikesOfV2 = 1.0*dataController.getHmVideo().get(item2).getNoOfDislikes();
-
-                    //X_ij.getHmNumericFeatures().put(1, (ratioOfDislikesOfV1 + ratioOfLikesOfV1) /
-                    //        (ratioOfDislikesOfV2 + ratioOfLikesOfV2));
-
-                    //double coeff = (ratioOfDislikesOfV1 + ratioOfLikesOfV1) /
-                    //               (ratioOfDislikesOfV2 + ratioOfLikesOfV2);
-
-                    ratioOfLikesOfV1 = ratioOfLikesOfV1 / (ratioOfLikesOfV1 + ratioOfDislikesOfV1);
-                    //ratioOfDislikesOfV1 = 1 - ratioOfLikesOfV1;
-
-                    ratioOfLikesOfV2 = ratioOfLikesOfV2 / (ratioOfLikesOfV2 + ratioOfDislikesOfV2);
-                    //ratioOfDislikesOfV2 = 1 - ratioOfLikesOfV2;
-
                     // 1.1 No of likes
-                    // X_ij.getHmNumericFeatures().put(1, ratioOfLikesOfV1 - ratioOfLikesOfV2);
-                    // X_ij.getHmNumericFeatures().put(1, coeff*(ratioOfLikesOfV1 - ratioOfLikesOfV2));
+                    X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
+                                                            dataController.getHmVideo().get(item2).getNoOfLikes()));
                     // 1.2 No of dislikes
-                    // X_ij.getHmNumericFeatures().put(2, Math.log(ratioOfDislikesOfV1) - Math.log(ratioOfDislikesOfV2));
-                    */
-                    /*
-                    System.out.println(ratioOfLikesOfV1 / ratioOfLikesOfV2 + " "
-                            + 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes()/
-                            dataController.getHmVideo().get(item2).getNoOfLikes()) + " "
-                            + ratioOfDislikesOfV1 / ratioOfDislikesOfV2 + " "
-                            + 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes()/
-                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
-                    */
-
-                    // 1.3 Video Length
-                    X_ij.getHmNumericFeatures().put(3, (1.0) * dataController.getHmVideo().get(item1).getVideoLengthInSeconds() /
-                            dataController.getHmVideo().get(item2).getVideoLengthInSeconds() );
+                    X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
+                                                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
 
                     // 2. Bag of Words (from Title only)
-                    int length1 = 0;
-                    int length2 = 0;
-
                     String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
                     for (String str:titleArr)
                     {
@@ -117,7 +81,6 @@ public class LRGradDescModel extends genericModel {
                         tf++;
                         X_ij.getHmBoWFeatures().put(str, tf);
                     }
-                    length1 = titleArr.length;
 
                     titleArr = dataController.getHmVideo().get(item2).getTitle().split(",");
                     for (String str:titleArr)
@@ -128,12 +91,8 @@ public class LRGradDescModel extends genericModel {
                         tf--;
                         X_ij.getHmBoWFeatures().put(str, tf);
                     }
-                    length2 = titleArr.length;
-
-                    X_ij.getHmNumericFeatures().put(4, (1.0) * length1 / length2);
 
                     // 3. Category
-                    /*
                     Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
                     if (tf == null)
                         tf = 0.0;
@@ -145,10 +104,8 @@ public class LRGradDescModel extends genericModel {
                         tf = 0.0;
                     tf--;
                     X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
-                    */
 
                     // 4. Uploader ID
-                    Double tf = 0.0;
                     tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
                     if (tf == null)
                         tf = 0.0;
@@ -231,7 +188,7 @@ public class LRGradDescModel extends genericModel {
         }
     }
 
-    public void test() throws Exception {
+    void test() throws Exception {
         Object[] arr = testData.toArray();
 
         int correct = 0;
@@ -247,33 +204,14 @@ public class LRGradDescModel extends genericModel {
 
                 // Create representative feature vector
                 featureController X_ij = new featureController();
-                // 0. Intercept
-                X_ij.getHmNumericFeatures().put(0, 1.0);
 
                 // 1. Numeric features
-                double ratioOfLikesOfV1 = 1.0*dataController.getHmVideo().get(item1).getNoOfLikes();
-                double ratioOfDislikesOfV1 = 1.0*dataController.getHmVideo().get(item1).getNoOfDislikes();
-
-                double ratioOfLikesOfV2 = 1.0*dataController.getHmVideo().get(item2).getNoOfLikes();
-                double ratioOfDislikesOfV2 = 1.0*dataController.getHmVideo().get(item2).getNoOfDislikes();
-
-                //X_ij.getHmNumericFeatures().put(1, (ratioOfDislikesOfV1 + ratioOfLikesOfV1) /
-                //                                   (ratioOfDislikesOfV2 + ratioOfLikesOfV2));
-
-                //double coeff = (ratioOfDislikesOfV1 + ratioOfLikesOfV1) /
-                //                (ratioOfDislikesOfV2 + ratioOfLikesOfV2);
-
-                ratioOfLikesOfV1 = ratioOfLikesOfV1 / (ratioOfLikesOfV1 + ratioOfDislikesOfV1);
-                ratioOfDislikesOfV1 = 1 - ratioOfLikesOfV1;
-
-                ratioOfLikesOfV2 = ratioOfLikesOfV2 / (ratioOfLikesOfV2 + ratioOfDislikesOfV2);
-                ratioOfDislikesOfV2 = 1 - ratioOfLikesOfV2;
-
                 // 1.1 No of likes
-                //X_ij.getHmNumericFeatures().put(1, coeff*(ratioOfLikesOfV1 - ratioOfLikesOfV2));
-
+                X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes()/
+                        dataController.getHmVideo().get(item2).getNoOfLikes()));
                 // 1.2 No of dislikes
-                //X_ij.getHmNumericFeatures().put(2, Math.log(ratioOfDislikesOfV1) - Math.log(ratioOfDislikesOfV2));
+                X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes()/
+                        dataController.getHmVideo().get(item2).getNoOfDislikes()));
 
                 // 2. Bag of Words (from Title only)
                 String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");

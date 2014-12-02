@@ -1,6 +1,5 @@
 package models;
 
-import controllers.dataControllers.featureController;
 import objects.youtubeObjects.youtubeVideo;
 
 import java.io.BufferedWriter;
@@ -18,8 +17,6 @@ public abstract class genericModel {
     List<Object> testData = null;
 
     BufferedWriter bw = null;
-
-    featureController modelParams = null;
 
     public genericModel() {
 
@@ -39,9 +36,5 @@ public abstract class genericModel {
 
     void test() throws Exception {
 
-    }
-
-    public featureController getModelParams() {
-        return modelParams;
     }
 }

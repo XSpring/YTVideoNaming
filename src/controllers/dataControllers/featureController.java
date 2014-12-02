@@ -7,14 +7,18 @@ import java.util.HashMap;
  *
  * @author Loc Do
  */
-public class featureController {
-
+public class FeatureController {
+    public static final int NUMERICFEATURES = 0;
+    public static final int BAGOFWORDSFEATURES = 1;
+    public static final int CHANNELIDFEATURES = 2;
+    public static final int CATEGORYFEATURES = 3;
+    
     HashMap<Integer, Double> hmNumericFeatures = null; // type = 0
     HashMap<String, Double> hmBoWFeatures = null; // type = 1
     HashMap<String, Double> hmChannelIDFeatures = null; // type = 2
     HashMap<String, Double> hmCategoryFeatures = null; // type = 3
 
-    public featureController() {
+    public FeatureController() {
         hmNumericFeatures = new HashMap<Integer, Double>();
         hmBoWFeatures = new HashMap<String, Double>();
         hmChannelIDFeatures = new HashMap<String, Double>();
@@ -94,5 +98,31 @@ public class featureController {
 
     public HashMap<String, Double> getHmCategoryFeatures() {
         return hmCategoryFeatures;
+    }
+    
+    public void output(String filename) {
+	java.io.FileWriter fw = null;
+	java.io.BufferedWriter bw = null;
+	try {
+	    fw = new java.io.FileWriter(filename);
+	    bw = new java.io.BufferedWriter(fw);
+	    for (Integer j : hmNumericFeatures.keySet()) {
+		bw.write("0." + j + ";" + hmNumericFeatures.get(j));
+		bw.newLine();
+	    }
+	    for (int i=1; i<4; i++) {
+		for (String j : getStringFeatures(i).keySet()) {
+		    bw.write(i + "." + j + ";" + getOrInitFeature(i, j));
+		    bw.newLine();
+		}
+	    }
+	} catch (java.io.IOException e) {
+	    System.err.println("Failed to finish output file " + filename);
+	} finally {
+	    try {
+		bw.close();
+		fw.close();
+	    } catch (java.io.IOException e) {};
+	}
     }
 }
