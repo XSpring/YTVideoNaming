@@ -63,13 +63,23 @@ public class LRGradDescModel extends genericModel {
                     // Create representative feature vector
                     FeatureController X_ij = new FeatureController();
 
+
                     // 1. Numeric features
+                    // 1.0 Intercept weight w_0
+                    X_ij.getHmNumericFeatures().put(0, 1.0);
+
+                    /*
                     // 1.1 No of likes
-                    X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
+                    X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
                                                             dataController.getHmVideo().get(item2).getNoOfLikes()));
                     // 1.2 No of dislikes
-                    X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
+                    X_ij.getHmNumericFeatures().put(2, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
                                                             dataController.getHmVideo().get(item2).getNoOfDislikes()));
+                    */
+
+                    // 1.3 Video Length In Seconds
+                    X_ij.getHmNumericFeatures().put(3, 1.0 * dataController.getHmVideo().get(item1).getVideoLengthInSeconds() /
+                                                             dataController.getHmVideo().get(item2).getVideoLengthInSeconds());
 
                     // 2. Bag of Words (from Title only)
                     String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
@@ -82,6 +92,8 @@ public class LRGradDescModel extends genericModel {
                         X_ij.getHmBoWFeatures().put(str, tf);
                     }
 
+                    int titleLength1 = titleArr.length;
+
                     titleArr = dataController.getHmVideo().get(item2).getTitle().split(",");
                     for (String str:titleArr)
                     {
@@ -91,6 +103,9 @@ public class LRGradDescModel extends genericModel {
                         tf--;
                         X_ij.getHmBoWFeatures().put(str, tf);
                     }
+
+                    int titleLength2 = titleArr.length;
+                    X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
                     // 3. Category
                     Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
