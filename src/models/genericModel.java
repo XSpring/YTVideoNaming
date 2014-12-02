@@ -44,4 +44,8 @@ public abstract class genericModel {
     void test() throws Exception {
 
     }
+
+    public void output(String filename) {
+
+    }
 }

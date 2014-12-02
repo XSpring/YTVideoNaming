@@ -1,7 +1,6 @@
 package controllers.dataControllers;
 
-import controllers.modelControllers.modelController;
-import objects.youtubeObjects.youtubeUser;
+import models.BaggingModel;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
 
@@ -48,9 +47,10 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRAdaGA_result.txt");
+        FileWriter fw = new FileWriter("LRGA_All_Bagging.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
+        /*
         int count = 0;
         for (Long age:hmVideoBins.keySet()) {
             count ++;
@@ -66,6 +66,12 @@ public class videoController {
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
             //if (count==1) break;
         }
+        */
+
+        BaggingModel model = new BaggingModel();
+        model.setBw(bw);
+        model.run();
+
         bw.close();
 
         //readAndExportToCSV(videoFolder);

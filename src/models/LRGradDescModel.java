@@ -108,6 +108,7 @@ public class LRGradDescModel extends genericModel {
                     X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
                     // 3. Category
+                    /*
                     Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
                     if (tf == null)
                         tf = 0.0;
@@ -119,9 +120,10 @@ public class LRGradDescModel extends genericModel {
                         tf = 0.0;
                     tf--;
                     X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
+                    */
 
                     // 4. Uploader ID
-                    tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
+                    Double tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
                     if (tf == null)
                         tf = 0.0;
                     tf++;

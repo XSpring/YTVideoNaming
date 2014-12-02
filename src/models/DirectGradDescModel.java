@@ -119,7 +119,7 @@ public class DirectGradDescModel extends genericModel {
     }
     
     private java.util.List<Double> getPredictions(java.util.List<Object> vids) {
-	java.util.List<Double> list = new java.util.ArrayList<>(vids.size());
+	java.util.List<Double> list = new java.util.ArrayList<Double>(vids.size());
 	for (int i=0; i < vids.size(); i++) {
 	    objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(vids.get(i));
 	    FeatureController datapoint = getFeatureController(ytVid);
