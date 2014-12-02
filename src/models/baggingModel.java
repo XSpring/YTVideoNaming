@@ -1,7 +1,7 @@
 package models;
 
 import controllers.dataControllers.dataController;
-import controllers.dataControllers.featureController;
+import controllers.dataControllers.FeatureController;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
 import utilities.CrossValidation;
@@ -42,7 +42,7 @@ public class baggingModel extends genericModel {
             System.out.println("Training with fold "+fold);
 
             //List<featureController> ensemble = new ArrayList<featureController>();
-            HashMap<Long, featureController> ensemble = new HashMap<Long, featureController>();
+            HashMap<Long, FeatureController> ensemble = new HashMap<Long, FeatureController>();
 
             CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
 
@@ -99,7 +99,7 @@ public class baggingModel extends genericModel {
 
     }
 
-    public double test(HashMap<Long, featureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
+    public double test(HashMap<Long, FeatureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
         Object[] arr = testData.toArray();
 
         int correct = 0;
@@ -119,10 +119,10 @@ public class baggingModel extends genericModel {
 
                 //for (featureController weight:ensemble) {
                 for (Long age:ensemble.keySet()) {
-                    featureController weight = ensemble.get(selectedAge);
+                    FeatureController weight = ensemble.get(selectedAge);
 
                     // Create representative feature vector
-                    featureController X_ij = new featureController();
+                    FeatureController X_ij = new FeatureController();
 
                     // 0. Intercept
                     X_ij.getHmNumericFeatures().put(0, 1.0);

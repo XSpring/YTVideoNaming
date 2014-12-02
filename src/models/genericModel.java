@@ -1,5 +1,6 @@
 package models;
 
+import controllers.dataControllers.FeatureController;
 import objects.youtubeObjects.youtubeVideo;
 
 import java.io.BufferedWriter;
@@ -18,8 +19,14 @@ public abstract class genericModel {
 
     BufferedWriter bw = null;
 
+    FeatureController modelParams = null;
+
     public genericModel() {
 
+    }
+
+    public FeatureController getModelParams() {
+        return modelParams;
     }
 
     public void setBw(BufferedWriter bw) {
