@@ -1,0 +1,9 @@
+- Goal: given two videos, predict the video has higher no of views.
+	+ Fair comparison: the video's uploaded time should be equal
+
+- 
+- Evaluation
+	+ Cross-validation: 5 folds on each time-slot.
+	+ Pairwise comparison
+
+	

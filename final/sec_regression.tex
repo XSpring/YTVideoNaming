@@ -1,0 +1,13 @@
+\subsection{Regression the popularity}
+\label{sec:regression}
+	Another approach to the ranking problem is to predict the number of views from a video's metadata (excluding the actual views) and use the predicted number to determine which video is more popular. This can be treated as a simple linear regression problem. Again, our linear function can be written in the functional form of feature vectors as input $X_u$ plus some noise $\epsilon$
+	
+	\begin{equation}
+	Y_u = \beta X_u + \epsilon
+	\end{equation}
+	 
+	 We can use the closed form or Gradient Descent to learn the $\beta$ parameters. After the learning stage, the predicted ranking can be done as follows
+	 \begin{equation}
+	 	\hat{Y}_{uv} = \mathbb{I}(\beta X_u > \beta X_v),\\					
+	 \end{equation}
+	 where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
