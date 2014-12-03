@@ -1,43 +1,38 @@
-\section{Ranking the popularity}
-\label{sec:ranking}
-	
-	Our goal is to construct a prediction rule $f$ that can rank the videos w.r.t. their popularity using their meta-data as feature inputs.
-	
-	\subsection{Ranking as Logistic Regression}
-	We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two video $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
-	\begin{equation}
-		Y_{ij} = \begin{cases}
-				   1, & \text{if } \text{\#\_of\_view\_i} \geq \text{\#\_of\_view\_j} \\
-				   0, & \text{otherwise}
-				\end{cases} 
-	\end{equation}	
-	 We can form a representative vector of the pair $(i, j)$ as follows
-	\begin{equation}
-		\mathcal{X}_{ij} = k (X_i, X_j),
-	\end{equation}
-	where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feature transformation function. There are several options for $k$. 
-	\begin{itemize}
-		\item Difference between two feature vectors: $\mathcal{X}_{ij} = X_i - X_j$
-		\item Concatenation of two feature vectors:  $\mathcal{X}_{ij} = [X_i, X_j]$ (Matlab notation)
-		\item Kernel functions, e.g. $\mathcal{X}_{ij} = || X_i - X_j ||^2$
-	\end{itemize}
-	At the moment, we cannot find any theories/signals to indicate which form of $k$ is the most appropriate. For the scope of the project, we choose to represent $X_{ij}$ as difference between $X_i$ and $X_j$, meaning $D = D'$. The kernelized version is left in future work. 
-	
-	The function form of classifier $P(Y_{ij}|\mathcal{X}_{ij}, \textbf{w})$ as follows
-	 \begin{equation}
-		 P(Y_{ij}=1|\mathcal{X}_{ij}, \textbf{w}) = \frac{1}{1 + \exp ( w_0 + \sum_d w_d \mathcal{X}_{ij}^d )} = \frac{1}{1 + \exp (\textbf{w}^T \mathcal{X}_{ij})}
-	 \end{equation}
-	 
-	The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
-	\begin{align}
-		\label{eqn:objFuncLR}
-		\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
-		&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
-		&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) ln P(\textbf{w}) \\ \notag
-		&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) + \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
-	\end{align}
-	
-	We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent with the following update rule
-	\begin{equation}
-	w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  + \lambda_w w_d
-	\end{equation}
+\subsection{Ranking as Logistic Regression}
+We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two video $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
+\begin{equation}
+	Y_{ij} = \begin{cases}
+			   1, & \text{if } \text{\#\_of\_views\_i} \geq \text{\#\_of\_views\_j} \\
+			   0, & \text{otherwise}
+			\end{cases} 
+\end{equation}	
+ We can form a representative vector of the pair $(i, j)$ as follows
+\begin{equation}
+	\mathcal{X}_{ij} = k (X_i, X_j),
+\end{equation}
+where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feature transformation function. There are several options for $k$. 
+\begin{itemize}
+	\item Difference between two feature vectors: $\mathcal{X}_{ij} = X_i - X_j$
+	\item Concatenation of two feature vectors:  $\mathcal{X}_{ij} = [X_i, X_j]$ (Matlab notation)
+	\item Kernel functions, e.g. $\mathcal{X}_{ij} = || X_i - X_j ||^2$
+\end{itemize}
+At the moment, we cannot find any theories/signals to indicate which form of $k$ is the most appropriate. For the scope of the project, we choose to represent $X_{ij}$ as difference between $X_i$ and $X_j$, meaning $D = D'$. The kernelized version is left in future work. 
+
+The function form of classifier $P(Y_{ij}|\mathcal{X}_{ij}, \textbf{w})$ as follows
+ \begin{equation}
+	 P(Y_{ij}=1|\mathcal{X}_{ij}, \textbf{w}) = \frac{1}{1 + \exp ( w_0 + \sum_d w_d \mathcal{X}_{ij}^d )} = \frac{1}{1 + \exp (\textbf{w}^T \mathcal{X}_{ij})}
+ \end{equation}
+ 
+The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
+\begin{align}
+	\label{eqn:objFuncLR}
+	\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
+	&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
+	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) + ln P(\textbf{w}) \\ \notag
+	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) + \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
+\end{align}
+
+We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent with the following update rule
+\begin{equation}
+w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  + \lambda_w w_d
+\end{equation}
