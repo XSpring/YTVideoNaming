@@ -119,7 +119,7 @@ public class DirectGradDescModel extends genericModel {
     }
     
     private java.util.List<Double> getPredictions(java.util.List<Object> vids) {
-	java.util.List<Double> list = new java.util.ArrayList<Double>(vids.size());
+	java.util.List<Double> list = new java.util.ArrayList<>(vids.size());
 	for (int i=0; i < vids.size(); i++) {
 	    objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(vids.get(i));
 	    FeatureController datapoint = getFeatureController(ytVid);
@@ -153,13 +153,14 @@ public class DirectGradDescModel extends genericModel {
 	}
 	double ratio = (totalUploaderNumVids!=0) ? ((double)totalUploaderNumVidViews/totalUploaderNumVids) : 0;
 	X_i.getHmNumericFeatures().put(0, 1.0);
-	X_i.getHmNumericFeatures().put(1, 1.0*ytVid.getNoOfLikes());
-	X_i.getHmNumericFeatures().put(2, 1.0*ytVid.getNoOfDislikes());
-	X_i.getHmNumericFeatures().put(3,(double)ytVid.getVideoLengthInSeconds());
-	X_i.getHmNumericFeatures().put(4,(double)ytVid.getHowLongAgoUploaded());
+	X_i.getHmNumericFeatures().put(1, 1.0 * ytVid.getNoOfLikes() / ytVid.getNoOfDislikes());
+	X_i.getHmNumericFeatures().put(2,(double)ytVid.getVideoLengthInSeconds());
+	X_i.getHmNumericFeatures().put(3,(double)ytVid.getHowLongAgoUploaded());
+	X_i.getHmNumericFeatures().put(4,(double)uploader.getSubscriberCount());
 	X_i.getHmNumericFeatures().put(5,(double)totalUploaderNumVids);
 	X_i.getHmNumericFeatures().put(6,(double)totalUploaderNumVidViews);
 	X_i.getHmNumericFeatures().put(7,ratio);
+	
 
 	// 1. Bag of Words (from Title only)
 	String[] titleArr = ytVid.getTitle().split(",");

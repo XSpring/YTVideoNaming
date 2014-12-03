@@ -53,12 +53,14 @@ public class LRGradDescModel extends genericModel {
                     Object item1 = arr[idI1];
                     Object item2 = arr[idI2];
 
+                    /*
                     if (dataController.getHmVideo().get(item1).getViewCount() <
                             dataController.getHmVideo().get(item2).getViewCount())
                     {
                         item1 = arr[idI2];
                         item2 = arr[idI1];
                     }
+                    */
 
                     // Create representative feature vector
                     FeatureController X_ij = new FeatureController();
@@ -75,10 +77,23 @@ public class LRGradDescModel extends genericModel {
                     X_ij.getHmNumericFeatures().put(2, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
                                                             dataController.getHmVideo().get(item2).getNoOfDislikes()));
                     */
+                    double ratioOfLike1 = dataController.getHmVideo().get(item1).getNoOfLikes();
+                    double ratioOfDislike1 = dataController.getHmVideo().get(item1).getNoOfDislikes();
+
+                    ratioOfLike1 /= (ratioOfLike1 + ratioOfDislike1);
+
+                    double ratioOfLike2 = dataController.getHmVideo().get(item2).getNoOfLikes();
+                    double ratioOfDislike2 = dataController.getHmVideo().get(item2).getNoOfDislikes();
+
+                    ratioOfLike2 /= (ratioOfLike2 + ratioOfDislike2);
+
+                    //X_ij.getHmNumericFeatures().put(1, ratioOfLike1);
+
+                    //X_ij.getHmNumericFeatures().put(2, ratioOfLike2);
 
                     // 1.3 Video Length In Seconds
-                    X_ij.getHmNumericFeatures().put(3, 1.0 * dataController.getHmVideo().get(item1).getVideoLengthInSeconds() /
-                                                             dataController.getHmVideo().get(item2).getVideoLengthInSeconds());
+                    //X_ij.getHmNumericFeatures().put(3, 1.0 * dataController.getHmVideo().get(item1).getVideoLengthInSeconds() /
+                    //                                         dataController.getHmVideo().get(item2).getVideoLengthInSeconds());
 
                     // 2. Bag of Words (from Title only)
                     String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
@@ -104,7 +119,7 @@ public class LRGradDescModel extends genericModel {
                     }
 
                     int titleLength2 = titleArr.length;
-                    X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
+                    //X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
                     // 3. Category
                     /*
@@ -154,7 +169,7 @@ public class LRGradDescModel extends genericModel {
                     }
 
                     exponential = Math.exp(exponential);
-                    exponential = - exponential / (1 + exponential);
+                    exponential = exponential / (1 + exponential);
 
                     //System.out.println(exponential);
 
@@ -162,7 +177,13 @@ public class LRGradDescModel extends genericModel {
                     for (Integer idF:X_ij.getHmNumericFeatures().keySet())
                     {
                         w = gradient.getOrInitFeature(0, idF);
-                        w += X_ij.getOrInitFeature(0, idF) * exponential;
+
+                        if (dataController.getHmVideo().get(item1).getViewCount() <
+                                dataController.getHmVideo().get(item2).getViewCount())
+                            w += X_ij.getOrInitFeature(0, idF) * ( 1 - exponential );
+                        else
+                            w += X_ij.getOrInitFeature(0, idF) * ( - exponential );
+
                         gradient.setFeature(0, idF, w);
                     }
 
@@ -171,7 +192,13 @@ public class LRGradDescModel extends genericModel {
                         for (String key:X_ij.getStringFeatures(featureType).keySet())
                         {
                             w = gradient.getOrInitFeature(featureType, key);
-                            w += X_ij.getOrInitFeature(featureType, key) * exponential;
+
+                            if (dataController.getHmVideo().get(item1).getViewCount() <
+                                    dataController.getHmVideo().get(item2).getViewCount())
+                                w += X_ij.getOrInitFeature(featureType, key) * ( 1 - exponential );
+                            else
+                                w += X_ij.getOrInitFeature(featureType, key) * ( - exponential);
+
                             gradient.setFeature(featureType, key, w);
                         }
                     }
@@ -182,7 +209,8 @@ public class LRGradDescModel extends genericModel {
             for (Integer idF:modelParams.getHmNumericFeatures().keySet())
             {
                 w_d = modelParams.getOrInitFeature(0, idF);
-                w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(0, idF);
+                w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(0, idF) -
+                        Configuration.getInstance().getLambda() * w_d;
                 modelParams.setFeature(0, idF, w_d);
                 //System.out.print(w_d + " ");
             }
@@ -194,7 +222,8 @@ public class LRGradDescModel extends genericModel {
                 for (String key:modelParams.getStringFeatures(featureType).keySet())
                 {
                     w_d = modelParams.getOrInitFeature(featureType, key);
-                    w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key);
+                    w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key) -
+                            Configuration.getInstance().getLambda() * w_d;
                     modelParams.setFeature(featureType, key, w_d);
                     //System.out.print(w_d + " ");
                 }
