@@ -1,13 +1,33 @@
-\subsection{Regression the popularity}
+\subsection{Regression on popularity}
 \label{sec:regression}
-	Another approach to the ranking problem is to predict the number of views from a video's metadata (excluding the actual views) and use the predicted number to determine which video is more popular. This can be treated as a simple linear regression problem. Again, our linear function can be written in the functional form of feature vectors as input $X_u$ plus some noise $\epsilon$
-	
-	\begin{equation}
-	Y_u = \beta X_u + \epsilon
-	\end{equation}
-	 
-	 We can use the closed form or Gradient Descent to learn the $\beta$ parameters. After the learning stage, the predicted ranking can be done as follows
-	 \begin{equation}
-	 	\hat{Y}_{uv} = \mathbb{I}(\beta X_u > \beta X_v),\\					
-	 \end{equation}
-	 where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
+Another approach to the ranking problem is to predict the number of views for each video and then compare that, rather than comparing two videos directly. Finding the number of views can be treated as a simple linear regression problem. Our linear function assumes that are labels come from our input $X_u$ plus some noise $\epsilon$:
+\begin{equation}
+Y_u = X_u \beta + \epsilon
+\end{equation}
+We therefore seek a function of the form
+\begin{equation}
+f(X) = X \beta
+\end{equation}
+and attempt to minimize the mean squared error loss function, giving
+\begin{equation}
+\beta = arg min_\beta 1/n (A \beta - Y)^T(A \beta - Y)
+\end{equation}
+where
+\begin{equation}
+A = [X_1 ... X_n]^T, Y = [Y_1 ... Y_n]^T
+\end{equation}
+  
+We can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
+\begin{equation}
+\beta^{t+1} = \beta_t - \eta A^T (A \beta^t - Y)
+\end{equation}
+ 
+After the learning stage is complete, the predicted ranking can be done as follows
+\begin{equation}
+\hat{Y}_{uv} = \mathbb{I}(\beta X_u > \beta X_v),
+\end{equation}
+where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
+
+Directly predicting the actual popularity is not strictly necessary for our ranking problem, however, and we can instead predict anything with the same ranking properties.  In order to help deal with enormous variance in the number of views, we also attempted replace $Y$ with $log(Y)$ and perform least-squares to predict that instead.  Since order of magnitude is more significant than the actual number of views, this is a reasonable substitution.
+
+We anticipated that direct ranking with logistic regression would be more accurate than first performing regression on popularity.  Comparing the two methods is one of the goals of this project.
