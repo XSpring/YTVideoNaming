@@ -39,12 +39,15 @@ YouTube is one of the most popular video-sharing online platform in the Internet
 
 The ranking problem (aka. Learning to rank\footnote{http://en.wikipedia.org/wiki/Learning\_to\_rank}) is a typical supervised learning problem of predicting the rank of a set of items regarding to a set of criteria. It has a numerous applications in a broad domains such as web search, multimedia retrieval, recommender systems, etc. Results from these such problems can bring benefits to Internet users such as saving their time by introducing the most relevant products/articles/web pages to their interests. In YouTube context, ranking problems can be raised to recommend most relevant videos to a given video. Another application is to predict the ranking of videos w.r.t to their popularity. This can reveal the most important visual factors in determine popularity of a video.
 
-\textbf{Problem statement.} Given a set of videos, each is associated with a set of bag-of-word and numeric features. A pair of videos is said to have an order on their popularity by comparing their number of views. Video with more viewership is considered to be more popular than the other. Given two videos with their features, the ranking problem here is to construct a model to well predict the exact order between the two videos.
+\textbf{Problem statement.} Given a set of videos, each is associated with a set of bag-of-word and numeric features. A pair of videos is said to have an order on their popularity by comparing their number of views. Video with more viewership is considered to be more popular than the other. Given two videos with their features, the ranking problem here is to construct a model to accurately predict the exact order between the two videos.
 
-\include{sec_related}
-\include{sec_ranking}
-\include{sec_regression}
+\section{Ranking the popularity}
+\label{sec:ranking}	
+	Our goal is to construct a prediction rule $f$ that can rank the videos w.r.t. their popularity using their meta-data as feature inputs.
+	\include{sec_ranking}
+	\include{sec_regression}
 \include{sec_experiments}	
+\include{sec_related}
 \include{sec_conclusion}
 		 
 	%\subsection{First Steps Taken}

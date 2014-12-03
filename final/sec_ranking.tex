@@ -29,10 +29,10 @@ The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
 	\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
 	&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
 	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) + ln P(\textbf{w}) \\ \notag
-	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) + \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
+	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) - \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
 \end{align}
 
 We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent with the following update rule
 \begin{equation}
-w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  + \lambda_w w_d
+w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
 \end{equation}
