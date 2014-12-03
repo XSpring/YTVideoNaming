@@ -47,7 +47,7 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRGA_All_Test_Bagging.txt");
+        FileWriter fw = new FileWriter("LRGA_All_Test_Bagging_1_30.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
         /*

@@ -2,6 +2,7 @@ package models;
 
 import controllers.dataControllers.FeatureController;
 import controllers.dataControllers.dataController;
+import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
 
 import java.util.List;
@@ -22,19 +23,51 @@ public class LRStoGradAscModel extends genericModel {
         modelParams = new FeatureController();
     }
 
-    public void run() {
+    @Override
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         try {
             //System.out.println("Training...");
             train();
 
-            //System.out.println("Testing...");
-            test();
+            //System.out.println("Testing (on training data)...");
+            test(false);
+
+            //System.out.println("Testing (on testing data)...");
+            test(true);
+
+            if (!whereSaveModel.isEmpty())
+                output(whereSaveModel);
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    void test(boolean onTestData) throws Exception {
+        // HAS NOT IMPLEMENTED YET
+    }
+
+    @Override
+    public void output(String filename) {
+        modelParams.output(filename);
+    }
+
+    public void run() {
+        try {
+            //System.out.println("Training...");
+            train();
+
+            //System.out.println("Testing...");
+            test(true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     void train() throws Exception {
         Object[] arr = trainData.toArray();
 
@@ -48,30 +81,24 @@ public class LRStoGradAscModel extends genericModel {
                     Object item1 = arr[idI1];
                     Object item2 = arr[idI2];
 
-                    /*
-                    if (dataController.getHmVideo().get(item1).getViewCount() <
-                            dataController.getHmVideo().get(item2).getViewCount())
-                    {
-                        item1 = arr[idI2];
-                        item2 = arr[idI1];
-                    }
-                    */
-
                     // Create representative feature vector
-                    FeatureController X_ij = new FeatureController();
+                    youtubeVideo v1 = dataController.getHmVideo().get(item1);
+                    youtubeVideo v2 = dataController.getHmVideo().get(item2);
 
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
+
+                    /*
                     // 1. Numeric features
                     // 1.0 Intercept weight w_0
                     X_ij.getHmNumericFeatures().put(0, 1.0);
 
-                    /*
                     // 1.1 No of likes
                     X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
                                                             dataController.getHmVideo().get(item2).getNoOfLikes()));
                     // 1.2 No of dislikes
                     X_ij.getHmNumericFeatures().put(2, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
                                                             dataController.getHmVideo().get(item2).getNoOfDislikes()));
-                    */
+
                     double ratioOfLike1 = dataController.getHmVideo().get(item1).getNoOfLikes();
                     double ratioOfDislike1 = dataController.getHmVideo().get(item1).getNoOfDislikes();
 
@@ -117,7 +144,7 @@ public class LRStoGradAscModel extends genericModel {
                     //X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
                     // 3. Category
-                    /*
+
                     Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
                     if (tf == null)
                         tf = 0.0;
@@ -129,7 +156,6 @@ public class LRStoGradAscModel extends genericModel {
                         tf = 0.0;
                     tf--;
                     X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
-                    */
 
                     // 4. Uploader ID
                     Double tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
@@ -143,6 +169,7 @@ public class LRStoGradAscModel extends genericModel {
                         tf = 0.0;
                     tf--;
                     X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item2).getChannelID(), tf);
+                    */
 
                     // Compute the <w, X>
                     Double w = 0.0;
@@ -213,9 +240,5 @@ public class LRStoGradAscModel extends genericModel {
 
             //System.out.println();
         }
-    }
-
-    void test() throws Exception {
-
     }
 }

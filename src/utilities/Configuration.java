@@ -36,6 +36,10 @@ public class Configuration {
     private int noOfIterations;
     private double eta;
     private double lambda;
+    private int minAge;
+    private int maxAge;
+    private int minSize;
+    private int maxSize;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -53,6 +57,10 @@ public class Configuration {
         noOfIterations = 3;
         eta = 1;
         lambda = 0.01;
+        minAge = 1;
+        minSize = 20;
+        maxAge = 30;
+        maxSize = 10000;
     }
 
     public double getLambda() { return lambda;}
@@ -106,4 +114,32 @@ public class Configuration {
     public int getNoOfVideosBeforeResting() { return noOfVideosBeforeResting; };
 
     public int getNoOfIterations() { return noOfIterations; };
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+    }
+
+    public void setMinSize(int minSize) {
+        this.minSize = minSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public int getMinSize() {
+        return minSize;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
 }
