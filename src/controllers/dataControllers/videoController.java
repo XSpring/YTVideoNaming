@@ -1,6 +1,7 @@
 package controllers.dataControllers;
 
-import models.BaggingModel;
+import models.*;
+import controllers.modelControllers.*;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
 
@@ -47,31 +48,30 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRGA_All_Test_Bagging_1_30.txt");
+        FileWriter fw = new FileWriter("results/DirectGradDesc.csv");
         BufferedWriter bw = new BufferedWriter(fw);
 
-        /*
+//        /*
         int count = 0;
         for (Long age:hmVideoBins.keySet()) {
             count ++;
             List<String> lstVideos = hmVideoBins.get(age);
             if (lstVideos.size()>=20 && lstVideos.size()<=100) {
                 System.out.println("Learning model with bin ("+age+").");
-                bw.write("Bin "+age+" ");
                 modelController model = new modelController();
                 model.setBw(bw);
                 model.loadData(lstVideos);
                 model.run("results/DirectGradDesc_"+age+"_weights");
-		        model.output("results/DirectGradDesc_"+age+".txt");
+                break;
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
             //if (count==1) break;
         }
-        */
+//        */
 
-        BaggingModel model = new BaggingModel();
-        model.setBw(bw);
-        model.run();
+//        baggingModel model = new baggingModel();
+//        model.setBw(bw);
+//        model.run();
 
         bw.close();
 

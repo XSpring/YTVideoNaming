@@ -2,8 +2,8 @@ package models;
 
 import controllers.dataControllers.dataController;
 import controllers.dataControllers.FeatureController;
-import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
+import objects.youtubeObjects.*;
 
 import java.util.List;
 
@@ -12,279 +12,60 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class LRAdaGradModel extends genericModel {
 
-    FeatureController modelParams = null;
-
-    FeatureController stackedGradients = null;
-
-    @Override
-    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
-        // Initialize the data
-        this.trainData = trainData;
-        this.testData = testData;
-
-        // Initialize the parameters
-        modelParams = new FeatureController();
-        stackedGradients = new FeatureController();
-
-        try {
-            //System.out.println("Training...");
-            train();
-
-            //System.out.println("Testing (training data)...");
-            test(false);
-
-            //System.out.println("Testing (test data)...");
-            test(true);
-
-            if (!whereSaveModel.isEmpty())
-                output(whereSaveModel);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//this uses a different train() method, but otherwise matches LRGradDescModel
+public class LRAdaGradModel extends LRGradDescModel {
+    private FeatureController stackedGradients = null;
 
     @Override
-    void train() throws Exception {
-        Object[] arr = trainData.toArray();
-
-        for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
-             idLoop++)
-        {
+    protected void train() {
+	for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {
             FeatureController gradient = new FeatureController();
-
-            // For all pairs (i, j) such that views_i > views_j
-            for (int idI1=0; idI1 < arr.length-1; idI1++)
-                for (int idI2=idI1+1; idI2 < arr.length; idI2++)
-                {
-                    Object item1 = arr[idI1];
-                    Object item2 = arr[idI2];
-
-                    if (dataController.getHmVideo().get(item1).getViewCount() <
-                            dataController.getHmVideo().get(item2).getViewCount())
-                    {
-                        item1 = arr[idI2];
-                        item2 = arr[idI1];
-                    }
-
-                    youtubeVideo v1 = dataController.getHmVideo().get(item1);
-                    youtubeVideo v2 = dataController.getHmVideo().get(item2);
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1,v2);
-
-                    // Compute the <w, X>
-                    Double w = 0.0;
-                    Double exponential = 0.0;
-
-                    for (Integer idF:X_ij.getHmNumericFeatures().keySet())
-                    {
-                        w = modelParams.getOrInitFeature(0, idF);
-                        exponential += w * X_ij.getOrInitFeature(0, idF);
-                    }
-
-                    for (int featureType=1; featureType<4; featureType++)
-                    {
-                        for (String key:X_ij.getStringFeatures(featureType).keySet())
-                        {
-                            w = modelParams.getOrInitFeature(featureType, key);
-                            exponential += w * X_ij.getOrInitFeature(featureType, key);
-                        }
-                    }
-
-                    exponential = Math.exp(exponential);
+            for (int idI1=0; idI1 < trainData.size()-1; idI1++) {
+                for (int idI2=idI1+1; idI2 < trainData.size(); idI2++) {
+		    // For all pairs (i, j) such that views_i > views_j
+		    youtubeVideo v1 = dataController.getHmVideo().get(trainData.get(idI1));
+		    youtubeVideo v2 = dataController.getHmVideo().get(trainData.get(idI2));
+		    if (v1.getViewCount() < v2.getViewCount()) {    //swap them
+			youtubeVideo temp = v2; v2 = v1; v1 = temp;
+		    }
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1,v2);
+		    double innerProd = FeatureController.getInnerProduct(modelParams, X_ij);
+                    double exponential = Math.exp(innerProd);
                     exponential = - exponential / (1 + exponential);
-
-                    //System.out.println(exponential);
-
-                    // Update the gradient
-                    for (Integer idF:X_ij.getHmNumericFeatures().keySet())
-                    {
-                        w = gradient.getOrInitFeature(0, idF);
-                        w += X_ij.getOrInitFeature(0, idF) * exponential;
-                        gradient.setFeature(0, idF, w);
-                    }
-
-                    for (int featureType=1; featureType<4; featureType++)
-                    {
-                        for (String key:X_ij.getStringFeatures(featureType).keySet())
-                        {
-                            w = gradient.getOrInitFeature(featureType, key);
-                            w += X_ij.getOrInitFeature(featureType, key) * exponential;
-                            gradient.setFeature(featureType, key, w);
-                        }
-                    }
+		    gradient.addWithScaling(X_ij, exponential);
                 }
-
-            // Update the parameter
+	    }
+	    
+	    // Update the parameter
             double w_d = 0.0;
             double learningRateCoeff = 0.0;
 
-            for (Integer idF:modelParams.getHmNumericFeatures().keySet())
-            {
+            for (Integer idF:modelParams.getHmNumericFeatures().keySet()) {
                 w_d = modelParams.getOrInitFeature(0, idF);
                 learningRateCoeff = stackedGradients.getOrInitFeature(0, idF);
                 if (learningRateCoeff == 0.0)
-                    w_d +=  Configuration.getInstance().getEta() *
-                            gradient.getOrInitFeature(0, idF);
-                    else
-                    w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) *
-                             gradient.getOrInitFeature(0, idF);
-
+                    w_d +=  Configuration.getInstance().getEta() * gradient.getOrInitFeature(0, idF);
+                else
+                    w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) * gradient.getOrInitFeature(0, idF);
                 learningRateCoeff += gradient.getOrInitFeature(0, idF) * gradient.getOrInitFeature(0, idF);
-
                 modelParams.setFeature(0, idF, w_d);
                 stackedGradients.setFeature(0, idF, learningRateCoeff);
             }
 
-            for (int featureType=1; featureType<4; featureType++)
-            {
-                for (String key:modelParams.getStringFeatures(featureType).keySet())
-                {
+	    for (int featureType=1; featureType<4; featureType++) {
+                for (String key:modelParams.getStringFeatures(featureType).keySet()) {
                     w_d = modelParams.getOrInitFeature(featureType, key);
                     learningRateCoeff = stackedGradients.getOrInitFeature(featureType, key);
                     if (learningRateCoeff == 0.0)
                         w_d += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key);
                     else
-                        w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) *
-                                gradient.getOrInitFeature(featureType, key);
-
-                    learningRateCoeff += gradient.getOrInitFeature(featureType, key) *
-                                            gradient.getOrInitFeature(featureType, key);
-
+                        w_d += ( Configuration.getInstance().getEta() / Math.sqrt(learningRateCoeff) ) * gradient.getOrInitFeature(featureType, key);
+                    learningRateCoeff += gradient.getOrInitFeature(featureType, key) * gradient.getOrInitFeature(featureType, key);
                     modelParams.setFeature(featureType, key, w_d);
                     stackedGradients.setFeature(featureType, key, learningRateCoeff);
-                    //System.out.print(w_d + " ");
                 }
             }
-
-            //System.out.println();
         }
-    }
-
-    @Override
-    void test(boolean onTestData) throws Exception {
-        Object[] arr = (onTestData ? testData : trainData).toArray();
-
-        int correct = 0;
-        int count = 0;
-
-        // For all pairs (i, j) such that views_i > views_j
-        for (int idI1=0; idI1 < arr.length-1; idI1++)
-            for (int idI2=idI1+1; idI2 < arr.length; idI2++) {
-                Object item1 = arr[idI1];
-                Object item2 = arr[idI2];
-
-                count++;
-
-                // Create representative feature vector
-                FeatureController X_ij = new FeatureController();
-
-                // 1. Numeric features
-                // 1.1 No of likes
-                X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes()/
-                        dataController.getHmVideo().get(item2).getNoOfLikes()));
-                // 1.2 No of dislikes
-                X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes()/
-                        dataController.getHmVideo().get(item2).getNoOfDislikes()));
-
-                // 2. Bag of Words (from Title only)
-                String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
-                for (String str:titleArr)
-                {
-                    Double tf = X_ij.getHmBoWFeatures().get(str);
-                    if (tf == null)
-                        tf = 0.0;
-                    tf++;
-                    X_ij.getHmBoWFeatures().put(str, tf);
-                }
-
-                titleArr = dataController.getHmVideo().get(item2).getTitle().split(",");
-                for (String str:titleArr)
-                {
-                    Double tf = X_ij.getHmBoWFeatures().get(str);
-                    if (tf == null)
-                        tf = 0.0;
-                    tf--;
-                    X_ij.getHmBoWFeatures().put(str, tf);
-                }
-
-                // 3. Category
-                Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
-                if (tf == null)
-                    tf = 0.0;
-                tf++;
-                X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item1).getCategory(), tf);
-
-                tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item2).getCategory());
-                if (tf == null)
-                    tf = 0.0;
-                tf--;
-                X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
-
-                // 4. Uploader ID
-                tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
-                if (tf == null)
-                    tf = 0.0;
-                tf++;
-                X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item1).getChannelID(), tf);
-
-                tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item2).getChannelID());
-                if (tf == null)
-                    tf = 0.0;
-                tf--;
-                X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item2).getChannelID(), tf);
-
-                // Compute the <w, X>
-                Double w = 0.0;
-                Double exponential = 0.0;
-
-                for (Integer idF:X_ij.getHmNumericFeatures().keySet())
-                {
-                    w = modelParams.getOrInitFeature(0, idF);
-                    exponential += w * X_ij.getOrInitFeature(0, idF);
-                }
-
-                for (int featureType=1; featureType<4; featureType++)
-                {
-                    for (String key:X_ij.getStringFeatures(featureType).keySet())
-                    {
-                        w = modelParams.getOrInitFeature(featureType, key);
-                        exponential += w * X_ij.getOrInitFeature(featureType, key);
-                    }
-                }
-
-                exponential = Math.exp(exponential);
-
-                double prob_1 = 1 / (1 + exponential);
-                double prob_0 = 1 - prob_1;
-
-                if ((dataController.getHmVideo().get(item1).getViewCount() -
-                        dataController.getHmVideo().get(item2).getViewCount())*(prob_1 - prob_0) >= 0.0) {
-                    correct++;
-                    /*
-                    System.out.println(dataController.getHmVideo().get(item1).getTitle()+" "
-                                        +dataController.getHmVideo().get(item1).getViewCount()+" "
-                                        +dataController.getHmVideo().get(item2).getTitle()+" "
-                                        +dataController.getHmVideo().get(item2).getViewCount()+" "
-                                        +prob_1+" "
-                                        +prob_0+" ");
-                    */
-                }
-
-            }
-
-        bw.write(onTestData ? "testing" : "training");
-        bw.write(((youtubeVideo)arr[0]).getHowLongAgoUploaded() + ";");
-        bw.write(";");
-        bw.write(correct + ";");
-        bw.write(count + ";");
-        bw.write(1.0*correct/count + "");
-        bw.newLine();
-    }
-    
-    @Override
-    public void output(String filename) {
-	modelParams.output(filename);
     }
 }
