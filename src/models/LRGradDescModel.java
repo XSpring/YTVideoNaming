@@ -63,7 +63,6 @@ public class LRGradDescModel extends genericModel {
                     // Create representative feature vector
                     FeatureController X_ij = new FeatureController();
 
-
                     // 1. Numeric features
                     // 1.0 Intercept weight w_0
                     X_ij.getHmNumericFeatures().put(0, 1.0);
