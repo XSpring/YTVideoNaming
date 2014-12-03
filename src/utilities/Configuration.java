@@ -59,8 +59,8 @@ public class Configuration {
         lambda = 0.01;
         minAge = 1;
         minSize = 20;
-        maxAge = 30;
-        maxSize = 10000;
+        maxAge = 100000;
+        maxSize = 100;
     }
 
     public double getLambda() { return lambda;}
