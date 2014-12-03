@@ -99,22 +99,27 @@ public class DatafileGrabber {
     
     /* Reads in user info from a single file */
     public static HashMap<String,youtubeUser> readMapOfUsers(String fileName) throws IOException {
-	    final File file = new File(fileName);
-	    HashMap<String,youtubeUser> map = new java.util.HashMap<String, youtubeUser>();
-	    BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-	    boolean keepGoing = true;
-	    while (keepGoing) {
-	        try {
-		        youtubeUser user = youtubeUser.deserializeMinimal(br);
-		        map.put(user.getKey(), user);
-	        } catch (IOException e) {
-		        System.out.println("Could not read any more youtubeUsers from file "+fileName+".  Reason: ");
-		        System.out.println("\t"+e.getMessage());
-		        System.out.println("\tThis is probably normal.  Returing the list had so far.");
-		        keepGoing = false;
-	        }
+	System.out.println("Reading in map of users...");
+	final File file = new File(fileName);
+	HashMap<String,youtubeUser> map = new java.util.HashMap<String, youtubeUser>();
+	BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+	boolean keepGoing = true;
+	while (keepGoing) {
+	    try {
+		    youtubeUser user = youtubeUser.deserializeMinimal(br);
+		    if (user != null)
+			map.put(user.getKey(), user);
+		    else
+			keepGoing = false;
+	    } catch (IOException e) {
+		    System.out.println("Could not read any more youtubeUsers from file "+fileName+".  Reason: ");
+		    System.out.println("\t"+e.getMessage());
+		    System.out.println("\tThis is probably normal.  Returing the list had so far.");
+		    keepGoing = false;
 	    }
-	    br.close();
-	    return map;
+	}
+	br.close();
+	System.out.println("Done reading in map of users.");
+	return map;
     }
 }

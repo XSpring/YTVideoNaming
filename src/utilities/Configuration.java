@@ -35,6 +35,7 @@ public class Configuration {
     private int maxFold;
     private int noOfIterations;
     private double eta;
+    private double lambda;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -49,9 +50,12 @@ public class Configuration {
         noOfConcurrentThreads = 7; // No of *real* cores
         executor = Executors.newFixedThreadPool(noOfConcurrentThreads);
         maxFold = 5;
-        noOfIterations = 10;
-        eta = 0.01;
+        noOfIterations = 3;
+        eta = 1;
+        lambda = 0.01;
     }
+
+    public double getLambda() { return lambda;}
 
     public double getEta() {
         return eta;

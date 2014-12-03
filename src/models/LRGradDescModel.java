@@ -2,6 +2,7 @@ package models;
 
 import controllers.dataControllers.dataController;
 import controllers.dataControllers.FeatureController;
+import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
 
 import java.util.List;
@@ -25,24 +26,32 @@ public class LRGradDescModel extends genericModel {
         modelParams = new FeatureController();
     }
 
-    public void run() {
+    @Override
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         try {
             //System.out.println("Training...");
             train();
 
-            //System.out.println("Testing...");
-            test();
+            //System.out.println("Testing (on training data)...");
+            test(false);
+
+            //System.out.println("Testing (on testing data)...");
+            test(true);
+
+            if (!whereSaveModel.isEmpty())
+                output(whereSaveModel);
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     void train() throws Exception {
         Object[] arr = trainData.toArray();
 
-        for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
-                 idLoop++)
+        for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations(); idLoop++)
         {
             FeatureController gradient = new FeatureController();
 
@@ -62,92 +71,9 @@ public class LRGradDescModel extends genericModel {
                     }
                     */
 
-                    // Create representative feature vector
-                    FeatureController X_ij = new FeatureController();
-
-                    // 1. Numeric features
-                    // 1.0 Intercept weight w_0
-                    X_ij.getHmNumericFeatures().put(0, 1.0);
-
-                    /*
-                    // 1.1 No of likes
-                    X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
-                                                            dataController.getHmVideo().get(item2).getNoOfLikes()));
-                    // 1.2 No of dislikes
-                    X_ij.getHmNumericFeatures().put(2, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
-                                                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
-                    */
-                    double ratioOfLike1 = dataController.getHmVideo().get(item1).getNoOfLikes();
-                    double ratioOfDislike1 = dataController.getHmVideo().get(item1).getNoOfDislikes();
-
-                    ratioOfLike1 /= (ratioOfLike1 + ratioOfDislike1);
-
-                    double ratioOfLike2 = dataController.getHmVideo().get(item2).getNoOfLikes();
-                    double ratioOfDislike2 = dataController.getHmVideo().get(item2).getNoOfDislikes();
-
-                    ratioOfLike2 /= (ratioOfLike2 + ratioOfDislike2);
-
-                    //X_ij.getHmNumericFeatures().put(1, ratioOfLike1);
-
-                    //X_ij.getHmNumericFeatures().put(2, ratioOfLike2);
-
-                    // 1.3 Video Length In Seconds
-                    //X_ij.getHmNumericFeatures().put(3, 1.0 * dataController.getHmVideo().get(item1).getVideoLengthInSeconds() /
-                    //                                         dataController.getHmVideo().get(item2).getVideoLengthInSeconds());
-
-                    // 2. Bag of Words (from Title only)
-                    String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
-                    for (String str:titleArr)
-                    {
-                        Double tf = X_ij.getHmBoWFeatures().get(str);
-                        if (tf == null)
-                            tf = 0.0;
-                        tf++;
-                        X_ij.getHmBoWFeatures().put(str, tf);
-                    }
-
-                    int titleLength1 = titleArr.length;
-
-                    titleArr = dataController.getHmVideo().get(item2).getTitle().split(",");
-                    for (String str:titleArr)
-                    {
-                        Double tf = X_ij.getHmBoWFeatures().get(str);
-                        if (tf == null)
-                            tf = 0.0;
-                        tf--;
-                        X_ij.getHmBoWFeatures().put(str, tf);
-                    }
-
-                    int titleLength2 = titleArr.length;
-                    //X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
-
-                    // 3. Category
-                    /*
-                    Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf++;
-                    X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item1).getCategory(), tf);
-
-                    tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item2).getCategory());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf--;
-                    X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
-                    */
-
-                    // 4. Uploader ID
-                    Double tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf++;
-                    X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item1).getChannelID(), tf);
-
-                    tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item2).getChannelID());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf--;
-                    X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item2).getChannelID(), tf);
+                    youtubeVideo v1 = dataController.getHmVideo().get(item1);
+                    youtubeVideo v2 = dataController.getHmVideo().get(item2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
 
                     // Compute the <w, X>
                     Double w = 0.0;
@@ -233,8 +159,9 @@ public class LRGradDescModel extends genericModel {
         }
     }
 
-    void test() throws Exception {
-        Object[] arr = testData.toArray();
+    @Override
+    void test(boolean onTestData) throws Exception {
+        Object[] arr = (onTestData ? testData : trainData).toArray();
 
         int correct = 0;
         int count = 0;
@@ -343,8 +270,18 @@ public class LRGradDescModel extends genericModel {
                 }
 
             }
-        double errorRatio = correct*1.0 / count;
-        //System.out.println("Error ratio: "+errorRatio+" ("+correct+" over "+count+").");
-        bw.write(errorRatio+" ("+correct+"/"+count+") ");
+
+        bw.write(onTestData ? "testing" : "training");
+        bw.write(((youtubeVideo)arr[0]).getHowLongAgoUploaded() + ";");
+        bw.write(";");
+        bw.write(correct + ";");
+        bw.write(count + ";");
+        bw.write(1.0*correct/count + "");
+        bw.newLine();
+    }
+
+    @Override
+    public void output(String filename) {
+        modelParams.output(filename);
     }
 }

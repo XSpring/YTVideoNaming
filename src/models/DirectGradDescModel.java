@@ -16,14 +16,17 @@ public class DirectGradDescModel extends genericModel {
     FeatureController modelParams = null;
 
     @Override
-    public void run(List<Object> trainData, List<Object> testData) {
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         this.trainData = trainData;
         this.testData = testData;
         modelParams = new FeatureController();
 	System.out.println("Training...");
 	train();
-	System.out.println("Testing...");
-	test();
+	System.out.println("Testing and saving params...");
+	test(false);
+	test(true);
+	if (!whereSaveModel.isEmpty())
+	    output(whereSaveModel);
     }
 
     @Override
@@ -78,14 +81,15 @@ public class DirectGradDescModel extends genericModel {
     }
 
     @Override
-    void test() {//throws Exception {
-	java.util.List<Double> predictions = getPredictions(testData);
+    void test(boolean onTestData) {//throws Exception {
+	List<Object> data = onTestData ? testData : trainData;
+	java.util.List<Double> predictions = getPredictions(data);
 	//get direct sqrtErrSq results
 	double errSq = 0;
         int count = 0;
-        for (int i=0; i < testData.size(); i++) {
+        for (int i=0; i < data.size(); i++) {
 	    double prediction = predictions.get(i);
-	    double truth = dataController.getHmVideo().get(testData.get(i)).getNoOfLikes();
+	    double truth = dataController.getHmVideo().get(data.get(i)).getNoOfLikes();
 	    double diffrence = prediction - truth;
 	    errSq += diffrence*diffrence;
 	    count++;
@@ -98,8 +102,8 @@ public class DirectGradDescModel extends genericModel {
             for (int j=i+1; j < predictions.size(); j++) {
 		count++;
 		boolean iBiggerPredicted = predictions.get(i) > predictions.get(j);
-		long c_i = dataController.getHmVideo().get(testData.get(i)).getViewCount();
-		long c_j = dataController.getHmVideo().get(testData.get(j)).getViewCount();
+		long c_i = dataController.getHmVideo().get(data.get(i)).getViewCount();
+		long c_j = dataController.getHmVideo().get(data.get(j)).getViewCount();
 		boolean iBiggerTruth = c_i > c_j;
 		if (iBiggerPredicted == iBiggerTruth)
 		    correct++;
@@ -107,9 +111,12 @@ public class DirectGradDescModel extends genericModel {
 	}
 	//output the results
 	try {
-	    bw.write("Results:");
-	    bw.write("  sqrtErrSq = " + sqrtErrSq);
-	    bw.write("  # correct = " + correct + "/" + count);
+	    bw.write(onTestData ? "testing" : "training");
+	    bw.write(((youtubeVideo)data.get(0)).getHowLongAgoUploaded() + ";");
+	    bw.write(sqrtErrSq + ";");
+	    bw.write(correct + ";");
+	    bw.write(count);
+	    bw.newLine();
 	} catch (Exception e) { }
     }
     
@@ -119,7 +126,7 @@ public class DirectGradDescModel extends genericModel {
     }
     
     private java.util.List<Double> getPredictions(java.util.List<Object> vids) {
-	java.util.List<Double> list = new java.util.ArrayList<>(vids.size());
+	java.util.List<Double> list = new java.util.ArrayList<Double>();
 	for (int i=0; i < vids.size(); i++) {
 	    objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(vids.get(i));
 	    FeatureController datapoint = getFeatureController(ytVid);
@@ -130,7 +137,7 @@ public class DirectGradDescModel extends genericModel {
 		for (String key:datapoint.getStringFeatures(featureType).keySet())
 		    innerProd += modelParams.getOrInitFeature(featureType, key) * datapoint.getOrInitFeature(featureType, key);
 	    }
-	    list.set(i, innerProd);
+	    list.add(innerProd);
 	}
 	return list;
     }
@@ -140,16 +147,19 @@ public class DirectGradDescModel extends genericModel {
 	FeatureController X_i = new FeatureController();
 
 	// 0. Numeric features
-	youtubeUser uploader = dataController.getHmUser().get(ytVid.getChannelID());
+	java.util.Map<String, youtubeUser> userList = dataController.getHmUser();
+	youtubeUser uploader = userList.get(ytVid.getChannelID());
 	long totalUploaderNumVidViews = uploader.getVideoWatchCount();
 	long totalUploaderNumVids = 0;
 	for (String vName : uploader.getUploads()) {
 	    youtubeVideo v = dataController.getHmVideo().get(vName);
-	    long v_daysAgoPublished = v.getHowLongAgoUploaded();
-	    if (v_daysAgoPublished < ytVid.getHowLongAgoUploaded())
-		totalUploaderNumVidViews -= v.getViewCount();
-	    else
-		totalUploaderNumVids++;
+	    if (v != null) {
+		long v_daysAgoPublished = v.getHowLongAgoUploaded();
+		if (v_daysAgoPublished < ytVid.getHowLongAgoUploaded())
+		    totalUploaderNumVidViews -= v.getViewCount();
+		else
+		    totalUploaderNumVids++;
+	    }
 	}
 	double ratio = (totalUploaderNumVids!=0) ? ((double)totalUploaderNumVidViews/totalUploaderNumVids) : 0;
 	X_i.getHmNumericFeatures().put(0, 1.0);

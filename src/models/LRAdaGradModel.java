@@ -2,6 +2,7 @@ package models;
 
 import controllers.dataControllers.dataController;
 import controllers.dataControllers.FeatureController;
+import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
 
 import java.util.List;
@@ -17,7 +18,8 @@ public class LRAdaGradModel extends genericModel {
 
     FeatureController stackedGradients = null;
 
-    public void run(List<Object> trainData, List<Object> testData) {
+    @Override
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // Initialize the data
         this.trainData = trainData;
         this.testData = testData;
@@ -30,14 +32,21 @@ public class LRAdaGradModel extends genericModel {
             //System.out.println("Training...");
             train();
 
-            //System.out.println("Testing...");
-            test();
+            //System.out.println("Testing (training data)...");
+            test(false);
+
+            //System.out.println("Testing (test data)...");
+            test(true);
+
+            if (!whereSaveModel.isEmpty())
+                output(whereSaveModel);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     void train() throws Exception {
         Object[] arr = trainData.toArray();
 
@@ -60,63 +69,9 @@ public class LRAdaGradModel extends genericModel {
                         item2 = arr[idI1];
                     }
 
-                    // Create representative feature vector
-                    FeatureController X_ij = new FeatureController();
-
-                    // 1. Numeric features
-                    // 1.1 No of likes
-                    X_ij.getHmNumericFeatures().put(0, 1.0*(dataController.getHmVideo().get(item1).getNoOfLikes() /
-                            dataController.getHmVideo().get(item2).getNoOfLikes()));
-                    // 1.2 No of dislikes
-                    X_ij.getHmNumericFeatures().put(1, 1.0*(dataController.getHmVideo().get(item1).getNoOfDislikes() /
-                            dataController.getHmVideo().get(item2).getNoOfDislikes()));
-
-                    // 2. Bag of Words (from Title only)
-                    String[] titleArr = dataController.getHmVideo().get(item1).getTitle().split(",");
-                    for (String str:titleArr)
-                    {
-                        Double tf = X_ij.getHmBoWFeatures().get(str);
-                        if (tf == null)
-                            tf = 0.0;
-                        tf++;
-                        X_ij.getHmBoWFeatures().put(str, tf);
-                    }
-
-                    titleArr = dataController.getHmVideo().get(item2).getTitle().split(",");
-                    for (String str:titleArr)
-                    {
-                        Double tf = X_ij.getHmBoWFeatures().get(str);
-                        if (tf == null)
-                            tf = 0.0;
-                        tf--;
-                        X_ij.getHmBoWFeatures().put(str, tf);
-                    }
-
-                    // 3. Category
-                    Double tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item1).getCategory());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf++;
-                    X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item1).getCategory(), tf);
-
-                    tf = X_ij.getHmCategoryFeatures().get(dataController.getHmVideo().get(item2).getCategory());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf--;
-                    X_ij.getHmCategoryFeatures().put(dataController.getHmVideo().get(item2).getCategory(), tf);
-
-                    // 4. Uploader ID
-                    tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item1).getChannelID());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf++;
-                    X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item1).getChannelID(), tf);
-
-                    tf = X_ij.getHmChannelIDFeatures().get(dataController.getHmVideo().get(item2).getChannelID());
-                    if (tf == null)
-                        tf = 0.0;
-                    tf--;
-                    X_ij.getHmChannelIDFeatures().put(dataController.getHmVideo().get(item2).getChannelID(), tf);
+                    youtubeVideo v1 = dataController.getHmVideo().get(item1);
+                    youtubeVideo v2 = dataController.getHmVideo().get(item2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1,v2);
 
                     // Compute the <w, X>
                     Double w = 0.0;
@@ -180,10 +135,7 @@ public class LRAdaGradModel extends genericModel {
 
                 modelParams.setFeature(0, idF, w_d);
                 stackedGradients.setFeature(0, idF, learningRateCoeff);
-                //System.out.print(w_d + " ");
             }
-
-            //System.out.println();
 
             for (int featureType=1; featureType<4; featureType++)
             {
@@ -210,8 +162,9 @@ public class LRAdaGradModel extends genericModel {
         }
     }
 
-    void test() throws Exception {
-        Object[] arr = testData.toArray();
+    @Override
+    void test(boolean onTestData) throws Exception {
+        Object[] arr = (onTestData ? testData : trainData).toArray();
 
         int correct = 0;
         int count = 0;
@@ -320,9 +273,14 @@ public class LRAdaGradModel extends genericModel {
                 }
 
             }
-        double errorRatio = correct*1.0 / count;
-        //System.out.println("Error ratio: "+errorRatio+" ("+correct+" over "+count+").");
-        bw.write(errorRatio+" ("+correct+"/"+count+") ");
+
+        bw.write(onTestData ? "testing" : "training");
+        bw.write(((youtubeVideo)arr[0]).getHowLongAgoUploaded() + ";");
+        bw.write(";");
+        bw.write(correct + ";");
+        bw.write(count + ";");
+        bw.write(1.0*correct/count + "");
+        bw.newLine();
     }
     
     @Override

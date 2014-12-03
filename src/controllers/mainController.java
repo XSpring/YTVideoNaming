@@ -16,7 +16,7 @@ public class mainController {
     public static void main(String[] args) {
         System.out.println("This is the main controllers...");
 
-        String videoFolder = "YTData";
+        String videoFolder = "data_all";
         //String videoFolder = "youtube";
         try {
             dataController.run(videoFolder);

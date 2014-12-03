@@ -1,6 +1,7 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
+import models.DirectGradDescModel;
 import models.LRAdaGradModel;
 import models.genericModel;
 import utilities.Configuration;
@@ -20,6 +21,8 @@ public class modelController {
 
     BufferedWriter bw = null;
 
+    genericModel model = null;
+
     public void loadData(List<String> lstVideos) {
         cv.loadData(lstVideos);
     }
@@ -28,7 +31,7 @@ public class modelController {
         this.bw = bw;
     }
 
-    public void run() throws Exception {
+    public void run(String wherePutModel) throws Exception {
 
         for (int id = 1; id < 6; id++) {
             List<Object> train = cv.getTrainingDataInFold(id);
@@ -45,13 +48,19 @@ public class modelController {
             */
 
             //LRGradDescModel model = new LRGradDescModel();
-            genericModel model = new LRAdaGradModel();
+            //genericModel model = new LRAdaGradModel();
+            model = new DirectGradDescModel();
             model.setBw(bw);
-            model.run(train, test);
+            model.run(train, test, wherePutModel + "_" + id + ".csv");
         }
+
         bw.write("\n");
         bw.flush();
         System.out.println("Done with training/testing data...");
+    }
+
+    public void output(String filename) {
+        model.output(filename);
     }
 
     public void testDataValidity() {

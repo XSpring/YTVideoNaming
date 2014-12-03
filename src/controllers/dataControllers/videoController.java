@@ -47,7 +47,7 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRGA_All_Bagging.txt");
+        FileWriter fw = new FileWriter("LRGA_All_Test_Bagging.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
         /*
@@ -55,13 +55,14 @@ public class videoController {
         for (Long age:hmVideoBins.keySet()) {
             count ++;
             List<String> lstVideos = hmVideoBins.get(age);
-            if (lstVideos.size()>=10 && lstVideos.size()<=100) {
+            if (lstVideos.size()>=20 && lstVideos.size()<=100) {
                 System.out.println("Learning model with bin ("+age+").");
                 bw.write("Bin "+age+" ");
                 modelController model = new modelController();
                 model.setBw(bw);
                 model.loadData(lstVideos);
-                model.run();
+                model.run("results/DirectGradDesc_"+age+"_weights");
+		        model.output("results/DirectGradDesc_"+age+".txt");
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
             //if (count==1) break;

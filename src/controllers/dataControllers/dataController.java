@@ -16,8 +16,9 @@ public class dataController {
     static HashMap<String, youtubeUser> hmUser = null;
 
     public static void run(String videoFolder) throws IOException {
-        hmVideo  = readDataFromCSV(videoFolder);    //utilities.DatafileGrabber.readListOfVideos(videoFolder);
-    	//hmUser = utilities.DatafileGrabber.readMapOfUsers(videoFolder + "/userMapSave.txt");
+        //hmVideo  = readDataFromCSV(videoFolder);    //old version for YTVideos folder (includes comments)
+        hmVideo  = utilities.DatafileGrabber.readMapOfVideos(videoFolder); //new version for data_all folder (comments excluded)
+        hmUser = utilities.DatafileGrabber.readMapOfUsers(videoFolder + "/userMapSave.txt");
     }
 
     public static HashMap<String, youtubeVideo> getHmVideo() {

@@ -262,6 +262,7 @@ public class youtubeUser {
 	    os.newLine();
     }
     public static youtubeUser deserializeMinimal(java.io.BufferedReader is) throws java.io.IOException {
+	try {
 	    youtubeUser user = new youtubeUser("");
 	    String[] pieces = is.readLine().split(";");
 	    user.setKey(pieces[0]);
@@ -270,5 +271,8 @@ public class youtubeUser {
 	    uploadedVids.addAll(Arrays.asList(pieces).subList(2, pieces.length));
 	    user.setUploads(uploadedVids);
 	    return user;
+	} catch (java.lang.NullPointerException e) {
+	    return null;
+	}
     }
 }

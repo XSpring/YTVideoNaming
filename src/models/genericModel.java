@@ -33,19 +33,8 @@ public abstract class genericModel {
         this.bw = bw;
     }
 
-    public void run(List<Object> train, List<Object> test) {
-
-    }
-
-    void train() throws Exception {
-
-    }
-
-    void test() throws Exception {
-
-    }
-
-    public void output(String filename) {
-
-    }
+    public abstract void run(List<Object> train, List<Object> test, String whereSaveModel);
+    abstract void train() throws Exception;
+    abstract void test(boolean onTestData) throws Exception;
+    public abstract void output(String filename);
 }
