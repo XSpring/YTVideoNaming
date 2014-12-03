@@ -70,6 +70,7 @@ public class LRStoGradAscModel extends genericModel {
     @Override
     void train() throws Exception {
         Object[] arr = trainData.toArray();
+        int labelType = Configuration.getInstance().getLabelType();
 
         for (int idLoop = 0; idLoop < Configuration.getInstance().getNoOfIterations();
              idLoop++)
@@ -201,8 +202,8 @@ public class LRStoGradAscModel extends genericModel {
                     {
                         w_d = modelParams.getOrInitFeature(0, idF);
 
-                        if (dataController.getHmVideo().get(item1).getViewCount() >
-                                dataController.getHmVideo().get(item2).getViewCount())
+                        if (dataController.getHmVideo().get(item1).getRatioOfLikeDislike() >
+                                dataController.getHmVideo().get(item2).getRatioOfLikeDislike())
                             w_d += Configuration.getInstance().getEta() * // learning rate
                                     X_ij.getOrInitFeature(0, idF) * (- exponential) // gradient
                                     - Configuration.getInstance().getLambda() * w_d; // regularization
@@ -223,8 +224,8 @@ public class LRStoGradAscModel extends genericModel {
                         {
                             w_d = modelParams.getOrInitFeature(featureType, key);
 
-                            if (dataController.getHmVideo().get(item1).getViewCount() >
-                                    dataController.getHmVideo().get(item2).getViewCount())
+                            if (dataController.getHmVideo().get(item1).getRatioOfLikeDislike() >
+                                    dataController.getHmVideo().get(item2).getRatioOfLikeDislike())
                                 w_d += Configuration.getInstance().getEta() * // learning rate
                                        X_ij.getOrInitFeature(featureType, key) * (- exponential)
                                        - Configuration.getInstance().getLambda() * w_d;
