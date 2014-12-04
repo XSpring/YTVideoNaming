@@ -1,6 +1,7 @@
 package models;
 
 import controllers.dataControllers.FeatureController;
+import controllers.dataControllers.dataController;
 import objects.youtubeObjects.youtubeVideo;
 
 import java.io.BufferedWriter;
@@ -13,28 +14,32 @@ import java.util.List;
  */
 
 public abstract class genericModel {
+    protected List<Object> trainData = null;
+    protected List<Object> testData = null;
+    protected BufferedWriter bw = null;
+    protected FeatureController modelParams = null;
+    
+    protected abstract void train();
+    protected abstract void test(boolean onTestData);
 
-    List<Object> trainData = null;
-    List<Object> testData = null;
-
-    BufferedWriter bw = null;
-
-    FeatureController modelParams = null;
-
-    public genericModel() {
-
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
+        this.trainData = trainData;
+        this.testData = testData;
+        modelParams = new FeatureController();
+	System.out.println("Training...");
+	train();
+	System.out.println("Testing and saving params...");
+	test(false);
+	test(true);
+	if (!whereSaveModel.isEmpty())
+	    outputModelParams(whereSaveModel);
     }
-
-    public FeatureController getModelParams() {
-        return modelParams;
-    }
-
+    
     public void setBw(BufferedWriter bw) {
         this.bw = bw;
     }
-
-    public abstract void run(List<Object> train, List<Object> test, String whereSaveModel);
-    abstract void train() throws Exception;
-    abstract void test(boolean onTestData) throws Exception;
-    public abstract void output(String filename);
+    
+    protected void outputModelParams(String filename) {
+	modelParams.output(filename);
+    }
 }
