@@ -1,6 +1,8 @@
 package controllers.dataControllers;
 
 import java.util.HashMap;
+import java.util.HashSet;
+
 import objects.youtubeObjects.*;
 
 /**
@@ -296,8 +298,17 @@ public class FeatureController {
 	
 	// Bag of words features
 	for (int featType=1; featType<4; featType++) {
-	    java.util.Set<String> strFeatureKeys = X_i.getStringFeatures(featType).keySet();
-	    strFeatureKeys.addAll(X_j.getStringFeatures(featType).keySet());
+        // Need to fix this since my JRE cannot interpret the addAll
+
+	    java.util.Set<String> strFeatureKeys = new HashSet<String>();
+
+        for (String str:X_i.getStringFeatures(featType).keySet())
+            strFeatureKeys.add(str);
+
+
+        for (String str:X_j.getStringFeatures(featType).keySet())
+	        strFeatureKeys.add(str);
+
 	    for (String k : strFeatureKeys) {
 		double f_i = X_i.getOrInitFeature(featType, k);
 		double f_j = X_j.getOrInitFeature(featType, k);

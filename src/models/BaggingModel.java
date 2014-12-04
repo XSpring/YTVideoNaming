@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class BaggingModel extends genericModel {
 
+    public BaggingModel() {
+
+    }
     @Override
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // HAS NOT IMPLEMENTED YET
@@ -74,7 +77,7 @@ public class BaggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-                        genericModel model = new LRStoGradAscModel();
+                        genericModel model = new LRStoGradAscModel(train, null);
                         //genericModel model = new LRAdaGradModel();
                         model.setBw(bw);
                         model.train();
@@ -158,7 +161,7 @@ public class BaggingModel extends genericModel {
                     youtubeVideo v1 = dataController.getHmVideo().get(item1);
                     youtubeVideo v2 = dataController.getHmVideo().get(item2);
 
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1, v2);
 
                     // Compute the <w, X>
                     Double w = 0.0;

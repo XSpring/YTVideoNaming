@@ -5,12 +5,19 @@ import controllers.dataControllers.dataController;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Configuration;
 
+import java.util.List;
+
 /**
  * Create on 2/12/14
  *
  * @author Loc Do
  */
 public class LRStoGradAscModel extends genericModel {
+
+    public LRStoGradAscModel(List<Object> trainData, List<Object> testData) {
+        super(trainData, testData);
+    }
+
     @Override
     protected void train() {
         for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {
@@ -18,7 +25,7 @@ public class LRStoGradAscModel extends genericModel {
                 for (int idI2=idI1+1; idI2 < trainData.size(); idI2++) {
 		    youtubeVideo v1 = dataController.getHmVideo().get(trainData.get(idI1));
 		    youtubeVideo v2 = dataController.getHmVideo().get(trainData.get(idI2));
-		    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1,v2);
+		    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1, v2);
 		    double innerProd = FeatureController.getInnerProduct(modelParams, X_ij);
                     double exponential = Math.exp(innerProd);
                     exponential = exponential / (1 + exponential);
