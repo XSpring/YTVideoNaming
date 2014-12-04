@@ -13,62 +13,8 @@ import java.util.List;
  * @author Loc Do
  */
 public class LRStoGradAscModel extends genericModel {
-
-    public LRStoGradAscModel(List<Object> trainData, List<Object> testData) {
-        // Initialize the data
-        this.trainData = trainData;
-        this.testData = testData;
-
-        // Initialize the parameters
-        modelParams = new FeatureController();
-    }
-
     @Override
-    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
-        try {
-            //System.out.println("Training...");
-            train();
-
-            //System.out.println("Testing (on training data)...");
-            test(false);
-
-            //System.out.println("Testing (on testing data)...");
-            test(true);
-
-            if (!whereSaveModel.isEmpty())
-                output(whereSaveModel);
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    void test(boolean onTestData) throws Exception {
-        // HAS NOT IMPLEMENTED YET
-    }
-
-    @Override
-    public void output(String filename) {
-        modelParams.output(filename);
-    }
-
-    public void run() {
-        try {
-            //System.out.println("Training...");
-            train();
-
-            //System.out.println("Testing...");
-            test(true);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    void train() throws Exception {
+    protected void train() {
         Object[] arr = trainData.toArray();
         int labelType = Configuration.getInstance().getLabelType();
 
@@ -241,5 +187,10 @@ public class LRStoGradAscModel extends genericModel {
 
             //System.out.println();
         }
+    }
+    
+    @Override
+    protected void test(boolean onTestData) {
+        // HAS NOT IMPLEMENTED YET
     }
 }

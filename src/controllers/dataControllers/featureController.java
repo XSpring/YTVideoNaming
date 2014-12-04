@@ -1,7 +1,6 @@
 package controllers.dataControllers;
 
 import java.util.HashMap;
-import objects.youtubeObjects.*;
 
 /**
  * Create on 30/11/14
@@ -75,11 +74,7 @@ public class FeatureController {
         }
         return true;
     }
-    
-    public HashMap<Integer, Double> getNumericFeatures() {
-        return hmNumericFeatures;
-    }
-    
+
     public HashMap<String, Double> getStringFeatures(int featureType) {
         switch (featureType) {
             case 1: return hmBoWFeatures;
@@ -103,32 +98,6 @@ public class FeatureController {
 
     public HashMap<String, Double> getHmCategoryFeatures() {
         return hmCategoryFeatures;
-    }
-    
-    public static double getInnerProduct(FeatureController f1, FeatureController f2) {
-	double innerProd = 0.0;
-	for (Integer idF:f1.getHmNumericFeatures().keySet())
-	    innerProd += f2.getOrInitFeature(0, idF) * f1.getOrInitFeature(0, idF);
-	for (int featureType=1; featureType<4; featureType++) {
-	    for (String key:f1.getStringFeatures(featureType).keySet())
-		innerProd += f2.getOrInitFeature(featureType, key) * f1.getOrInitFeature(featureType, key);
-	}
-	return innerProd;
-    }
-    
-    public void addWithScaling(FeatureController f2, double scale) {
-	for (Integer k:f2.getHmNumericFeatures().keySet()) {
-	    double feat = this.getOrInitFeature(0, k);
-	    feat += f2.getOrInitFeature(0, k) * scale;
-	    this.setFeature(0, k, feat);
-	}
-	for (int featureType=1; featureType<4; featureType++) {
-	    for (String k:f2.getStringFeatures(featureType).keySet()) {
-		double feat = this.getOrInitFeature(0, k);
-		feat += f2.getOrInitFeature(0, k) * scale;
-		this.setFeature(0, k, feat);
-	    }
-	}
     }
     
     public void output(String filename) {
@@ -155,160 +124,5 @@ public class FeatureController {
 		fw.close();
 	    } catch (java.io.IOException e) {};
 	}
-    }
-    
-    //made by Joseph
-    public static FeatureController getFeatureControllerFromVid_1(youtubeVideo ytVid) {
-	// Create representative feature vector
-	FeatureController X_i = new FeatureController();
-
-	// 0. Numeric features
-	java.util.Map<String, youtubeUser> userList = dataController.getHmUser();
-	youtubeUser uploader = userList.get(ytVid.getChannelID());
-	long totalUploaderNumVidViews = uploader.getVideoWatchCount();
-	long totalUploaderNumVids = 0;
-	for (String vName : uploader.getUploads()) {
-	    youtubeVideo v = dataController.getHmVideo().get(vName);
-	    if (v != null) {
-		long v_daysAgoPublished = v.getHowLongAgoUploaded();
-		if (v_daysAgoPublished < ytVid.getHowLongAgoUploaded())
-		    totalUploaderNumVidViews -= v.getViewCount();
-		else
-		    totalUploaderNumVids++;
-	    }
-	}
-	double viewsPerVid = (totalUploaderNumVids!=0) ? ((double)totalUploaderNumVidViews/totalUploaderNumVids) : 0;
-	X_i.getHmNumericFeatures().put(0, 1.0);
-	X_i.getHmNumericFeatures().put(1, 1.0 * ytVid.getNoOfLikes() / ytVid.getNoOfDislikes());
-	X_i.getHmNumericFeatures().put(2,(double)ytVid.getVideoLengthInSeconds());
-	X_i.getHmNumericFeatures().put(3,(double)ytVid.getHowLongAgoUploaded());
-	X_i.getHmNumericFeatures().put(4,(double)uploader.getSubscriberCount());
-	X_i.getHmNumericFeatures().put(5,(double)totalUploaderNumVids);
-	X_i.getHmNumericFeatures().put(6,(double)totalUploaderNumVidViews);
-	X_i.getHmNumericFeatures().put(7,viewsPerVid);
-	
-
-	// 1. Bag of Words (from Title only)
-	String[] titleArr = ytVid.getTitle().split(",");
-	for (String str:titleArr) {
-	    Double tf = X_i.getHmBoWFeatures().get(str);
-	    if (tf == null)
-		tf = 0.0;
-	    tf++;
-	    X_i.getHmBoWFeatures().put(str, tf);
-	}
-
-	// 2. Category
-	Double tf = X_i.getHmCategoryFeatures().get(ytVid.getCategory());
-	if (tf == null)
-	    tf = 0.0;
-	tf++;
-	X_i.getHmCategoryFeatures().put(ytVid.getCategory(), tf);
-
-	// 3. Uploader ID
-	//I skip this one, since we instead extracted numeric features
-
-	return X_i;
-    }
-    
-    //made by Loc
-    public static FeatureController getFeatureControllerFromVids_0(youtubeVideo ytVid1, youtubeVideo ytVid2) {
-	// Create representative feature vector
-	FeatureController X_ij = new FeatureController();
-
-	// 1. Numeric features
-	// 1.0 Intercept weight w_0
-	X_ij.getHmNumericFeatures().put(0, 1.0);
-	/*
-	// 1.1 No of likes
-	X_ij.getHmNumericFeatures().put(1, 1.0*(ytVid1.getNoOfLikes() / ytVid2.getNoOfLikes()));
-	// 1.2 No of dislikes
-	X_ij.getHmNumericFeatures().put(2, 1.0*(ytVid1.getNoOfDislikes() / ytVid2.getNoOfDislikes()));
-	*/
-
-	// 1.3 Video Length In Seconds
-	X_ij.getHmNumericFeatures().put(3, 1.0 * ytVid1.getVideoLengthInSeconds() / ytVid2.getVideoLengthInSeconds());
-
-	// 2. Bag of Words (from Title only)
-	String[] titleArr = ytVid1.getTitle().split(",");
-	for (String str:titleArr) {
-	    Double tf = X_ij.getHmBoWFeatures().get(str);
-	    if (tf == null)
-		tf = 0.0;
-	    tf++;
-	    X_ij.getHmBoWFeatures().put(str, tf);
-	}
-	int titleLength1 = titleArr.length;
-	titleArr = ytVid2.getTitle().split(",");
-	for (String str:titleArr)
-	{
-	    Double tf = X_ij.getHmBoWFeatures().get(str);
-	    if (tf == null)
-		tf = 0.0;
-	    tf--;
-	    X_ij.getHmBoWFeatures().put(str, tf);
-	}
-	int titleLength2 = titleArr.length;
-	X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
-
-	// 3. Category
-	/*
-	Double tf = X_ij.getHmCategoryFeatures().get(ytVid1.getCategory());
-	if (tf == null)
-	    tf = 0.0;
-	tf++;
-	X_ij.getHmCategoryFeatures().put(ytVid1.getCategory(), tf);
-
-	tf = X_ij.getHmCategoryFeatures().get(ytVid2.getCategory());
-	if (tf == null)
-	    tf = 0.0;
-	tf--;
-	X_ij.getHmCategoryFeatures().put(ytVid2.getCategory(), tf);
-	*/
-
-	// 4. Uploader ID
-	Double tf = X_ij.getHmChannelIDFeatures().get(ytVid1.getChannelID());
-	if (tf == null)
-	    tf = 0.0;
-	tf++;
-	X_ij.getHmChannelIDFeatures().put(ytVid1.getChannelID(), tf);
-	tf = X_ij.getHmChannelIDFeatures().get(ytVid2.getChannelID());
-	if (tf == null)
-	    tf = 0.0;
-	tf--;
-	X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
-	
-	return X_ij;
-    }
-    
-    //made by Joseph, to match getFeatureControllerFromVid_1
-    public static FeatureController getFeatureControllerFromVids_1(youtubeVideo ytVid1, youtubeVideo ytVid2) {
-	// Create representative feature vector
-	FeatureController X_ij = new FeatureController();
-	
-	FeatureController X_i = getFeatureControllerFromVid_1(ytVid1);
-	FeatureController X_j = getFeatureControllerFromVid_1(ytVid2);
-	
-	// 0. Numeric features
-	java.util.Set<Integer> numFeatureKeys = X_i.getNumericFeatures().keySet();
-	for (Integer k : numFeatureKeys) {
-	    double f_i = X_i.getHmNumericFeatures().get(k);
-	    double f_j = X_j.getHmNumericFeatures().get(k);
-	    X_ij.getNumericFeatures().put(k, f_i - f_j);
-	    X_ij.getNumericFeatures().put(numFeatureKeys.size() + k, f_i / f_j);
-	}
-	
-	// Bag of words features
-	for (int featType=1; featType<4; featType++) {
-	    java.util.Set<String> strFeatureKeys = X_i.getStringFeatures(featType).keySet();
-	    strFeatureKeys.addAll(X_j.getStringFeatures(featType).keySet());
-	    for (String k : strFeatureKeys) {
-		double f_i = X_i.getOrInitFeature(featType, k);
-		double f_j = X_j.getOrInitFeature(featType, k);
-		X_ij.setFeature(featType, k, f_i - f_j);
-	    }
-	}
-
-	return X_i;
     }
 }

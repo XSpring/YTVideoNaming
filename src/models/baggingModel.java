@@ -18,25 +18,19 @@ import java.util.List;
  * @author Loc Do
  */
 public class baggingModel extends genericModel {
-
     @Override
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // HAS NOT IMPLEMENTED YET
     }
 
     @Override
-    void train() throws Exception {
+    protected void train() {
         // HAS NOT IMPLEMENTED YET
     }
 
     @Override
-    void test(boolean onTestData) throws Exception {
+    protected void test(boolean onTestData) {
         // HAS NOT IMPLEMENTED YET
-    }
-
-    @Override
-    public void output(String filename) {
-        modelParams.output(filename);
     }
 
     public void run() throws Exception {
@@ -79,12 +73,13 @@ public class baggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-                        genericModel model = new LRStoGradAscModel(train, null);
-                        //genericModel model = new LRAdaGradModel();
-                        model.setBw(bw);
+                        genericModel model = new LRStoGradAscModel();
+			model.trainData = train;
+			model.modelParams = new FeatureController();
+			model.setBw(bw);
                         model.train();
 
-                        ensemble.put(age, model.getModelParams());
+                        ensemble.put(age, model.modelParams);
                     }
                     //System.out.println(age + "\t" + hmVideoBins.get(age).size());
                     //if (count==1) break;

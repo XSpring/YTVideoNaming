@@ -31,7 +31,7 @@ public class UserDictionaryMaker {
      * It is expected that these _subscribers files all be merged (manually, since that's easy) before doing anything else. */
     public static void runGetSubscribers_oneAtATime(String videoFolder) throws java.io.IOException {
 	final java.io.File folder = new java.io.File(videoFolder);
-	java.util.Set<String> alreadyCrawled = new java.util.HashSet<>();
+	java.util.Set<String> alreadyCrawled = new java.util.HashSet<String>();
 	int crawled = 0;
 	for (final java.io.File file : folder.listFiles()) {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
@@ -94,8 +94,9 @@ public class UserDictionaryMaker {
     public static void runUserDictionaryMaker_oneAtATime(String videoFolder, String subscribersFileName, String outputFileName) throws java.io.IOException {
 	//read in subscriber counts
 	java.io.File subscribersFile = new java.io.File(subscribersFileName);
-	java.util.Map<String,Long> subscribersMap = new java.util.HashMap<>();
-	try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(subscribersFile.getAbsolutePath()))) {
+	java.util.Map<String,Long> subscribersMap = new java.util.HashMap<String,Long>();
+    java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(subscribersFile.getAbsolutePath()));
+
 	    while (true) {
 		String ln = br.readLine();
 		if (ln == null)
@@ -103,15 +104,16 @@ public class UserDictionaryMaker {
 		String[] pieces = ln.split(";");
 		subscribersMap.put(pieces[0], Long.parseLong(pieces[1]));
 	    }
-	}
+
 	//begin going through videos and filling in the user map
 	java.io.File vidFolder = new java.io.File(videoFolder);
-	HashMap<String,youtubeUser> userMap = new java.util.HashMap<>();
+	HashMap<String,youtubeUser> userMap = new java.util.HashMap<String,youtubeUser>();
 	for (final java.io.File file : vidFolder.listFiles()) {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
 		System.out.println("Making users for " + file.getName());
 		int counter = 0;
-		try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()))) {
+        br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()));
+
 		    while (true) {
 			youtubeVideo vid = youtubeVideo.deserializeMinimal(br);
 			if (vid == null) {
@@ -131,7 +133,6 @@ public class UserDictionaryMaker {
 				System.out.println("... finished " + counter + " videos for " + file.getName());
 			}
 		    }
-		}
 	    }
 	}
 	//map created.  Output to file
