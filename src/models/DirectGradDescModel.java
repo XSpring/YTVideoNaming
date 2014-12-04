@@ -12,12 +12,12 @@ import java.util.List;
  * Linear Regression using Gradient Descent
  */
 
-public class DirectGradDescModel extends genericModel {
+public class DirectGradDescModel extends GenericModel {
     @Override
     protected void train() {//throws Exception {
-	int numIterations = 500;    //Configuration.getInstance().getNoOfIterations();
-	double eta = 0.01;	    //Configuration.getInstance().getEta();
-	double lamda = 0.01;	    //Configuration.getInstance().getLambda();;
+	int numIterations = 50;    //Configuration.getInstance().getNoOfIterations();
+	double eta = 0.00001;	    //Configuration.getInstance().getEta();
+	double lamda = 0.05;	    //Configuration.getInstance().getLambda();;
         for (int iteration = 0; iteration < numIterations; iteration++) {
             FeatureController gradient = new FeatureController();
             for (int idI1=0; idI1 < trainData.size(); idI1++) {
@@ -27,7 +27,8 @@ public class DirectGradDescModel extends genericModel {
 		double diffrence = prediction - ytVid.getViewCount();
 		gradient.addWithScaling(datapoint, diffrence);
 	    }
-	    modelParams.addWithScaling(gradient, -1.0 * eta / trainData.size());
+	    modelParams.addWithScaling(modelParams, -1.0 * eta);
+	    modelParams.addWithScaling(gradient, -1.0 * eta);
 	    //output for debug
 	    double gradientMag = Math.sqrt(FeatureController.getInnerProduct(gradient, gradient));
 	    double errSq = this.getErrSq(getPredictions(trainData), trainData);

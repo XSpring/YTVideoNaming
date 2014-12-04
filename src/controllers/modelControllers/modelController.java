@@ -16,7 +16,7 @@ import java.util.List;
 public class modelController {
     CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
     BufferedWriter bw = null;
-    genericModel model = null;
+    GenericModel model = null;
 
     public void loadData(List<String> lstVideos) {
         cv.loadData(lstVideos);
@@ -46,6 +46,7 @@ public class modelController {
             model = new DirectGradDescModel();
             model.setBw(bw);
             model.run(train, test, wherePutModel + "_" + id + ".csv");
+	    break;
         }
 
 //        bw.write("\n");

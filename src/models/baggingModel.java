@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class BaggingModel extends genericModel {
+/*public class BaggingModel extends GenericModel {
     @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
@@ -69,7 +69,7 @@ public class BaggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-                        genericModel model = new LRStoGradAscModel();
+                        GenericModel model = new LRStoGradAscModel();
 			model.trainData = train;
 			model.modelParams = new FeatureController();
 			model.setBw(bw);
@@ -206,3 +206,4 @@ public class BaggingModel extends genericModel {
         return errorRatio;
     }
 }
+*/
