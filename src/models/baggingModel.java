@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class baggingModel extends genericModel {
+/*public class baggingModel extends genericModel {
     @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
@@ -206,3 +206,4 @@ public class baggingModel extends genericModel {
         return errorRatio;
     }
 }
+*/

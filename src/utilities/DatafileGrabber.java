@@ -18,7 +18,7 @@ public class DatafileGrabber {
 	final File folder = new File(folderName);
 	List<youtubeVideo> list = new java.util.LinkedList<youtubeVideo>();
 	for (final File file : folder.listFiles()) {
-	    if (! file.isDirectory() && file.getName().indexOf(".csv")>-1) {
+	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
 		System.out.println(file.getName());
 		BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 		while (true) {
