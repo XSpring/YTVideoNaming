@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  3 DEC 2014 18:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  3 DEC 2014 23:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -396,7 +396,7 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 \openout2 = `sec_experiments.aux'.
 
  (./sec_experiments.tex
-<DistributionOfViews.png, id=106, 430.60875pt x 341.77687pt>
+<DistributionOfViews.png, id=107, 430.60875pt x 341.77687pt>
 File: DistributionOfViews.png Graphic file (type png)
 
 <use DistributionOfViews.png>
@@ -438,8 +438,8 @@ Package rerunfilecheck Info: File `final.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 67.
  ) 
 Here is how much of TeX's memory you used:
- 6512 strings out of 493117
- 93806 string characters out of 6135433
+ 6513 strings out of 493117
+ 93819 string characters out of 6135433
  186586 words of memory out of 5000000
  9805 multiletter control sequences out of 15000+600000
  26075 words of font info for 59 fonts, out of 8000000 for 9000
@@ -460,10 +460,10 @@ texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-di
 st/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/t
 ype1/urw/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/t
 imes/utmri8a.pfb>
-Output written on final.pdf (8 pages, 162367 bytes).
+Output written on final.pdf (8 pages, 162807 bytes).
 PDF statistics:
- 195 PDF objects out of 1000 (max. 8388607)
- 167 compressed objects within 2 object streams
- 41 named destinations out of 1000 (max. 500000)
+ 196 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
  132 words of extra memory for PDF output out of 10000 (max. 10000000)
 
