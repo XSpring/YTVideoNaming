@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class baggingModel extends genericModel {
+public class BaggingModel extends genericModel {
     @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
@@ -193,8 +193,8 @@ public class baggingModel extends genericModel {
                 }
 
                 //System.out.println("Stop");
-                if ((dataController.getHmVideo().get(item1).getRatioOfLikeDislike() -
-                        dataController.getHmVideo().get(item2).getRatioOfLikeDislike()) * (label_1 - label_0) >= 0.0) {
+                if ((dataController.getHmVideo().get(item1).getViewCount() -
+                        dataController.getHmVideo().get(item2).getViewCount()) * (label_1 - label_0) >= 0.0) {
                     correct++;
                 }
 

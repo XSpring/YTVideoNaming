@@ -70,7 +70,7 @@ public class videoController {
         }
         */
 
-        models.baggingModel model = new models.baggingModel();
+        models.BaggingModel model = new models.BaggingModel();
         model.setBw(bw);
         model.run();
 
