@@ -26,7 +26,7 @@ public class LRStoGradAscModel extends GenericModel {
                 for (int idI2=idI1+1; idI2 < trainData.size(); idI2++) {
 		    youtubeVideo v1 = dataController.getHmVideo().get(trainData.get(idI1));
 		    youtubeVideo v2 = dataController.getHmVideo().get(trainData.get(idI2));
-		    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1, v2);
+		    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
 		    double innerProd = FeatureController.getInnerProduct(modelParams, X_ij);
                     double exponential = Math.exp(innerProd);
                     exponential = exponential / (1 + exponential);

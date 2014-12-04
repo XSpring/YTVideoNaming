@@ -165,7 +165,7 @@ public class BaggingModel extends GenericModel {
                     youtubeVideo v1 = dataController.getHmVideo().get(item1);
                     youtubeVideo v2 = dataController.getHmVideo().get(item2);
 
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1, v2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
 
                     // Compute the <w, X>
                     Double w = 0.0;

@@ -175,7 +175,8 @@ public class FeatureController {
 	    }
 	}
 	double viewsPerVid = (totalUploaderNumVids!=0) ? ((double)totalUploaderNumVidViews/totalUploaderNumVids) : 0;
-	double likeDislikeRatio = ytVid.getNoOfDislikes()!=0 ? (1.0*ytVid.getNoOfLikes()/ytVid.getNoOfDislikes()) : 0.0;
+	double likeDislikeRatio = ytVid.getNoOfDislikes()!=0 ? (1.0*ytVid.getNoOfLikes()/(ytVid.getNoOfLikes() +
+                                                                ytVid.getNoOfDislikes())) : 0.0;
 	X_i.getHmNumericFeatures().put(0, 1.0);
 	X_i.getHmNumericFeatures().put(1, Math.log(likeDislikeRatio));
 	X_i.getHmNumericFeatures().put(2,(double)ytVid.getVideoLengthInSeconds());
@@ -225,7 +226,7 @@ public class FeatureController {
 	*/
 
 	// 1.3 Video Length In Seconds
-	X_ij.getHmNumericFeatures().put(3, 1.0 * ytVid1.getVideoLengthInSeconds() / ytVid2.getVideoLengthInSeconds());
+	//X_ij.getHmNumericFeatures().put(3, 1.0 * ytVid1.getVideoLengthInSeconds() / ytVid2.getVideoLengthInSeconds());
 
 	// 2. Bag of Words (from Title only)
 	String[] titleArr = ytVid1.getTitle().split(",");
@@ -247,7 +248,7 @@ public class FeatureController {
 	    X_ij.getHmBoWFeatures().put(str, tf);
 	}
 	int titleLength2 = titleArr.length;
-	X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
+	//X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
 	// 3. Category
 	/*
@@ -265,17 +266,23 @@ public class FeatureController {
 	*/
 
 	// 4. Uploader ID
+    java.util.Map<String, youtubeUser> userList = dataController.getHmUser();
+
+    youtubeUser uploader1 = userList.get(ytVid1.getChannelID());
+    youtubeUser uploader2 = userList.get(ytVid1.getChannelID());
+
 	Double tf = X_ij.getHmChannelIDFeatures().get(ytVid1.getChannelID());
 	if (tf == null)
 	    tf = 0.0;
 	tf++;
-	X_ij.getHmChannelIDFeatures().put(ytVid1.getChannelID(), tf);
+	//X_ij.getHmChannelIDFeatures().put(ytVid1.getChannelID(), tf);
 	tf = X_ij.getHmChannelIDFeatures().get(ytVid2.getChannelID());
 	if (tf == null)
 	    tf = 0.0;
 	tf--;
-	X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
-	
+	//X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
+
+    //X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());
 	return X_ij;
     }
     
