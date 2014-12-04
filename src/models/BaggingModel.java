@@ -25,12 +25,12 @@ public class BaggingModel extends genericModel {
     }
 
     @Override
-    protected void train() throws Exception {
+    protected void train() {
         // HAS NOT IMPLEMENTED YET
     }
 
     @Override
-    protected void test(boolean onTestData) throws Exception {
+    protected void test(boolean onTestData) {
         // HAS NOT IMPLEMENTED YET
     }
 
@@ -74,7 +74,7 @@ public class BaggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-                        genericModel model = new LRStoGradAscModel(train, null);
+                        genericModel model = new LRStoGradAscModel();
                         //genericModel model = new LRAdaGradModel();
                         model.setBw(bw);
                         model.train();
@@ -198,8 +198,8 @@ public class BaggingModel extends genericModel {
                 }
 
                 //System.out.println("Stop");
-                if ((dataController.getHmVideo().get(item1).getRatioOfLikeDislike() -
-                        dataController.getHmVideo().get(item2).getRatioOfLikeDislike()) * (label_1 - label_0) >= 0.0) {
+                if ((dataController.getHmVideo().get(item1).getViewCount() -
+                        dataController.getHmVideo().get(item2).getViewCount()) * (label_1 - label_0) >= 0.0) {
                     correct++;
                 }
 

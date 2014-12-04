@@ -34,7 +34,9 @@ public abstract class genericModel {
 	if (!whereSaveModel.isEmpty())
 	    outputModelParams(whereSaveModel);
     }
-    
+
+    public FeatureController getModelParams() { return modelParams;}
+
     public void setBw(BufferedWriter bw) {
         this.bw = bw;
     }
