@@ -20,60 +20,74 @@ public class DirectGradDescModel extends genericModel {
         this.trainData = trainData;
         this.testData = testData;
         modelParams = new FeatureController();
-	System.out.println("Training...");
-	train();
-	System.out.println("Testing and saving params...");
-	test(false);
-	test(true);
-	if (!whereSaveModel.isEmpty())
-	    output(whereSaveModel);
+
+	    System.out.println("Training...");
+	    train();
+
+        System.out.println("Testing and saving params...");
+	    test(false);
+
+        test(true);
+
+        if (!whereSaveModel.isEmpty())
+	        output(whereSaveModel);
     }
 
     @Override
     void train() {//throws Exception {
         for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {
             FeatureController gradient = new FeatureController();
-	    //update the gradient, one data point at a time
+
+	        //update the gradient, one data point at a time
             for (int idI1=0; idI1 < trainData.size(); idI1++) {
-		objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(trainData.get(idI1));
-		FeatureController datapoint = getFeatureController(ytVid);
+		        objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(trainData.get(idI1));
 
-		// Compute the inner product of modelParams and datapoint
-		double innerProd = 0.0;
-		for (Integer idF:datapoint.getHmNumericFeatures().keySet())
-		    innerProd += modelParams.getOrInitFeature(0, idF) * datapoint.getOrInitFeature(0, idF);
-		for (int featureType=1; featureType<4; featureType++) {
-		    for (String key:datapoint.getStringFeatures(featureType).keySet())
-			innerProd += modelParams.getOrInitFeature(featureType, key) * datapoint.getOrInitFeature(featureType, key);
-		}
-		double diffrence = innerProd - ytVid.getViewCount();
+                FeatureController datapoint = getFeatureController(ytVid);
 
-		// Update the gradient
-		for (Integer idF:datapoint.getHmNumericFeatures().keySet()) {
-		    double g_feat = gradient.getOrInitFeature(0, idF);
-		    g_feat += datapoint.getOrInitFeature(0, idF) * diffrence;
-		    gradient.setFeature(0, idF, g_feat);
-		}
-		for (int featureType=1; featureType<4; featureType++) {
-		    for (String key:datapoint.getStringFeatures(featureType).keySet()) {
-			double g_feat = gradient.getOrInitFeature(featureType, key);
-			g_feat += datapoint.getOrInitFeature(featureType, key) * diffrence;
-			gradient.setFeature(featureType, key, g_feat);
-		    }
-		}
-	    }
+		        // Compute the inner product of modelParams and datapoint
+		        double innerProd = 0.0;
+
+                for (Integer idF:datapoint.getHmNumericFeatures().keySet())
+		            innerProd += modelParams.getOrInitFeature(0, idF) * datapoint.getOrInitFeature(0, idF);
+
+                for (int featureType=1; featureType<4; featureType++) {
+		            for (String key:datapoint.getStringFeatures(featureType).keySet())
+			        innerProd += modelParams.getOrInitFeature(featureType, key) * datapoint.getOrInitFeature(featureType, key);
+		        }
+
+                double difference = innerProd - ytVid.getViewCount();
+
+		        // Update the gradient
+		        for (Integer idF:datapoint.getHmNumericFeatures().keySet()) {
+		            double g_feat = gradient.getOrInitFeature(0, idF);
+		            g_feat += datapoint.getOrInitFeature(0, idF) * difference;
+		            gradient.setFeature(0, idF, g_feat);
+		        }
+
+                for (int featureType=1; featureType<4; featureType++) {
+		            for (String key:datapoint.getStringFeatures(featureType).keySet()) {
+			            double g_feat = gradient.getOrInitFeature(featureType, key);
+			            g_feat += datapoint.getOrInitFeature(featureType, key) * difference;
+			            gradient.setFeature(featureType, key, g_feat);
+		            }
+		        }
+	        }
 
             // Update the parameters
             double w_feat = 0.0;
             for (Integer idF:modelParams.getHmNumericFeatures().keySet()) {
                 w_feat = modelParams.getOrInitFeature(0, idF);
-                w_feat += Configuration.getInstance().getEta() * gradient.getOrInitFeature(0, idF);
+                w_feat -= Configuration.getInstance().getEta() * ( gradient.getOrInitFeature(0, idF) +
+                            Configuration.getInstance().getLambda()*w_feat // Regularization
+                        );
                 modelParams.setFeature(0, idF, w_feat);
             }
             for (int featureType=1; featureType<4; featureType++) {
                 for (String key:modelParams.getStringFeatures(featureType).keySet()) {
                     w_feat = modelParams.getOrInitFeature(featureType, key);
-                    w_feat += Configuration.getInstance().getEta() * gradient.getOrInitFeature(featureType, key);
+                    w_feat -= Configuration.getInstance().getEta() * ( gradient.getOrInitFeature(featureType, key) +
+                            Configuration.getInstance().getLambda()*w_feat // Regularization
+                        );
                     modelParams.setFeature(featureType, key, w_feat);
                 }
             }
