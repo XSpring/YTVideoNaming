@@ -15,7 +15,10 @@ import java.util.List;
 public class DirectGradDescModel extends genericModel {
     @Override
     protected void train() {//throws Exception {
-        for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {
+	int numIterations = 500;    //Configuration.getInstance().getNoOfIterations();
+	double eta = 0.01;	    //Configuration.getInstance().getEta();
+	double lamda = 0.01;	    //Configuration.getInstance().getLambda();;
+        for (int iteration = 0; iteration < numIterations; iteration++) {
             FeatureController gradient = new FeatureController();
             for (int idI1=0; idI1 < trainData.size(); idI1++) {
 		objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(trainData.get(idI1));
@@ -24,9 +27,11 @@ public class DirectGradDescModel extends genericModel {
 		double diffrence = prediction - ytVid.getViewCount();
 		gradient.addWithScaling(datapoint, diffrence);
 	    }
+	    modelParams.addWithScaling(gradient, -1.0 * eta / trainData.size());
+	    //output for debug
 	    double gradientMag = Math.sqrt(FeatureController.getInnerProduct(gradient, gradient));
-	    System.out.println("Gradient mag: " + gradientMag);
-            modelParams.addWithScaling(gradient, -1 * Configuration.getInstance().getEta());
+	    double errSq = this.getErrSq(getPredictions(trainData), trainData);
+	    System.out.println("Iter: " + iteration + "; ErrSq: " + errSq + "; Gradient mag: " + gradientMag);
         }
     }
 

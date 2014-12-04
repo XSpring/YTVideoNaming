@@ -11,7 +11,6 @@ import utilities.Configuration;
  * @author Loc Do
  */
 public class LRStoGradAscModel extends genericModel {
-
     @Override
     protected void train() {
         for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {

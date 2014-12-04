@@ -117,16 +117,11 @@ public class FeatureController {
     }
     
     public void addWithScaling(FeatureController f2, double scale) {
-	for (Integer k:f2.getHmNumericFeatures().keySet()) {
-	    double feat = this.getOrInitFeature(0, k);
-	    feat += f2.getOrInitFeature(0, k) * scale;
-	    this.setFeature(0, k, feat);
-	}
-	for (int featureType=1; featureType<4; featureType++) {
-	    for (String k:f2.getStringFeatures(featureType).keySet()) {
-		double feat = this.getOrInitFeature(0, k);
-		feat += f2.getOrInitFeature(0, k) * scale;
-		this.setFeature(0, k, feat);
+	for (int featureType=0; featureType<4; featureType++) {
+	    for (Object k: (featureType==0 ? f2.getNumericFeatures() : f2.getStringFeatures(featureType)).keySet()) {
+		double feat = this.getOrInitFeature(featureType, k);
+		double toAdd = f2.getOrInitFeature(featureType, k) * scale;
+		this.setFeature(featureType, k, feat + toAdd);
 	    }
 	}
     }
@@ -178,8 +173,9 @@ public class FeatureController {
 	    }
 	}
 	double viewsPerVid = (totalUploaderNumVids!=0) ? ((double)totalUploaderNumVidViews/totalUploaderNumVids) : 0;
+	double likeDislikeRatio = ytVid.getNoOfDislikes()!=0 ? (1.0*ytVid.getNoOfLikes()/ytVid.getNoOfDislikes()) : 0.0;
 	X_i.getHmNumericFeatures().put(0, 1.0);
-	X_i.getHmNumericFeatures().put(1, 1.0 * ytVid.getNoOfLikes() / ytVid.getNoOfDislikes());
+	X_i.getHmNumericFeatures().put(1, Math.log(likeDislikeRatio));
 	X_i.getHmNumericFeatures().put(2,(double)ytVid.getVideoLengthInSeconds());
 	X_i.getHmNumericFeatures().put(3,(double)ytVid.getHowLongAgoUploaded());
 	X_i.getHmNumericFeatures().put(4,(double)uploader.getSubscriberCount());
