@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0b24814-d444-4b83-b094-a31b4559b4e9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/BaggingModel.java" afterPath="$PROJECT_DIR$/src/models/BaggingModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" afterPath="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/genericModel.java" afterPath="$PROJECT_DIR$/src/models/genericModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" afterPath="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LRSGA_All_Bagging_Test.txt" />
     </list>
     <ignored path="YTVideoNaming.iws" />
     <ignored path=".idea/workspace.xml" />
