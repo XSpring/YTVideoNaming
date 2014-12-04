@@ -40,6 +40,7 @@ public class Configuration {
     private int maxAge;
     private int minSize;
     private int maxSize;
+    private int labelType;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -61,6 +62,7 @@ public class Configuration {
         minSize = 20;
         maxAge = 100000;
         maxSize = 100;
+        labelType = 1;
     }
 
     public double getLambda() { return lambda;}
@@ -141,5 +143,13 @@ public class Configuration {
 
     public int getMaxSize() {
         return maxSize;
+    }
+
+    public int getLabelType() {
+        return labelType;
+    }
+
+    public void setLabelType(int labelType) {
+        this.labelType = labelType;
     }
 }
