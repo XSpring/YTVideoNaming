@@ -248,7 +248,7 @@ public class FeatureController {
 	    X_ij.getHmBoWFeatures().put(str, tf);
 	}
 	int titleLength2 = titleArr.length;
-	X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
+	//X_ij.getHmNumericFeatures().put(4, 1.0 * titleLength1 / titleLength2);
 
 	// 3. Category
 	/*
@@ -282,7 +282,7 @@ public class FeatureController {
 	tf--;
 	//X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
 
-    X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());
+    //X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());
 	return X_ij;
     }
     
