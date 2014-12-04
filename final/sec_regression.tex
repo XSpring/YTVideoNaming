@@ -19,9 +19,14 @@ A = [X_1 ... X_n]^T, Y = [Y_1 ... Y_n]^T
   
 We can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
 \begin{equation}
-\beta^{t+1} = \beta_t - \eta A^T (A \beta^t - Y)
+\beta^{t+1} = \beta^t - \eta A^T (A \beta^t - Y)
 \end{equation}
  
+Since our context is a bad conditioning problem, we opt Stochastic Gradient Descent with Regularization. The new update function
+	\begin{equation}
+		\beta^{t+1} = \beta^t - \eta (x_i (x_i\beta^t - Y_i) + \beta^t)
+	\end{equation}
+
 After the learning stage is complete, the predicted ranking can be done as follows
 \begin{equation}
 \hat{Y}_{uv} = \mathbb{I}(\beta X_u > \beta X_v),
