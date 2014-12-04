@@ -256,6 +256,7 @@ public class youtubeUser {
     /* Serialization methods */
     public void serializeMinimal(java.io.BufferedWriter os) throws java.io.IOException {
 	    os.write(this.key + ";");
+	    os.write("" + this.getSubscriberCount()+ ";");
 	    os.write("" + this.getViewCount() + ";");
 	    for (String uploadedVid : this.getUploads())
 	        os.write(uploadedVid + ",");
@@ -267,8 +268,9 @@ public class youtubeUser {
 	    String[] pieces = is.readLine().split(";");
 	    user.setKey(pieces[0]);
 	    user.setViewCount(Long.parseLong(pieces[1]));
+	    user.setViewCount(Long.parseLong(pieces[2]));
 	    java.util.ArrayList<String> uploadedVids = new java.util.ArrayList<String>();
-	    uploadedVids.addAll(Arrays.asList(pieces).subList(2, pieces.length));
+	    uploadedVids.addAll(Arrays.asList(pieces).subList(3, pieces.length));
 	    user.setUploads(uploadedVids);
 	    return user;
 	} catch (java.lang.NullPointerException e) {

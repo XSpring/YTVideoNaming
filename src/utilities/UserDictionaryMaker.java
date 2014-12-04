@@ -19,8 +19,8 @@ public class UserDictionaryMaker {
 	    //old version
 		//runUserDictionaryMaker(videoFolder, outputFileName);
 	    //new version
-		runGetSubscribers_oneAtATime(videoFolder);
-//		runUserDictionaryMaker_oneAtATime(videoFolder, subscribersFileName, outputFileName);
+//		runGetSubscribers_oneAtATime(videoFolder);
+		runUserDictionaryMaker_oneAtATime(videoFolder, subscribersFileName, outputFileName);
 	} catch (java.io.IOException e) {
 	    System.err.println("Could not run UserDictionaryMaker: ");
 	    e.printStackTrace();

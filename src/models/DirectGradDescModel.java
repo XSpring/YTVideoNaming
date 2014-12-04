@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DirectGradDescModel extends GenericModel {
     @Override
-    protected void train() {//throws Exception {
+    protected void train() {
 	java.util.Random rand = new java.util.Random();
 	int numIterations = 150;    //Configuration.getInstance().getNoOfIterations();
 	double eta = 0.00000001;	    //Configuration.getInstance().getEta();
@@ -47,7 +47,7 @@ public class DirectGradDescModel extends GenericModel {
     }
 
     @Override
-    protected void test(boolean onTestData) {//throws Exception {
+    protected void test(boolean onTestData) {
 	List<Object> data = onTestData ? testData : trainData;
 	java.util.List<Double> predictions = getPredictions(data);
 	double sqrtErrSq = getErrSq(predictions, data);
