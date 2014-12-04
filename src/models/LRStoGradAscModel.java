@@ -10,7 +10,7 @@ import utilities.Configuration;
  *
  * @author Loc Do
  */
-/*public class LRStoGradAscModel extends genericModel {
+public class LRStoGradAscModel extends GenericModel {
     @Override
     protected void train() {
         for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {
@@ -26,7 +26,7 @@ import utilities.Configuration;
                     // Update the parameters
                     for (Integer idF:modelParams.getHmNumericFeatures().keySet()) {
                         double w_d = modelParams.getOrInitFeature(0, idF);
-                        if (v1.getRatioOfLikeDislike() > v2.getRatioOfLikeDislike()) {
+                        if (v1.getViewCount() > v2.getViewCount()) {
                             w_d += Configuration.getInstance().getEta() * // learning rate
                                     X_ij.getOrInitFeature(0, idF) * (- exponential) // gradient
                                     - Configuration.getInstance().getLambda() * w_d; // regularization
@@ -40,7 +40,7 @@ import utilities.Configuration;
                     for (int featureType=1; featureType<4; featureType++) {
                         for (String key:modelParams.getStringFeatures(featureType).keySet()) {
                             double w_d = modelParams.getOrInitFeature(featureType, key);
-                            if (v1.getRatioOfLikeDislike() > v2.getRatioOfLikeDislike()) {
+                            if (v1.getViewCount() > v2.getViewCount()) {
                                 w_d += Configuration.getInstance().getEta() * // learning rate
                                        X_ij.getOrInitFeature(featureType, key) * (- exponential)
                                        - Configuration.getInstance().getLambda() * w_d;
@@ -62,4 +62,3 @@ import utilities.Configuration;
         // HAS NOT IMPLEMENTED YET
     }
 }
-*/

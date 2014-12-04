@@ -18,6 +18,15 @@ import java.util.List;
  * @author Loc Do
  */
 /*public class BaggingModel extends GenericModel {
+=======
+public class BaggingModel extends genericModel {
+
+    @Override
+    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
+        // HAS NOT IMPLEMENTED YET
+    }
+
+>>>>>>> 8dd14b02338302b43a8577afa8bb32bff77eea75:src/models/BaggingModel.java
     @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
@@ -28,7 +37,6 @@ import java.util.List;
         // HAS NOT IMPLEMENTED YET
     }
 
-    //NOTE: this does NOT override the "run" method of genericModel, which has different parameters
     public void run() throws Exception {
         HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
 
@@ -69,13 +77,19 @@ import java.util.List;
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
+<<<<<<< HEAD:src/models/baggingModel.java
                         GenericModel model = new LRStoGradAscModel();
 			model.trainData = train;
 			model.modelParams = new FeatureController();
 			model.setBw(bw);
+=======
+                        genericModel model = new LRStoGradAscModel();
+                        //genericModel model = new LRAdaGradModel();
+                        model.setBw(bw);
+>>>>>>> 8dd14b02338302b43a8577afa8bb32bff77eea75:src/models/BaggingModel.java
                         model.train();
 
-                        ensemble.put(age, model.modelParams);
+                        ensemble.put(age, model.getModelParams());
                     }
                     //System.out.println(age + "\t" + hmVideoBins.get(age).size());
                     //if (count==1) break;
@@ -123,12 +137,13 @@ import java.util.List;
         }
     }
 
-    //NOTE: this does NOT override the "test" method of genericModel, which has different parameters
     public double test(HashMap<Long, FeatureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
         Object[] arr = testData.toArray();
 
         int correct = 0;
         int count = 0;
+
+        int labelType = Configuration.getInstance().getLabelType();
 
         // For all pairs (i, j) such that views_i > views_j
         for (int idI1=0; idI1 < arr.length-1; idI1++)
