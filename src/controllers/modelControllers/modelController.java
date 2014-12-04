@@ -1,9 +1,7 @@
 package controllers.modelControllers;
 
 import controllers.dataControllers.dataController;
-import models.DirectGradDescModel;
-import models.LRAdaGradModel;
-import models.genericModel;
+import models.*;
 import utilities.Configuration;
 import utilities.CrossValidation;
 
@@ -16,11 +14,8 @@ import java.util.List;
  * @author Loc Do
  */
 public class modelController {
-
     CrossValidation cv = new CrossValidation(Configuration.getInstance().getMaxFold());
-
     BufferedWriter bw = null;
-
     genericModel model = null;
 
     public void loadData(List<String> lstVideos) {
@@ -32,7 +27,6 @@ public class modelController {
     }
 
     public void run(String wherePutModel) throws Exception {
-
         for (int id = 1; id < 6; id++) {
             List<Object> train = cv.getTrainingDataInFold(id);
             List<Object> test = cv.getTestingDataInFold(id);
@@ -54,15 +48,11 @@ public class modelController {
             model.run(train, test, wherePutModel + "_" + id + ".csv");
         }
 
-        bw.write("\n");
+//        bw.write("\n");
         bw.flush();
         System.out.println("Done with training/testing data...");
     }
-
-    public void output(String filename) {
-        model.output(filename);
-    }
-
+    
     public void testDataValidity() {
         System.out.println("Test overlapping between training and testing set at each fold.");
 

@@ -1,6 +1,7 @@
 package controllers.dataControllers;
 
-import models.BaggingModel;
+import models.*;
+import controllers.modelControllers.*;
 import objects.youtubeObjects.youtubeVideo;
 import utilities.Common;
 
@@ -47,7 +48,7 @@ public class videoController {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        FileWriter fw = new FileWriter("LRGA_All_Test_Bagging_1_30.txt");
+        FileWriter fw = new FileWriter("results/LRGA_All_Test_Bagging_1_30.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
         /*
@@ -69,7 +70,7 @@ public class videoController {
         }
         */
 
-        BaggingModel model = new BaggingModel();
+        models.baggingModel model = new models.baggingModel();
         model.setBw(bw);
         model.run();
 

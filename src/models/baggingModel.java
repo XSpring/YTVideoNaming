@@ -19,11 +19,6 @@ import java.util.List;
  */
 public class baggingModel extends genericModel {
     @Override
-    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
-        // HAS NOT IMPLEMENTED YET
-    }
-
-    @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
     }
@@ -33,6 +28,7 @@ public class baggingModel extends genericModel {
         // HAS NOT IMPLEMENTED YET
     }
 
+    //NOTE: this does NOT override the "run" method of genericModel, which has different parameters
     public void run() throws Exception {
         HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
 
@@ -127,13 +123,12 @@ public class baggingModel extends genericModel {
         }
     }
 
+    //NOTE: this does NOT override the "test" method of genericModel, which has different parameters
     public double test(HashMap<Long, FeatureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
         Object[] arr = testData.toArray();
 
         int correct = 0;
         int count = 0;
-
-        int labelType = Configuration.getInstance().getLabelType();
 
         // For all pairs (i, j) such that views_i > views_j
         for (int idI1=0; idI1 < arr.length-1; idI1++)

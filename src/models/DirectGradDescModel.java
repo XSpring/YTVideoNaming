@@ -37,17 +37,8 @@ public class DirectGradDescModel extends genericModel {
 	double sqrtErrSq = getErrSq(predictions, data);
 	long correct = getNumCorrect(predictions, data);
 	long count = predictions.size() * predictions.size() / 2;
-	try {
-	    youtubeVideo anyVid = dataController.getHmVideo().get(data.get(0));
-	    long bin = anyVid.getHowLongAgoUploaded();
-	    bw.newLine();
-	    bw.write((onTestData ? "testing " : "training") + ",");
-	    bw.write("" + bin + ",");
-	    bw.write("" + sqrtErrSq + ",");
-	    bw.write("" + correct + ",");
-	    bw.write("" + count + ",");
-	    bw.write("" + 1.0*correct/count);
-	} catch (java.io.IOException e) { }
+	long bin = dataController.getHmVideo().get(data.get(0)).getHowLongAgoUploaded();
+	outputResultsLine(onTestData, bin, sqrtErrSq, correct, count);
     }
     
     public java.util.List<Double> getPredictions(java.util.List<Object> vids) {

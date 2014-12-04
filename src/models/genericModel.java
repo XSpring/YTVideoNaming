@@ -42,4 +42,16 @@ public abstract class genericModel {
     protected void outputModelParams(String filename) {
 	modelParams.output(filename);
     }
+    
+    protected void outputResultsLine(boolean onTestData, long bin, double sqrtErrSq, long correct, long count) {
+	try {
+	    bw.newLine();
+	    bw.write((onTestData ? "testing " : "training") + ",");
+	    bw.write("" + bin + ",");
+	    bw.write("" + sqrtErrSq + ",");
+	    bw.write("" + correct + ",");
+	    bw.write("" + count + ",");
+	    bw.write("" + 1.0*correct/count);
+	} catch (java.io.IOException e) { }
+    }
 }

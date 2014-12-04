@@ -55,17 +55,9 @@ public class LRGradDescModel extends genericModel {
 	    }
 	}
         //output the results
-	try {
-	    youtubeVideo anyVid = dataController.getHmVideo().get(data.get(0));
-	    long bin = anyVid.getHowLongAgoUploaded();
-	    bw.newLine();
-	    bw.write((onTestData ? "testing " : "training") + ",");
-	    bw.write("" + bin + ",");
-	    bw.write(",");
-	    bw.write("" + correct + ",");
-	    bw.write("" + count + ",");
-	    bw.write("" + 1.0*correct/count);
-	} catch (java.io.IOException e) { }
+	long bin = dataController.getHmVideo().get(data.get(0)).getHowLongAgoUploaded();
+	double sqrtErrSq = 0.0;	    //making something up; that field doesn't matter here
+	outputResultsLine(onTestData, bin, sqrtErrSq, correct, count);
     }
     
     private boolean predictIsFirstArgMorePopular(youtubeVideo v1, youtubeVideo v2) {
