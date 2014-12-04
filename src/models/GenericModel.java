@@ -13,7 +13,7 @@ import java.util.List;
  * @author Loc Do
  */
 
-public abstract class genericModel {
+public abstract class GenericModel {
     protected List<Object> trainData = null;
     protected List<Object> testData = null;
     protected BufferedWriter bw = null;

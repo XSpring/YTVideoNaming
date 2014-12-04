@@ -15,7 +15,7 @@ import java.util.List;
  * Logistic Regression using Gradient Descent
  */
 
-public class LRGradDescModel extends genericModel {
+public class LRGradDescModel extends GenericModel {
     @Override
     protected void train() {
         for (int iteration = 0; iteration < Configuration.getInstance().getNoOfIterations(); iteration++) {

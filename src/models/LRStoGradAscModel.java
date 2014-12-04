@@ -12,7 +12,8 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class LRStoGradAscModel extends genericModel {
+
+public class LRStoGradAscModel extends GenericModel {
 
     public LRStoGradAscModel(List<Object> trainData, List<Object> testData) {
         super(trainData, testData);

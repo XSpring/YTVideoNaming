@@ -17,7 +17,9 @@ import java.util.List;
  *
  * @author Loc Do
  */
-public class BaggingModel extends genericModel {
+
+public class BaggingModel extends GenericModel {
+
 
     public BaggingModel() {
 
@@ -77,9 +79,11 @@ public class BaggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-                        genericModel model = new LRStoGradAscModel(train, null);
-                        //genericModel model = new LRAdaGradModel();
-                        model.setBw(bw);
+
+                        GenericModel model = new LRStoGradAscModel(train, null);
+            			model.trainData = train;
+			            model.modelParams = new FeatureController();
+			            model.setBw(bw);
                         model.train();
 
                         ensemble.put(age, model.getModelParams());
