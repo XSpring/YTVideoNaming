@@ -22,6 +22,14 @@ public abstract class GenericModel {
     protected abstract void train();
     protected abstract void test(boolean onTestData);
 
+    public GenericModel() {modelParams = new FeatureController();}
+
+    public GenericModel(List<Object> trainData, List<Object> testData) {
+        this.trainData = trainData;
+        this.testData = testData;
+        modelParams = new FeatureController();
+    }
+
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         this.trainData = trainData;
         this.testData = testData;

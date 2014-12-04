@@ -17,16 +17,18 @@ import java.util.List;
  *
  * @author Loc Do
  */
-/*public class BaggingModel extends GenericModel {
-=======
-public class BaggingModel extends genericModel {
 
+public class BaggingModel extends GenericModel {
+
+
+    public BaggingModel() {
+
+    }
     @Override
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // HAS NOT IMPLEMENTED YET
     }
 
->>>>>>> 8dd14b02338302b43a8577afa8bb32bff77eea75:src/models/BaggingModel.java
     @Override
     protected void train() {
         // HAS NOT IMPLEMENTED YET
@@ -77,16 +79,11 @@ public class BaggingModel extends genericModel {
                         List<Object> train = cv.getTrainingDataInFold(fold);
                         //List<Object> test = cv.getTestingDataInFold(fold);
 
-<<<<<<< HEAD:src/models/baggingModel.java
-                        GenericModel model = new LRStoGradAscModel();
-			model.trainData = train;
-			model.modelParams = new FeatureController();
-			model.setBw(bw);
-=======
-                        genericModel model = new LRStoGradAscModel();
-                        //genericModel model = new LRAdaGradModel();
-                        model.setBw(bw);
->>>>>>> 8dd14b02338302b43a8577afa8bb32bff77eea75:src/models/BaggingModel.java
+
+                        GenericModel model = new LRStoGradAscModel(train, null);
+            			model.trainData = train;
+			            model.modelParams = new FeatureController();
+			            model.setBw(bw);
                         model.train();
 
                         ensemble.put(age, model.getModelParams());
@@ -168,7 +165,7 @@ public class BaggingModel extends genericModel {
                     youtubeVideo v1 = dataController.getHmVideo().get(item1);
                     youtubeVideo v2 = dataController.getHmVideo().get(item2);
 
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_1(v1, v2);
 
                     // Compute the <w, X>
                     Double w = 0.0;
@@ -221,4 +218,3 @@ public class BaggingModel extends genericModel {
         return errorRatio;
     }
 }
-*/
