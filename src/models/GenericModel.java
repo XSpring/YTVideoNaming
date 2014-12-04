@@ -59,9 +59,16 @@ public abstract class GenericModel {
 	    bw.write((onTestData ? "testing " : "training") + ",");
 	    bw.write("" + bin + ",");
 	    bw.write("" + sqrtErrSq + ",");
+	    bw.write("" + 1.0*correct/count + ",");
 	    bw.write("" + correct + ",");
-	    bw.write("" + count + ",");
-	    bw.write("" + 1.0*correct/count);
+	    bw.write("" + count);
 	} catch (java.io.IOException e) { }
+    }
+    
+    private long avgDataSize(List<Object> data) {
+	long total = 0;
+	for (int i=0; i < data.size(); i++)
+	    total += dataController.getHmVideo().get(data.get(i)).getNoOfLikes();
+	return total / data.size();
     }
 }

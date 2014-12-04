@@ -112,8 +112,7 @@ public class UserDictionaryMaker {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
 		System.out.println("Making users for " + file.getName());
 		int counter = 0;
-        br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()));
-
+		br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()));
 		    while (true) {
 			youtubeVideo vid = youtubeVideo.deserializeMinimal(br);
 			if (vid == null) {
