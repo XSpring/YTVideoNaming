@@ -20,7 +20,7 @@ public class mainController {
         //String videoFolder = "youtube";
         try {
             dataController.run(videoFolder);
-            videoController.run();
+            //videoController.run();
         } catch (java.io.IOException e) {
             System.err.println("Could not run UserDictionaryMaker: ");
             e.printStackTrace();

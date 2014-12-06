@@ -19,6 +19,21 @@ public class dataController {
         //hmVideo  = readDataFromCSV(videoFolder);    //old version for YTVideos folder (includes comments)
         hmVideo  = utilities.DatafileGrabber.readMapOfVideos(videoFolder); //new version for data_all folder (comments excluded)
         hmUser = utilities.DatafileGrabber.readMapOfUsers(videoFolder + "/userMapSave.txt");
+
+        long min = 10000, max = 0;
+        for (String uID:hmUser.keySet()) {
+            youtubeUser user = hmUser.get(uID);
+            System.out.println(user.getSubscriberCount());
+            if (user.getSubscriberCount()>0) {
+                if (user.getSubscriberCount()>max)
+                    max = user.getSubscriberCount();
+
+                if (user.getSubscriberCount()<min)
+                    min = user.getSubscriberCount();
+            }
+        }
+
+        System.out.println(min+" "+max);
     }
 
     public static HashMap<String, youtubeVideo> getHmVideo() {
