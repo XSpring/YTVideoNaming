@@ -19,8 +19,8 @@ public class UserDictionaryMaker {
 	    //old version
 		//runUserDictionaryMaker(videoFolder, outputFileName);
 	    //new version
-		runGetSubscribers_oneAtATime(videoFolder);
-//		runUserDictionaryMaker_oneAtATime(videoFolder, subscribersFileName, outputFileName);
+//		runGetSubscribers_oneAtATime(videoFolder);
+		runUserDictionaryMaker_oneAtATime(videoFolder, subscribersFileName, outputFileName);
 	} catch (java.io.IOException e) {
 	    System.err.println("Could not run UserDictionaryMaker: ");
 	    e.printStackTrace();
@@ -112,8 +112,7 @@ public class UserDictionaryMaker {
 	    if (! file.isDirectory() && file.getName().indexOf(".csv") == file.getName().length()-4) {
 		System.out.println("Making users for " + file.getName());
 		int counter = 0;
-        br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()));
-
+		br = new java.io.BufferedReader(new java.io.FileReader(file.getAbsolutePath()));
 		    while (true) {
 			youtubeVideo vid = youtubeVideo.deserializeMinimal(br);
 			if (vid == null) {

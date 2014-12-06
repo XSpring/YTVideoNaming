@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Loc Do
  */
-
+/*
 public class BaggingModel extends GenericModel {
 
 
@@ -218,3 +218,4 @@ public class BaggingModel extends GenericModel {
         return errorRatio;
     }
 }
+*/

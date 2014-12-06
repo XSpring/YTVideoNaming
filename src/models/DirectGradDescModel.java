@@ -14,32 +14,31 @@ import java.util.List;
 
 public class DirectGradDescModel extends GenericModel {
     @Override
-    protected void train() {//throws Exception {
+    protected void train() {
 	java.util.Random rand = new java.util.Random();
-	int numIterations = 10;    //Configuration.getInstance().getNoOfIterations();
-	double eta = 0.01;	    //Configuration.getInstance().getEta();
+	int numIterations = 150;    //Configuration.getInstance().getNoOfIterations();
+	double eta = 0.00000001;	    //Configuration.getInstance().getEta();
 	double lambda = 0.005;	    //Configuration.getInstance().getLambda();;
         for (int iteration = 0; iteration < numIterations; iteration++) {
             FeatureController gradient = new FeatureController();
-
+	    java.util.Collections.shuffle(trainData, rand);
             for (int idI1=0; idI1 < trainData.size(); idI1++) {
-	            idI1 = rand.nextInt(trainData.size());
-
+		gradient = new FeatureController();
+//	            idI1 = rand.nextInt(trainData.size());  //used for a quick, cheap stotastic gradient descent
                 objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(trainData.get(idI1));
-
                 FeatureController datapoint = FeatureController.getFeatureControllerFromVid_1(ytVid);
-
                 double prediction = FeatureController.getInnerProduct(datapoint, modelParams);
-
-                double difference = prediction - ytVid.getViewCount();
-
-		        gradient.addWithScaling(datapoint, difference);
-
+                double difference = prediction - Math.log10(ytVid.getViewCount());
+		gradient.addWithScaling(datapoint, difference);
                 modelParams.addWithScaling(modelParams, -1.0 * eta);
-
                 modelParams.addWithScaling(gradient, -1.0 * eta);
-	        }
-
+//		break;	    //used for a quick, cheap stotastic gradient descent
+		
+		//output for debug
+//		double gradientMag = Math.sqrt(FeatureController.getInnerProduct(gradient, gradient));
+//		double errSq = this.getErrSq(getPredictions(trainData), trainData);
+//		System.out.println("Iter: " + iteration + "; Diff: " + difference + "; ErrSq: " + errSq + "; Gradient mag: " + gradientMag);
+	    }
 	    //output for debug
 	    double gradientMag = Math.sqrt(FeatureController.getInnerProduct(gradient, gradient));
 	    double errSq = this.getErrSq(getPredictions(trainData), trainData);
@@ -48,7 +47,7 @@ public class DirectGradDescModel extends GenericModel {
     }
 
     @Override
-    protected void test(boolean onTestData) {//throws Exception {
+    protected void test(boolean onTestData) {
 	List<Object> data = onTestData ? testData : trainData;
 	java.util.List<Double> predictions = getPredictions(data);
 	double sqrtErrSq = getErrSq(predictions, data);
@@ -56,6 +55,7 @@ public class DirectGradDescModel extends GenericModel {
 	long count = predictions.size() * predictions.size() / 2;
 	long bin = dataController.getHmVideo().get(data.get(0)).getHowLongAgoUploaded();
 	outputResultsLine(onTestData, bin, sqrtErrSq, correct, count);
+//	makeCsvForPlot(predictions, data, "results/DirectGrad_ForAPlot_" + (onTestData?"test":"train") + ".csv");
     }
     
     public java.util.List<Double> getPredictions(java.util.List<Object> vids) {
@@ -73,7 +73,7 @@ public class DirectGradDescModel extends GenericModel {
         int count = 0;
         for (int i=0; i < data.size(); i++) {
 	    double prediction = predictions.get(i);
-	    double truth = dataController.getHmVideo().get(data.get(i)).getNoOfLikes();
+	    double truth = Math.log10(dataController.getHmVideo().get(data.get(i)).getViewCount());
 	    double diffrence = prediction - truth;
 	    errSq += diffrence*diffrence;
 	    count++;
@@ -96,10 +96,23 @@ public class DirectGradDescModel extends GenericModel {
 	return correct;
     }
     
-    private long avgDataSize(List<Object> data) {
-	long total = 0;
-	for (int i=0; i < data.size(); i++)
-	    total += dataController.getHmVideo().get(data.get(i)).getNoOfLikes();
-	return total / data.size();
+    private void makeCsvForPlot(java.util.List<Double> predictions, List<Object> data, String filename) {
+	java.io.FileWriter fw = null;
+	java.io.BufferedWriter bw = null;
+	try {
+	    fw = new java.io.FileWriter(filename);
+	    bw = new java.io.BufferedWriter(fw);
+	    for (int i=0; i < data.size(); i++) {
+		double prediction = predictions.get(i);
+		double truth = Math.log10(dataController.getHmVideo().get(data.get(i)).getViewCount());
+		bw.write(truth + "," + prediction);
+		bw.newLine();
+	    }
+	} catch (java.io.IOException e) {
+	    //nothing
+	} finally {
+	    if (bw != null) try { bw.close(); } catch (java.io.IOException e) {}
+	    if (fw != null) try { fw.close(); } catch (java.io.IOException e) {}
+	}
     }
 }

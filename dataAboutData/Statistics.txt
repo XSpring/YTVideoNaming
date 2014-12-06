@@ -1,0 +1,20 @@
+Number of statistics:
+No of uploader: 146655
+No of videos: 335373
+Range of views: (1 , 2107560304)
+Range of likes: (1 , 8647905)
+Range of dislikes: (1 , 0)
+No of videos has view counts <=1
+No of videos has view counts <=10
+No of videos has view counts <=100
+No of videos has view counts <=1000
+No of videos has view counts <=10000
+No of videos has view counts <=100000
+No of videos has view counts <=1000000
+No of videos has view counts <=10000000
+No of videos has view counts <=100000000
+No of videos has view counts <=1000000000
+No of videos has view counts <=10000000000
+No of videos has view counts <=100000000000
+No of videos has view counts <=1000000000000
+Dictionary size: 129553
