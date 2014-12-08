@@ -1,12 +1,19 @@
-\subsection{Ranking as Logistic Regression}
-We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two video $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
+\section{Ranking by Classication}
+\label{sec:ranking}	
+	Our goal is to construct a prediction rule $f$ that can rank the videos w.r.t. their popularity using their meta-data as feature inputs. Since there are only two outcomes in ranking two videos, we choose to model the output of $f$ as a binary class label. Hence, we can formulate the ranking problem as a binary classification problem as in Section \ref{subsec:probFormulation}. This approach poses two problems. First, it does not take into account the magnitude in the ranking, meaning there is no difference between pairs of videos which are significantly different in their viewerships and pairs which are just slightly different. We address this problem by borrowing ideas of re-weighted training set from the Boosting technique in Section \ref{subsec:ext1}. Second, video viewership also depends on the video's "age", i.e. number of days passed since it was uploaded to YouTube to the day it was crawled. It is comparable to rank popularity of a video uploaded years ago with recent ones. Therefore, we bin videos according to their "age", and learn a distinct classifier $f$ for each group. We also construct an ensemble of these time-specific classifiers in order to enhance the overall predictive performance. All are described in Section \ref{subsec:ext2}.
+
+\subsection{Problem Formulation}
+\label{subsec:probFormulation}
+We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two videos $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
 \begin{equation}
 	Y_{ij} = \begin{cases}
 			   1, & \text{if } \text{\#\_of\_views\_i} \geq \text{\#\_of\_views\_j} \\
 			   0, & \text{otherwise}
 			\end{cases} 
+	\label{eqn:binaryLabel}			
 \end{equation}	
- We can form a representative vector of the pair $(i, j)$ as follows
+
+We can form a representative vector of the pair $(i, j)$ as follows
 \begin{equation}
 	\mathcal{X}_{ij} = k (X_i, X_j),
 \end{equation}
@@ -36,3 +43,26 @@ We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient
 \begin{equation}
 w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
 \end{equation}
+
+\subsection{Extension 1: Re-weighting the features}
+\label{subsec:ext1}
+By definition in Equation \ref{eqn:binaryLabel}, $Y_{ij}$ can only capture which video has more viewerships, but not how much their viewerships differ. Hence, the classifier $f$ cannot weight correctly important features in determining video's popularity. Assume that we have three YouTube videos $v_1$, $v_2$ and $v_3$, each attracted $1000$, $10$ and $1$ views after one day since they were uploaded to the web. Also assume that we only use bag-of-word features and there are five words in our dictionary $\{w_1, w_2, w_3, w_4, w_5\}$.The following table contains all necessary information for this example.
+
+	\begin{center}
+		\begin{tabular}{| l | c | c | c |}
+    			\hline
+			Video & Title & Number of views & Bag of word features \\ \hline
+			$v_1$ & $\{w_1, w_2, w_3\}$ &	1000 & $\{1, 1, 1, 0 ,0 \}$	\\ \hline
+			$v_2$ & $\{w_2, w_3, w_4\}$ & 10 & $\{0, 1, 1, 1 ,0 \}$	\\ \hline
+			$v_3$ & $\{w_3, w_4, w_5\}$ & 1 & $\{0, 0, 1, 1 ,1 \}$	\\ \hline
+		\end{tabular}
+	\end{center}
+
+As the above scheme in Section \ref{subsec:probFormulation}, we can represent the pair $(v_1, v_2)$ and $(v_2, v_3)$ with feature vectors $\mathcal{X}_{12}=\{1, 0, 0, -1, 0\}$ and $\mathcal{X}_{23}=\{0, 1, 0, 0 , -1 \}$. When training a classifier $f$ on these two vectors with both $Y_{12}$ and $Y_{23}$ equal to $1$, we can see no differences between the weights on feature $w_1$ and $w_2$, $w_4$ and $w_5$. Hence, $f$ cannot correctly rank a pair of videos with titles of $\{w_1, w_4\}$ and $\{w_2, w_5\}$ correspondingly.
+
+This problem can be addressed by 
+
+\subsection{Extension 2: Ensemble of time-specific classifiers}
+\label{subsec:ext2}
+
+

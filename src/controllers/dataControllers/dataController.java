@@ -20,6 +20,7 @@ public class dataController {
         hmVideo  = utilities.DatafileGrabber.readMapOfVideos(videoFolder); //new version for data_all folder (comments excluded)
         hmUser = utilities.DatafileGrabber.readMapOfUsers(videoFolder + "/userMapSave.txt");
 
+        /*
         long min = 10000, max = 0;
         for (String uID:hmUser.keySet()) {
             youtubeUser user = hmUser.get(uID);
@@ -34,6 +35,7 @@ public class dataController {
         }
 
         System.out.println(min+" "+max);
+        */
     }
 
     public static HashMap<String, youtubeVideo> getHmVideo() {

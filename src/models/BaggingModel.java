@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Loc Do
  */
-/*
+
 public class BaggingModel extends GenericModel {
 
 
@@ -81,7 +81,6 @@ public class BaggingModel extends GenericModel {
 
 
                         GenericModel model = new LRStoGradAscModel(train, null);
-            			model.trainData = train;
 			            model.modelParams = new FeatureController();
 			            model.setBw(bw);
                         model.train();
@@ -165,7 +164,7 @@ public class BaggingModel extends GenericModel {
                     youtubeVideo v1 = dataController.getHmVideo().get(item1);
                     youtubeVideo v2 = dataController.getHmVideo().get(item2);
 
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1, v2, 1);
 
                     // Compute the <w, X>
                     Double w = 0.0;
@@ -194,13 +193,13 @@ public class BaggingModel extends GenericModel {
                         System.out.println("Found invalid value of exponential...");
 
                     if ((prob_1 - prob_0) > 0.0)
-                            label_1++;
+                            //label_1++;
                             //label_1 += Math.exp(-Math.abs(age - selectedAge));
-                            //label_1 += 1.0 / (1.0 + Math.abs(age - selectedAge));
+                            label_1 += 1.0 / (1.0 + Math.abs(age - selectedAge));
                         else
-                            label_0++;
+                            //label_0++;
                             //label_0 += Math.exp(-Math.abs(age - selectedAge));
-                            //label_0 += 1.0 / (1.0 + Math.abs(age - selectedAge));
+                            label_0 += 1.0 / (1.0 + Math.abs(age - selectedAge));
                     //}
                 }
 
@@ -218,4 +217,3 @@ public class BaggingModel extends GenericModel {
         return errorRatio;
     }
 }
-*/

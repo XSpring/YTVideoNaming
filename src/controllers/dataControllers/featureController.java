@@ -109,12 +109,17 @@ public class FeatureController {
     
     public static double getInnerProduct(FeatureController f1, FeatureController f2) {
 	double innerProd = 0.0;
-	for (Integer idF:f1.getHmNumericFeatures().keySet())
-	    innerProd += f2.getOrInitFeature(0, idF) * f1.getOrInitFeature(0, idF);
+	for (Integer idF:f1.getHmNumericFeatures().keySet()) {
+        innerProd += f2.getOrInitFeature(0, idF) * f1.getOrInitFeature(0, idF);
+        //System.out.print("("+f1.getOrInitFeature(0, idF)+","+f2.getOrInitFeature(0, idF)+") ");
+    }
 	for (int featureType=1; featureType<4; featureType++) {
-	    for (String key:f1.getStringFeatures(featureType).keySet())
-		innerProd += f2.getOrInitFeature(featureType, key) * f1.getOrInitFeature(featureType, key);
+	    for (String key:f1.getStringFeatures(featureType).keySet()) {
+            innerProd += f2.getOrInitFeature(featureType, key) * f1.getOrInitFeature(featureType, key);
+            //System.out.print("("+f1.getOrInitFeature(featureType, key)+","+f2.getOrInitFeature(featureType, key)+") ");
+        }
 	}
+        //System.out.println();
 	return innerProd;
     }
     
@@ -211,10 +216,34 @@ public class FeatureController {
     }
     
     //made by Loc
-    public static FeatureController getFeatureControllerFromVids_0(youtubeVideo ytVid1, youtubeVideo ytVid2) {
+    public static FeatureController getFeatureControllerFromVids_0(youtubeVideo ytVid1, youtubeVideo ytVid2, int type) {
 	// Create representative feature vector
 	FeatureController X_ij = new FeatureController();
 
+    double scale1 = Math.log(ytVid1.getViewCount());
+    double scale2 = Math.log(ytVid2.getViewCount());
+    double ratio = 1.0;
+
+        if (scale1 > scale2) {
+            scale1 = Math.log(ytVid1.getViewCount()*1.0) / Math.log(ytVid2.getViewCount());
+            scale2 = 1.0; //Math.log(ytVid2.getViewCount()*1.0 / ytVid1.getViewCount()); //1.0;
+            ratio = scale1 / scale2;
+        }
+        else {
+            scale2 = Math.log(ytVid2.getViewCount()*1.0) / Math.log(ytVid1.getViewCount());
+            scale1 = 1.0;
+            ratio = scale2 / scale1;
+        }
+
+        //If it is the testing set, reset the scale since we don't know the viewCount
+        if (type==1) {
+            scale1 = 1.0;
+            scale2 = 1.0;
+            ratio = 1.0;
+        }
+
+        ratio = 1.0;
+    //System.out.println(scale1+" "+scale2+" "+ytVid1.getViewCount()+" "+ytVid2.getViewCount());
 	// 1. Numeric features
 	// 1.0 Intercept weight w_0
 	X_ij.getHmNumericFeatures().put(0, 1.0);
@@ -234,7 +263,7 @@ public class FeatureController {
 	    Double tf = X_ij.getHmBoWFeatures().get(str);
 	    if (tf == null)
 		tf = 0.0;
-	    tf++;
+	    tf+=ratio;
 	    X_ij.getHmBoWFeatures().put(str, tf);
 	}
 	int titleLength1 = titleArr.length;
@@ -244,7 +273,7 @@ public class FeatureController {
 	    Double tf = X_ij.getHmBoWFeatures().get(str);
 	    if (tf == null)
 		tf = 0.0;
-	    tf--;
+	    tf-=ratio;
 	    X_ij.getHmBoWFeatures().put(str, tf);
 	}
 	int titleLength2 = titleArr.length;
@@ -274,12 +303,12 @@ public class FeatureController {
 	Double tf = X_ij.getHmChannelIDFeatures().get(ytVid1.getChannelID());
 	if (tf == null)
 	    tf = 0.0;
-	tf++;
+	tf+=ratio;
 	//X_ij.getHmChannelIDFeatures().put(ytVid1.getChannelID(), tf);
 	tf = X_ij.getHmChannelIDFeatures().get(ytVid2.getChannelID());
 	if (tf == null)
 	    tf = 0.0;
-	tf--;
+	tf-=ratio;
 	//X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
 
     //X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());

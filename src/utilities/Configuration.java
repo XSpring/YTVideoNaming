@@ -60,8 +60,8 @@ public class Configuration {
         lambda = 0.01;
         minAge = 1;
         minSize = 20;
-        maxAge = 100000;
-        maxSize = 100;
+        maxAge = 7;
+        maxSize = 5000;
         labelType = 1;
     }
 

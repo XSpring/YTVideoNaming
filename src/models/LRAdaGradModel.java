@@ -30,7 +30,7 @@ public class LRAdaGradModel extends LRGradDescModel {
 		    if (v1.getViewCount() < v2.getViewCount()) {    //swap them
 			youtubeVideo temp = v2; v2 = v1; v1 = temp;
 		    }
-                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1,v2);
+                    FeatureController X_ij = FeatureController.getFeatureControllerFromVids_0(v1,v2, 0);
 		    double innerProd = FeatureController.getInnerProduct(modelParams, X_ij);
                     double exponential = Math.exp(innerProd);
                     exponential = - exponential / (1 + exponential);
