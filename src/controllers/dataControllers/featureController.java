@@ -242,7 +242,7 @@ public class FeatureController {
             ratio = 1.0;
         }
 
-        ratio = 1.0;
+        ratio *= 1.0;
     //System.out.println(scale1+" "+scale2+" "+ytVid1.getViewCount()+" "+ytVid2.getViewCount());
 	// 1. Numeric features
 	// 1.0 Intercept weight w_0

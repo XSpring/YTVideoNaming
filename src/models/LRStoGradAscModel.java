@@ -49,14 +49,14 @@ public class LRStoGradAscModel extends GenericModel {
                         //System.out.println(w_d+"\t"+);
                         if (v1.getViewCount() > v2.getViewCount()) {
                             w_d += Configuration.getInstance().getEta() * // learning rate
-                                    ratio *
+                                    ratio * (
                                     X_ij.getOrInitFeature(0, idF) * (- exponential) // gradient
-                                    - Configuration.getInstance().getLambda() * w_d; // regularization
+                                    - Configuration.getInstance().getLambda() * w_d); // regularization
 			} else {
                             w_d += Configuration.getInstance().getEta() * // learning rate
-                                    ratio *
+                                    ratio * (
                                     X_ij.getOrInitFeature(0, idF) * (1 - exponential) // gradient
-                                    - Configuration.getInstance().getLambda() * w_d; // regularization
+                                    - Configuration.getInstance().getLambda() * w_d); // regularization
 			}
                         modelParams.setFeature(0, idF, w_d);
                     }
@@ -65,14 +65,14 @@ public class LRStoGradAscModel extends GenericModel {
                             double w_d = modelParams.getOrInitFeature(featureType, key);
                             if (v1.getViewCount() > v2.getViewCount()) {
                                 w_d += Configuration.getInstance().getEta() * // learning rate
-                                        ratio *
+                                        ratio * (
                                        X_ij.getOrInitFeature(featureType, key) * (- exponential)
-                                       - Configuration.getInstance().getLambda() * w_d;
+                                       - Configuration.getInstance().getLambda() * w_d);
 			    } else {
                                 w_d += Configuration.getInstance().getEta() * // learning rate
-                                        ratio *
+                                        ratio * (
                                         X_ij.getOrInitFeature(featureType, key) * (1 - exponential)
-                                        - Configuration.getInstance().getLambda() * w_d;
+                                        - Configuration.getInstance().getLambda() * w_d);
 			    }
                             modelParams.setFeature(featureType, key, w_d);
                         }

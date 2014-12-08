@@ -41,13 +41,13 @@ The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
 
 We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent algorithm with the following update rule
 	\begin{equation}
-	w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \eta \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
+	w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \eta (\sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
 	\end{equation}
 
 Since the size of training set is less than the number of features, we opt to using Stochastic Gradient Ascent algorithm with L2-regularization.
 	\begin{equation}
-	w^{t+1}_d = w^t_d + \eta \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
 	\label{eqn:stoGradAscUpdateFunc}
+	w^{t+1}_d = w^t_d + \eta (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
 	\end{equation}
 
 \begin{algorithm}[h]\small
@@ -58,7 +58,7 @@ Initialize $\eta = 1$.\\
 
 \While {epoch $<$ maxIter} {
 	\For {$\forall i, j$} {
-		Update $\textbf{w}$ using Equation \ref{eqn:stoGradAscUpdateFunc}
+		Update $\textbf{w}$ using Equation \ref{eqn:stoGradAscUpdateFuncGeneric}
 	}    
 	epoch++;
 }
@@ -94,12 +94,28 @@ There are other various options to compute the scaling factor $\alpha$ such as u
 Another way to tackle the above problem is to re-weighting the gradient. Similarly as the first approach, we also compute a scaling factor $\alpha$ from the two videos' number of views. The only difference is instead of augmenting the representative feature vectors $\mathcal{X}_{ij}$, we re-weight the gradient in Equation \ref{eqn:stoGradAscUpdateFunc} as follows
 
 	\begin{equation}
-	w^{t+1}_d = w^t_d + \eta \alpha \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
-	\label{eqn:stoGradAscUpdateFunc}
+	w^{t+1}_d = w^t_d + \eta \alpha (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
+	\label{eqn:stoGradAscUpdateFuncGeneric}
 	\end{equation}
 
-	The idea is borrowed from the AdaBoost technique by re-weighting the training data points. However, the difference is that AdaBoost keeps updating weights for every iteration, meanwhile in our context we fix the weight. Our goal is to stress the importance of pairs having high variance in their viewerships by forcing the corresponding parameters to update more gradients of these pairs. 
+	The idea is borrowed from the AdaBoost technique by re-weighting the training data points. However, the difference is that AdaBoost keeps updating weights for every iteration, meanwhile we fix the weight. Our goal is to stress the importance of pairs having high variance in their viewerships by forcing the corresponding parameters to update more gradients of these pairs. 
 	 
 \subsection{Extension 2: Ensemble of time-specific classifiers}
 \label{subsec:ext2}
+Number of views of a video also depends on time passed since it was first uploaded to YouTube. It is more comparable to measure the popularity between videos sharing the same passed days. Such videos are clustered into a bin and a distinct classifier $f$ is trained on them. For the above example, we have 3 different bins, $B_{1000}=\{v_1\}$, $B_{10}=\{v_2\}$ and $B_{1}=\{v_3\}$, with corresponding classifiers $f_{1000}$, $f_{10}$ and $f_{1}$. Given a new video pair $v_4$ and $v_5$, we first find the bin that both videos belong to according to their age, and use the corresponding classifier to compare their popularity. 
+
+This approach has a drawback which makes the learning model suffers from data sparseness. Since our data is a one-month sample from YouTube repository, it is possible to have keywords do not exist in the observed video pairs of a bin. To overcome this issue, we suggest to construct an ensemble of all bins' classifier to enhance the predictive performance. 
+
+According to [4], ensemble methods are learning algorithms that blend results from different hypotheses to perform some prediction tasks on new data points. There are two main reasons behind these methods. First is statistical. Basically, we often do not have sufficient data to identify the best, but equally accurate, hypotheses. By taking the majority votes or average results of these hypothesis, we can reduce the risk of choosing the wrong hypothesis. Secondly, different hypotheses may have different starting points and explore different local optima. Hence an ensemble of these hypotheses can give a better approximation than any of individual hypothesis.
+Bagging and Boosting are common ensemble algorithms. 
+
+The above two reasons motive us to construct an ensemble of bin-specific classifiers with selection of the majority weighted voting scheme. First, it is possible to have a keyword $w$ does not exist in an arbitrary bin's training data, but can occur in other bins. Hence we can borrow information from those bins to weight $w$. Second, to incorporate the fact that the video's popularity will be diminishing over time, the weights from bins further away from the selected bin must have smaller impact to its neighbouring bins. We therefore introduce a majority weighted voting scheme as follow. Let $f_t$ be the classifier trained on data of bin $B_t$, containing videos of t-days old. Assume that we have T such bins. For a pair of videos $i, j$ in the bin $B_t$'s testing set, we compute the probability of ranking as follows
+	\begin{align}
+		P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T) &= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_{t'}) \\ \notag 
+		&= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, \textbf{w}^{t'})
+	\end{align}
+	We can compute $P(Y_{ij}^t = 0 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T)$ similarly. The class with higher probability is selected as final prediction. 
+	
+
+
 
