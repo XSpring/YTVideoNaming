@@ -17,13 +17,9 @@ import java.util.List;
  *
  * @author Loc Do
  */
-
+/*
 public class BaggingModel extends GenericModel {
-
-
-    public BaggingModel() {
-
-    }
+* 
     @Override
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // HAS NOT IMPLEMENTED YET
@@ -217,3 +213,4 @@ public class BaggingModel extends GenericModel {
         return errorRatio;
     }
 }
+*/
