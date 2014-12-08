@@ -53,7 +53,6 @@ public class videoController {
         FileWriter fw = new FileWriter("results/LRSGA_Weighted.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
-        /*
         int count = 0;
         for (Long age:hmVideoBins.keySet()) {
 	    if (age < 200) continue;
@@ -66,17 +65,15 @@ public class videoController {
                 model.setBw(bw);
                 model.loadData(lstVideos);
                 model.run("results/DirectGradDesc_"+age+"_weights");
-
         		if (count > 10) break;
             }
             //System.out.println(age + "\t" + hmVideoBins.get(age).size());
             //if (count==1) break;
         }
-        */
 
-        models.BaggingModel model = new models.BaggingModel();
-        model.setBw(bw);
-        model.run();
+//        models.BaggingModel model = new models.BaggingModel();
+//        model.setBw(bw);
+//        model.run();
 
         bw.close();
 
