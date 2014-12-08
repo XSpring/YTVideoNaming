@@ -5,18 +5,18 @@
 \subsection{Problem Formulation}
 \label{subsec:probFormulation}
 We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two videos $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
-\begin{equation}
+	\begin{equation}
 	Y_{ij} = \begin{cases}
 			   1, & \text{if } \text{\#\_of\_views\_i} \geq \text{\#\_of\_views\_j} \\
 			   0, & \text{otherwise}
 			\end{cases} 
 	\label{eqn:binaryLabel}			
-\end{equation}	
+	\end{equation}	
 
 We can form a representative vector of the pair $(i, j)$ as follows
-\begin{equation}
-	\mathcal{X}_{ij} = k (X_i, X_j),
-\end{equation}
+	\begin{equation}
+		\mathcal{X}_{ij} = k (X_i, X_j),
+	\end{equation}
 where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feature transformation function. There are several options for $k$. 
 \begin{itemize}
 	\item Difference between two feature vectors: $\mathcal{X}_{ij} = X_i - X_j$
@@ -26,23 +26,46 @@ where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feat
 At the moment, we cannot find any theories/signals to indicate which form of $k$ is the most appropriate. For the scope of the project, we choose to represent $X_{ij}$ as difference between $X_i$ and $X_j$, meaning $D = D'$. The kernelized version is left in future work. 
 
 The function form of classifier $P(Y_{ij}|\mathcal{X}_{ij}, \textbf{w})$ as follows
- \begin{equation}
+	 \begin{equation}
 	 P(Y_{ij}=1|\mathcal{X}_{ij}, \textbf{w}) = \frac{1}{1 + \exp ( w_0 + \sum_d w_d \mathcal{X}_{ij}^d )} = \frac{1}{1 + \exp (\textbf{w}^T \mathcal{X}_{ij})}
- \end{equation}
+	 \end{equation}
  
 The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
-\begin{align}
+	\begin{align}
 	\label{eqn:objFuncLR}
 	\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
 	&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
 	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) + ln P(\textbf{w}) \\ \notag
 	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) - \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
-\end{align}
+	\end{align}
 
-We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent with the following update rule
-\begin{equation}
-w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
-\end{equation}
+We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent algorithm with the following update rule
+	\begin{equation}
+	w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \eta \sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
+	\end{equation}
+
+Since the size of training set is less than the number of features, we opt to using Stochastic Gradient Ascent algorithm with L2-regularization.
+	\begin{equation}
+	w^{t+1}_d = w^t_d + \eta \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
+	\label{eqn:stoGradAscUpdateFunc}
+	\end{equation}
+
+\begin{algorithm}[h]\small
+Initialize $\textbf{w}$ as zero-valued vector.\\
+Initialize $epoch = 1$.\\
+Initialize $\lambda = 0.01$.\\
+Initialize $\eta = 1$.\\
+
+\While {epoch $<$ maxIter} {
+	\For {$\forall i, j$} {
+		Update $\textbf{w}$ using Equation \ref{eqn:stoGradAscUpdateFunc}
+	}    
+	epoch++;
+}
+
+Return $\textbf{w}$.
+\caption{Stochastic Gradient Ascent Algorithm} \label{algo:stoGradAsc}
+\end{algorithm}
 
 \subsection{Extension 1: Re-weighting the features}
 \label{subsec:ext1}
@@ -58,11 +81,25 @@ By definition in Equation \ref{eqn:binaryLabel}, $Y_{ij}$ can only capture which
 		\end{tabular}
 	\end{center}
 
-As the above scheme in Section \ref{subsec:probFormulation}, we can represent the pair $(v_1, v_2)$ and $(v_2, v_3)$ with feature vectors $\mathcal{X}_{12}=\{1, 0, 0, -1, 0\}$ and $\mathcal{X}_{23}=\{0, 1, 0, 0 , -1 \}$. When training a classifier $f$ on these two vectors with both $Y_{12}$ and $Y_{23}$ equal to $1$, we can see no differences between the weights on feature $w_1$ and $w_2$, $w_4$ and $w_5$. Hence, $f$ cannot correctly rank a pair of videos with titles of $\{w_1, w_4\}$ and $\{w_2, w_5\}$ correspondingly.
+As the above scheme in Section \ref{subsec:probFormulation}, we can represent the pair $(v_1, v_2)$ and $(v_2, v_3)$ with feature vectors $\mathcal{X}_{12}=\{1, 0, 0, -1, 0\}$ and $\mathcal{X}_{23}=\{0, 1, 0, 0 , -1 \}$. When training a classifier $f$ on these two vectors with both $Y_{12}$ and $Y_{23}$ equal to $1$, we can see no differences between the weights (i.e. model parameters) on feature $w_1$ and $w_2$, $w_4$ and $w_5$. Hence, $f$ cannot correctly rank a pair of videos with titles of $\{w_1, w_4\}$ and $\{w_2, w_5\}$ correspondingly.
 
-This problem can be addressed by 
+A general idea to solve this problem is to incorporate the magnitude in difference between two videos' number of views into $f$. Basically, we want to have more weights on features that are frequently attached with popular videos. In this work we propose two ad-hoc solutions: 1) Augmenting the representative feature vectors $\mathcal{X}_{ij}$ and 2) Re-weighting the gradient.
 
+\subsubsection{Augmenting the representative feature vectors $\mathcal{X}_{ij}$}
+In this approach, we scale the representative feature vectors $\mathcal{X}_{ij}$ for pairs of videos $(i, j)$ in the training set, and train a classifier $f$ on these augmented features. The scaling factor is determined based on the ratio of numbers of views of the corresponding video pair $i$ and $j$. To avoid the overflow problem caused by high variance in number of views (2 billions versus 10), we transform the number of views into log space before computing the ratio. Let consider the pair $\mathcal{X}_{12}$ in the above example. The scaling factor is computed as follow: $\alpha = \frac{\log 1000}{\log 10} = 3$. Hence the augmented representative features $\mathcal{X}_{12} = \{3, 0, 0, -3, 0\}$. 
+
+There are other various options to compute the scaling factor $\alpha$ such as using a different log base, or normalise all the view counts, etc. However, all these approaches are akin to the proposed one, and hence do not have a theoretical guarantee on the overall performance. We demonstrate one way of using ratio of log base 10 in this work.
+
+\subsubsection{Re-weighting the gradient}
+Another way to tackle the above problem is to re-weighting the gradient. Similarly as the first approach, we also compute a scaling factor $\alpha$ from the two videos' number of views. The only difference is instead of augmenting the representative feature vectors $\mathcal{X}_{ij}$, we re-weight the gradient in Equation \ref{eqn:stoGradAscUpdateFunc} as follows
+
+	\begin{equation}
+	w^{t+1}_d = w^t_d + \eta \alpha \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d
+	\label{eqn:stoGradAscUpdateFunc}
+	\end{equation}
+
+	The idea is borrowed from the AdaBoost technique by re-weighting the training data points. However, the difference is that AdaBoost keeps updating weights for every iteration, meanwhile in our context we fix the weight. Our goal is to stress the importance of pairs having high variance in their viewerships by forcing the corresponding parameters to update more gradients of these pairs. 
+	 
 \subsection{Extension 2: Ensemble of time-specific classifiers}
 \label{subsec:ext2}
-
 
