@@ -73,6 +73,14 @@ public class Configuration {
         fileOutputName = "temp.txt";
     }
 
+    public String getFileOutputName() {
+        return fileOutputName;
+    }
+
+    public void setFileOutputName(String fileOutputName) {
+        this.fileOutputName = fileOutputName;
+    }
+
     public boolean isAug() {
         return isAug;
     }
