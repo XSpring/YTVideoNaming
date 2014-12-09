@@ -1,8 +1,11 @@
-Another approach to the ranking problem is to predict the number of views for each video and then compare that, rather than comparing two videos directly. Finding the number of views can be treated as a simple linear regression problem. Our linear function assumes that are labels come from our input $X_u$ plus some noise $\epsilon$:
+Another approach to the ranking problem is to predict the number of views for each video and then rank the videos based on predicted values, rather than comparing two videos directly. This approach has two advantages over the above approach of classification. First, it can take into account the magnitude of difference between two videos' viewership. Secondly, we can use it to predict a number of views of a video for a specific time in future given their current status. We treat this problem as an ordinary linear regression problem. 
+
+\subsection{Problem Formulation}
+Our linear function assumes that are labels $Y_i$ come from our input $X_i$ plus some noise $\epsilon$:
 \begin{equation}
-Y_u = X_u \beta + \epsilon
+Y_u = X_u \beta + \epsilon,
 \end{equation}
-We therefore seek a function of the form
+where $Y_i$ is the number of views of video $i$, $X_i$ is the associated feature vector. We therefore seek a function of the form
 \begin{equation}
 f(X) = X \beta
 \end{equation}
@@ -17,15 +20,15 @@ where
 \begin{equation}
 	Y = [Y_1 ... Y_n]^T
 \end{equation}
-
-We anticipated that this method will perform worse than logistic regression at the ranking problem.  However, this method, if successful, would have the added utility of allowing predictions on a video without needing to compare it to another.
   
+%We anticipated that this method will perform worse than logistic regression at the ranking problem.  However, this method, if successful, would have the added utility of allowing predictions on a video without needing to compare it to another.
+
 In order to solve this problem, we can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
 \begin{equation}
 \beta^{t+1} = \beta^t - \eta A^T (A \beta^t - Y)
 \end{equation}
  
-Since our context is a bad conditioning problem, we opt Stochastic Gradient Descent with Regularization. The new update function
+Since our context is a bad conditioning problem, similarly to the Classification approach, we opt to Stochastic Gradient Descent with L2-Regularization. The new update function
 	\begin{equation}
 		\beta^{t+1} = \beta^t - \eta (x_i (x_i\beta^t - Y_i) + \beta^t)
 	\end{equation}

@@ -156,7 +156,8 @@ public class BaggingModel extends GenericModel {
                 //for (featureController weight:ensemble) {
                 for (Long age:ensemble.keySet()) {
 
-                    //if (age != selectedAge) continue;
+
+                    if (!Configuration.getInstance().isBagging() && age != selectedAge) continue;
 
                     FeatureController weight = ensemble.get(age);
 

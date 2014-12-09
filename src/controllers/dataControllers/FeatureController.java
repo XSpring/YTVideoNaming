@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import objects.youtubeObjects.*;
+import utilities.Configuration;
 
 /**
  * Create on 30/11/14
@@ -242,7 +243,8 @@ public class FeatureController {
             ratio = 1.0;
         }
 
-        ratio *= 1.0;
+        if (!Configuration.getInstance().isAug())
+            ratio = 1.0;
     //System.out.println(scale1+" "+scale2+" "+ytVid1.getViewCount()+" "+ytVid2.getViewCount());
 	// 1. Numeric features
 	// 1.0 Intercept weight w_0

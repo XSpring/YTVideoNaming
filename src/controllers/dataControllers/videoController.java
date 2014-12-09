@@ -8,6 +8,7 @@ import utilities.Common;
 import java.io.*;
 import java.util.*;
 
+import utilities.Configuration;
 import utilities.DatafileGrabber;
 /**
  * Create on 23/11/14
@@ -50,7 +51,7 @@ public class videoController {
         }
 
         //FileWriter fw = new FileWriter("results/DirectGrad.csv");
-        FileWriter fw = new FileWriter("LRSGA_Single_Aug.txt");
+        FileWriter fw = new FileWriter(Configuration.getInstance().getFileOutputName());
         BufferedWriter bw = new BufferedWriter(fw);
 /*
         int count = 0;

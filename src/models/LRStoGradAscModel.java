@@ -42,7 +42,9 @@ public class LRStoGradAscModel extends GenericModel {
                     else
                         ratio = Math.log(v2.getViewCount()*1.0) / Math.log(v1.getViewCount());
 
-                    ratio *= 1.0;
+                    if (!Configuration.getInstance().isGrad())
+                        ratio = 1.0;
+
                     // Update the parameters
                     for (Integer idF:modelParams.getHmNumericFeatures().keySet()) {
                         double w_d = modelParams.getOrInitFeature(0, idF);

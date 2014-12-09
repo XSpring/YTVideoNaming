@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0b24814-d444-4b83-b094-a31b4559b4e9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utilities/Configuration.java" afterPath="$PROJECT_DIR$/src/utilities/Configuration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.pdf" afterPath="$PROJECT_DIR$/final/final.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.synctex.gz" afterPath="$PROJECT_DIR$/final/final.synctex.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/BaggingModel.java" afterPath="$PROJECT_DIR$/src/models/BaggingModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java" afterPath="$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" afterPath="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.log" afterPath="$PROJECT_DIR$/final/final.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/mainController.java" afterPath="$PROJECT_DIR$/src/controllers/mainController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/sec_experiments.tex" afterPath="$PROJECT_DIR$/final/sec_experiments.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" afterPath="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="YTVideoNaming.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,34 +37,35 @@
       <file leaf-file-name="BaggingModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/BaggingModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="738" max-vertical-offset="3990">
-              <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2358" max-vertical-offset="4005">
+              <caret line="187" column="41" selection-start-line="187" selection-start-column="41" selection-end-line="187" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#688#708#0" expanded="true" />
                 <element signature="e#1228#1257#0" expanded="true" />
                 <element signature="e#1520#1545#0" expanded="true" />
-                <element signature="e#8709#8710#0" expanded="true" />
-                <element signature="e#8757#8758#0" expanded="true" />
-                <element signature="e#8796#8797#0" expanded="true" />
-                <element signature="e#8853#8854#0" expanded="true" />
-                <element signature="e#8893#8894#0" expanded="true" />
-                <element signature="e#8938#8939#0" expanded="true" />
-                <element signature="e#8975#8976#0" expanded="true" />
-                <element signature="e#9022#9023#0" expanded="true" />
-                <element signature="e#9060#9061#0" expanded="true" />
-                <element signature="e#9148#9149#0" expanded="true" />
+                <element signature="e#8752#8753#0" expanded="true" />
+                <element signature="e#8800#8801#0" expanded="true" />
+                <element signature="e#8839#8840#0" expanded="true" />
+                <element signature="e#8896#8897#0" expanded="true" />
+                <element signature="e#8936#8937#0" expanded="true" />
+                <element signature="e#8981#8982#0" expanded="true" />
+                <element signature="e#9018#9019#0" expanded="true" />
+                <element signature="e#9065#9066#0" expanded="true" />
+                <element signature="e#9103#9104#0" expanded="true" />
+                <element signature="e#9191#9192#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Configuration.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Configuration.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utilities/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6035242" vertical-offset="761" max-vertical-offset="2325">
-              <caret line="75" column="39" selection-start-line="75" selection-start-column="39" selection-end-line="75" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2325">
+              <caret line="70" column="23" selection-start-line="70" selection-start-column="23" selection-end-line="70" selection-end-column="23" />
               <folding>
+                <element signature="e#2152#2153#0" expanded="true" />
                 <element signature="e#2189#2190#0" expanded="true" />
                 <element signature="e#2249#2250#0" expanded="true" />
                 <element signature="e#2301#2302#0" expanded="true" />
@@ -90,8 +99,8 @@
       <file leaf-file-name="LRStoGradAscModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/LRStoGradAscModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="329" max-vertical-offset="1350">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="656" max-vertical-offset="1380">
+              <caret line="53" column="45" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
               <folding>
                 <element signature="e#405#406#0" expanded="true" />
                 <element signature="e#447#448#0" expanded="true" />
@@ -100,22 +109,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mainController.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="mainController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
-              <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.26431718" vertical-offset="135" max-vertical-offset="1065">
+              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LRGradDescModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/LRGradDescModel.java">
+      <file leaf-file-name="dataController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/dataController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="626" max-vertical-offset="1080">
-              <caret line="63" column="86" selection-start-line="63" selection-start-column="86" selection-end-line="63" selection-end-column="86" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="2130">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding>
+                <element signature="e#1845#1867#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -130,22 +141,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FeatureController.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java">
+      <file leaf-file-name="DatafileGrabber.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/utilities/DatafileGrabber.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3284" max-vertical-offset="5250">
-              <caret line="244" column="15" selection-start-line="244" selection-start-column="15" selection-end-line="244" selection-end-column="15" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="1905">
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding>
+                <element signature="e#594#608#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="youtubeUser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/objects/youtubeObjects/youtubeUser.java">
+      <file leaf-file-name="FeatureController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2339" max-vertical-offset="2820">
-              <caret line="269" column="32" selection-start-line="269" selection-start-column="32" selection-end-line="269" selection-end-column="32" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5295">
+              <caret line="94" column="36" selection-start-line="94" selection-start-column="36" selection-end-line="94" selection-end-column="36" />
+              <folding>
+                <element signature="e#3296#3297#0" expanded="true" />
+                <element signature="e#3336#3337#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -153,12 +169,12 @@
       <file leaf-file-name="videoController.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/videoController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="600" max-vertical-offset="4635">
-              <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="4635">
+              <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
               <folding>
-                <element signature="e#2504#2521#0" expanded="true" />
-                <element signature="e#2564#2572#0" expanded="true" />
-                <element signature="e#6736#6750#0" expanded="true" />
+                <element signature="e#2561#2578#0" expanded="true" />
+                <element signature="e#2621#2629#0" expanded="true" />
+                <element signature="e#6793#6807#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -184,12 +200,12 @@
         <option value="$PROJECT_DIR$/src/models/LRGradDescModel.java" />
         <option value="$PROJECT_DIR$/src/models/LRAdaGradModel.java" />
         <option value="$PROJECT_DIR$/src/objects/youtubeObjects/youtubeUser.java" />
-        <option value="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" />
-        <option value="$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java" />
-        <option value="$PROJECT_DIR$/src/models/BaggingModel.java" />
-        <option value="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" />
-        <option value="$PROJECT_DIR$/src/controllers/mainController.java" />
         <option value="$PROJECT_DIR$/src/utilities/Configuration.java" />
+        <option value="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" />
+        <option value="$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java" />
+        <option value="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" />
+        <option value="$PROJECT_DIR$/src/models/BaggingModel.java" />
+        <option value="$PROJECT_DIR$/src/controllers/mainController.java" />
       </list>
     </option>
   </component>
@@ -611,7 +627,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -628,16 +644,16 @@
             <element signature="e#688#708#0" expanded="true" />
             <element signature="e#1228#1257#0" expanded="true" />
             <element signature="e#1520#1545#0" expanded="true" />
-            <element signature="e#8709#8710#0" expanded="true" />
-            <element signature="e#8757#8758#0" expanded="true" />
-            <element signature="e#8796#8797#0" expanded="true" />
-            <element signature="e#8853#8854#0" expanded="true" />
-            <element signature="e#8893#8894#0" expanded="true" />
-            <element signature="e#8938#8939#0" expanded="true" />
-            <element signature="e#8975#8976#0" expanded="true" />
-            <element signature="e#9022#9023#0" expanded="true" />
-            <element signature="e#9060#9061#0" expanded="true" />
-            <element signature="e#9148#9149#0" expanded="true" />
+            <element signature="e#8752#8753#0" expanded="true" />
+            <element signature="e#8800#8801#0" expanded="true" />
+            <element signature="e#8839#8840#0" expanded="true" />
+            <element signature="e#8896#8897#0" expanded="true" />
+            <element signature="e#8936#8937#0" expanded="true" />
+            <element signature="e#8981#8982#0" expanded="true" />
+            <element signature="e#9018#9019#0" expanded="true" />
+            <element signature="e#9065#9066#0" expanded="true" />
+            <element signature="e#9103#9104#0" expanded="true" />
+            <element signature="e#9191#9192#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -646,7 +662,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2745" max-vertical-offset="5010">
           <caret line="183" column="72" selection-start-line="183" selection-start-column="54" selection-end-line="183" selection-end-column="72" />
-          <folding />
+          <folding>
+            <element signature="e#3296#3297#0" expanded="true" />
+            <element signature="e#3336#3337#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -679,9 +698,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="4830">
           <caret line="70" column="9" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
           <folding>
-            <element signature="e#2504#2521#0" expanded="true" />
-            <element signature="e#2564#2572#0" expanded="true" />
-            <element signature="e#6736#6750#0" expanded="true" />
+            <element signature="e#2561#2578#0" expanded="true" />
+            <element signature="e#2621#2629#0" expanded="true" />
+            <element signature="e#6793#6807#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -691,10 +710,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="2220">
           <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
           <folding>
-            <element signature="e#1355#1356#0" expanded="true" />
-            <element signature="e#1385#1386#0" expanded="true" />
-            <element signature="e#1451#1452#0" expanded="true" />
-            <element signature="e#1480#1481#0" expanded="true" />
             <element signature="e#1845#1867#0" expanded="true" />
           </folding>
         </state>
@@ -704,7 +719,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="1965">
           <caret line="108" column="54" selection-start-line="108" selection-start-column="54" selection-end-line="108" selection-end-column="54" />
-          <folding />
+          <folding>
+            <element signature="e#594#608#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -763,28 +780,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/dataController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="2190">
-          <caret line="20" column="53" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
-          <folding>
-            <element signature="e#1355#1356#0" expanded="true" />
-            <element signature="e#1385#1386#0" expanded="true" />
-            <element signature="e#1451#1452#0" expanded="true" />
-            <element signature="e#1480#1481#0" expanded="true" />
-            <element signature="e#1845#1867#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utilities/DatafileGrabber.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1289" max-vertical-offset="1905">
-          <caret line="108" column="50" selection-start-line="108" selection-start-column="50" selection-end-line="108" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/objects/youtubeObjects/youtubeUser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2339" max-vertical-offset="2820">
@@ -801,6 +796,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/LRStoGradAscModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="656" max-vertical-offset="1380">
+          <caret line="53" column="45" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
+          <folding>
+            <element signature="e#405#406#0" expanded="true" />
+            <element signature="e#447#448#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/GenericModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="109" max-vertical-offset="1050">
@@ -809,81 +815,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/videoController.java">
+    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="600" max-vertical-offset="4635">
-          <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5295">
+          <caret line="94" column="36" selection-start-line="94" selection-start-column="36" selection-end-line="94" selection-end-column="36" />
           <folding>
-            <element signature="e#2504#2521#0" expanded="true" />
-            <element signature="e#2564#2572#0" expanded="true" />
-            <element signature="e#6736#6750#0" expanded="true" />
+            <element signature="e#3296#3297#0" expanded="true" />
+            <element signature="e#3336#3337#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/models/BaggingModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="738" max-vertical-offset="3990">
-          <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2358" max-vertical-offset="4005">
+          <caret line="187" column="41" selection-start-line="187" selection-start-column="41" selection-end-line="187" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#688#708#0" expanded="true" />
             <element signature="e#1228#1257#0" expanded="true" />
             <element signature="e#1520#1545#0" expanded="true" />
-            <element signature="e#8709#8710#0" expanded="true" />
-            <element signature="e#8757#8758#0" expanded="true" />
-            <element signature="e#8796#8797#0" expanded="true" />
-            <element signature="e#8853#8854#0" expanded="true" />
-            <element signature="e#8893#8894#0" expanded="true" />
-            <element signature="e#8938#8939#0" expanded="true" />
-            <element signature="e#8975#8976#0" expanded="true" />
-            <element signature="e#9022#9023#0" expanded="true" />
-            <element signature="e#9060#9061#0" expanded="true" />
-            <element signature="e#9148#9149#0" expanded="true" />
+            <element signature="e#8752#8753#0" expanded="true" />
+            <element signature="e#8800#8801#0" expanded="true" />
+            <element signature="e#8839#8840#0" expanded="true" />
+            <element signature="e#8896#8897#0" expanded="true" />
+            <element signature="e#8936#8937#0" expanded="true" />
+            <element signature="e#8981#8982#0" expanded="true" />
+            <element signature="e#9018#9019#0" expanded="true" />
+            <element signature="e#9065#9066#0" expanded="true" />
+            <element signature="e#9103#9104#0" expanded="true" />
+            <element signature="e#9191#9192#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/LRStoGradAscModel.java">
+    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/videoController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="329" max-vertical-offset="1350">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="4635">
+          <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
           <folding>
-            <element signature="e#405#406#0" expanded="true" />
-            <element signature="e#447#448#0" expanded="true" />
+            <element signature="e#2561#2578#0" expanded="true" />
+            <element signature="e#2621#2629#0" expanded="true" />
+            <element signature="e#6793#6807#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/LRAdaGradModel.java">
+    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/dataController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="206" max-vertical-offset="1260">
-          <caret line="30" column="43" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="43" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="2130">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#1845#1867#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java">
+    <entry file="file://$PROJECT_DIR$/src/utilities/DatafileGrabber.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3284" max-vertical-offset="5250">
-          <caret line="244" column="15" selection-start-line="244" selection-start-column="15" selection-end-line="244" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
-          <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="1905">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="e#594#608#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utilities/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6035242" vertical-offset="761" max-vertical-offset="2325">
-          <caret line="75" column="39" selection-start-line="75" selection-start-column="39" selection-end-line="75" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2325">
+          <caret line="70" column="23" selection-start-line="70" selection-start-column="23" selection-end-line="70" selection-end-column="23" />
           <folding>
+            <element signature="e#2152#2153#0" expanded="true" />
             <element signature="e#2189#2190#0" expanded="true" />
             <element signature="e#2249#2250#0" expanded="true" />
             <element signature="e#2301#2302#0" expanded="true" />
@@ -900,6 +903,22 @@
             <element signature="e#2688#2689#0" expanded="true" />
             <element signature="e#2730#2731#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/LRAdaGradModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="206" max-vertical-offset="1260">
+          <caret line="30" column="43" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26431718" vertical-offset="135" max-vertical-offset="1065">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>

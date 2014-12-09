@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  9 DEC 2014 12:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  9 DEC 2014 18:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -330,7 +330,7 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@algocf=\count118
 \algocf@algoframe=\box36
 \algocf@algobox=\box37
-) (./final.aux (./sec_experiments.aux))
+) (./final.aux)
 \openout1 = `final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
@@ -348,12 +348,10 @@ LaTeX Font Info:    ... okay on input line 33.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 33.
-
-(/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+ (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 \AtBeginShipoutBox=\box38
-
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count119
@@ -424,6 +422,17 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 37.
 
 (./sec_ranking.tex
+
+LaTeX Warning: Reference `subsec:probFormulation' on page 1 undefined on input 
+line 1.
+
+
+LaTeX Warning: Reference `subsec:ext1' on page 1 undefined on input line 1.
+
+
+LaTeX Warning: Reference `subsec:ext2' on page 1 undefined on input line 1.
+
+
 Underfull \vbox (badness 5548) has occurred while \output is active []
 
  [1
@@ -436,32 +445,56 @@ File: omsptm.fd
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 20.
- [2]
+
+
+LaTeX Warning: Reference `eqn:objFuncLR' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Reference `algo:stoGradAsc' on page 2 undefined on input line 45
+.
+
+[2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 52.
- [3])
-(./sec_regression.tex [4]) [5]
-\openout2 = `sec_experiments.aux'.
 
- (./sec_experiments.tex
-<DistributionOfViews.png, id=144, 430.60875pt x 341.77687pt>
+
+LaTeX Warning: Reference `eqn:stoGradAscUpdateFuncGeneric' on page 3 undefined 
+on input line 61.
+
+
+LaTeX Warning: Reference `eqn:binaryLabel' on page 3 undefined on input line 68
+.
+
+
+LaTeX Warning: Reference `subsec:probFormulation' on page 3 undefined on input 
+line 80.
+
+
+LaTeX Warning: Reference `eqn:stoGradAscUpdateFunc' on page 3 undefined on inpu
+t line 90.
+
+[3]) (./sec_regression.tex [4]) (./sec_experiments.tex [5]
+
+LaTeX Warning: Reference `fig:logNoOfViews' on page 6 undefined on input line 1
+8.
+
+<DistributionOfViews.png, id=72, 430.60875pt x 341.77687pt>
 File: DistributionOfViews.png Graphic file (type png)
 
 <use DistributionOfViews.png>
 Package pdftex.def Info: DistributionOfViews.png used on input line 22.
-(pdftex.def)             Requested size: 298.11374pt x 236.61899pt.
+(pdftex.def)             Requested size: 198.7425pt x 157.74599pt.
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: Reference `sec:orderofmagnitude' on page 6 undefined on input li
+ne 28.
 
-[6
-
-]) [7 <./DistributionOfViews.png>] (./sec_results.tex
+[6 <./DistributionOfViews.png>]) (./sec_results.tex [7]
 
 LaTeX Warning: File `logistic regression training.png' not found on input line 
 20.
 
-<logistic regression training.png, id=160, 237.88875pt x 134.00063pt>
+<logistic regression training.png, id=97, 237.88875pt x 134.00063pt>
 File: logistic regression training.png Graphic file (type png)
 
 <use logistic regression training.png>
@@ -473,7 +506,7 @@ Package pdftex.def Info: logistic regression training.png used on input line 20
 LaTeX Warning: File `logistic regression testing.png' not found on input line 2
 8.
 
-<logistic regression testing.png, id=162, 237.88875pt x 132.495pt>
+<logistic regression testing.png, id=99, 237.88875pt x 132.495pt>
 File: logistic regression testing.png Graphic file (type png)
 
 <use logistic regression testing.png>
@@ -484,29 +517,39 @@ Package pdftex.def Info: logistic regression testing.png used on input line 28.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (./sec_related.tex [8
-
- <./logistic regression training.png>])
+) (./sec_related.tex [8 <./logistic regression training.png>])
 (./sec_references.tex)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 72.
  [9 <./logistic regression testing.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 72.
- (./final.aux
-(./sec_experiments.aux))
+ (./final.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 72.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 72.
-Package rerunfilecheck Info: File `final.out' has not changed.
-(rerunfilecheck)             Checksum: 038B5BFAA3CF0A561F21D9CFC972B1CF;1245.
+
+
+Package rerunfilecheck Warning: File `final.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `final.out':
+(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
+(rerunfilecheck)             After:  1442521EE6148E793BA600005AA937B0;1492.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 72.
  ) 
 Here is how much of TeX's memory you used:
- 7929 strings out of 493117
- 113960 string characters out of 6135433
- 230417 words of memory out of 5000000
- 11209 multiletter control sequences out of 15000+600000
+ 7907 strings out of 493117
+ 113623 string characters out of 6135433
+ 229000 words of memory out of 5000000
+ 11187 multiletter control sequences out of 15000+600000
  29904 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,16n,39p,1333b,438s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,16n,39p,1337b,440s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -525,10 +568,10 @@ ist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-dist/font
 s/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on final.pdf (9 pages, 214210 bytes).
+Output written on final.pdf (9 pages, 215453 bytes).
 PDF statistics:
- 248 PDF objects out of 1000 (max. 8388607)
- 211 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 189 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
+ 58 named destinations out of 1000 (max. 500000)
+ 34 words of extra memory for PDF output out of 10000 (max. 10000000)
 
