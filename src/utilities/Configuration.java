@@ -41,6 +41,10 @@ public class Configuration {
     private int minSize;
     private int maxSize;
     private int labelType;
+    private boolean isAug;
+    private boolean isGrad;
+    private boolean isBagging;
+    private String fileOutputName;
 
     private Configuration() {
         delayTimeInSeconds = 7000;
@@ -60,9 +64,37 @@ public class Configuration {
         lambda = 0.01;
         minAge = 1;
         minSize = 20;
-        maxAge = 7;
+        maxAge = 30;
         maxSize = 5000;
         labelType = 1;
+        isAug = false;
+        isGrad = false;
+        isBagging = false;
+        fileOutputName = "temp.txt";
+    }
+
+    public boolean isAug() {
+        return isAug;
+    }
+
+    public void setAug(boolean isAug) {
+        this.isAug = isAug;
+    }
+
+    public boolean isGrad() {
+        return isGrad;
+    }
+
+    public void setGrad(boolean isGrad) {
+        this.isGrad = isGrad;
+    }
+
+    public boolean isBagging() {
+        return isBagging;
+    }
+
+    public void setBagging(boolean isBagging) {
+        this.isBagging = isBagging;
     }
 
     public double getLambda() { return lambda;}

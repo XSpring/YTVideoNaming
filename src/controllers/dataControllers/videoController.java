@@ -50,9 +50,9 @@ public class videoController {
         }
 
         //FileWriter fw = new FileWriter("results/DirectGrad.csv");
-        FileWriter fw = new FileWriter("LRSGA_Bagging_Both.txt");
+        FileWriter fw = new FileWriter("LRSGA_Single_Aug.txt");
         BufferedWriter bw = new BufferedWriter(fw);
-
+/*
         int count = 0;
         for (Long age:hmVideoBins.keySet()) {
             List<String> lstVideos = hmVideoBins.get(age);
@@ -64,10 +64,10 @@ public class videoController {
 	    model.run("results/DirectGradDesc_"+age+"_weights");
             if (count==30) break;
         }
-        
-//        models.BaggingModel model = new models.BaggingModel();
-//        model.setBw(bw);
-//        model.run();
+*/
+        models.BaggingModel model = new models.BaggingModel();
+        model.setBw(bw);
+        model.run();
 
         bw.close();
 

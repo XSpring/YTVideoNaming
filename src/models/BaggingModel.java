@@ -1,5 +1,6 @@
 package models;
 
+import com.sun.tools.javac.jvm.Gen;
 import controllers.dataControllers.dataController;
 import controllers.dataControllers.FeatureController;
 import objects.youtubeObjects.youtubeVideo;
@@ -17,8 +18,11 @@ import java.util.List;
  *
  * @author Loc Do
  */
-/*
-public class BaggingModel {
+
+public class BaggingModel extends GenericModel {
+
+    protected void train() {};
+    protected void test(boolean onTestData) {};
 
     public void run() throws Exception {
         HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
@@ -254,4 +258,3 @@ public class BaggingModel {
     }
 
 }
-*/
