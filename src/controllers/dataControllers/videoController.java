@@ -53,28 +53,21 @@ public class videoController {
         FileWriter fw = new FileWriter("LRSGA_Bagging_Both.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
-        /*
         int count = 0;
         for (Long age:hmVideoBins.keySet()) {
-	    if (age < 200) continue;
             List<String> lstVideos = hmVideoBins.get(age);
-            //if (lstVideos.size()>=20 && lstVideos.size()<=100) {
-	        if (lstVideos.size()>200) {
-		        count++;
-                System.out.println("Learning model with bin ("+age+").");
-                modelController model = new modelController();
-                model.setBw(bw);
-                model.loadData(lstVideos);
-                model.run("results/DirectGradDesc_"+age+"_weights");
-        		if (count > 10) break;
-            }
-            //System.out.println(age + "\t" + hmVideoBins.get(age).size());
-            //if (count==1) break;
+	    count++;
+	    System.out.println("Learning model with bin ("+age+").");
+	    modelController model = new modelController();
+	    model.setBw(bw);
+	    model.loadData(lstVideos);
+	    model.run("results/DirectGradDesc_"+age+"_weights");
+            if (count==30) break;
         }
-        */
-        models.BaggingModel model = new models.BaggingModel();
-        model.setBw(bw);
-        model.run();
+        
+//        models.BaggingModel model = new models.BaggingModel();
+//        model.setBw(bw);
+//        model.run();
 
         bw.close();
 

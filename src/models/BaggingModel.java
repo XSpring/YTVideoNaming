@@ -17,23 +17,8 @@ import java.util.List;
  *
  * @author Loc Do
  */
-
-public class BaggingModel extends GenericModel {
-
-    @Override
-    public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
-        // HAS NOT IMPLEMENTED YET
-    }
-
-    @Override
-    protected void train() {
-        // HAS NOT IMPLEMENTED YET
-    }
-
-    @Override
-    protected void test(boolean onTestData) {
-        // HAS NOT IMPLEMENTED YET
-    }
+/*
+public class BaggingModel {
 
     public void run() throws Exception {
         HashMap<Long, List<String>> hmVideoBins = new HashMap<Long, List<String>>();
@@ -269,3 +254,4 @@ public class BaggingModel extends GenericModel {
     }
 
 }
+*/

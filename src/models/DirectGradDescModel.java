@@ -17,21 +17,21 @@ public class DirectGradDescModel extends GenericModel {
     protected void train() {
 	java.util.Random rand = new java.util.Random();
 	int numIterations = 150;    //Configuration.getInstance().getNoOfIterations();
-	double eta = 0.00000001;	    //Configuration.getInstance().getEta();
+	double eta = 0.000000001;	    //Configuration.getInstance().getEta();
 	double lambda = 0.005;	    //Configuration.getInstance().getLambda();;
         for (int iteration = 0; iteration < numIterations; iteration++) {
             FeatureController gradient = new FeatureController();
 	    java.util.Collections.shuffle(trainData, rand);
             for (int idI1=0; idI1 < trainData.size(); idI1++) {
 		gradient = new FeatureController();
-//	            idI1 = rand.nextInt(trainData.size());  //used for a quick, cheap stotastic gradient descent
+//	        idI1 = rand.nextInt(trainData.size());  //used for a quick, cheap stotastic gradient descent
                 objects.youtubeObjects.youtubeVideo ytVid = dataController.getHmVideo().get(trainData.get(idI1));
                 FeatureController datapoint = FeatureController.getFeatureControllerFromVid_1(ytVid);
                 double prediction = FeatureController.getInnerProduct(datapoint, modelParams);
                 double difference = prediction - Math.log10(ytVid.getViewCount());
 		gradient.addWithScaling(datapoint, difference);
-                modelParams.addWithScaling(modelParams, -1.0 * eta);
-                modelParams.addWithScaling(gradient, -1.0 * eta);
+                modelParams.addWithScaling(modelParams, -1.0 * eta / trainData.size());
+                modelParams.addWithScaling(gradient, -1.0 * eta / trainData.size());
 //		break;	    //used for a quick, cheap stotastic gradient descent
 		
 		//output for debug
@@ -39,7 +39,6 @@ public class DirectGradDescModel extends GenericModel {
 //		double errSq = this.getErrSq(getPredictions(trainData), trainData);
 //		System.out.println("Iter: " + iteration + "; Diff: " + difference + "; ErrSq: " + errSq + "; Gradient mag: " + gradientMag);
 	    }
-	    //output for debug
 	    double gradientMag = Math.sqrt(FeatureController.getInnerProduct(gradient, gradient));
 	    double errSq = this.getErrSq(getPredictions(trainData), trainData);
 	    System.out.println("Iter: " + iteration + "; ErrSq: " + errSq + "; Gradient mag: " + gradientMag);
