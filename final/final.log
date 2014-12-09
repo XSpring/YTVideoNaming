@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.3)  9 DEC 2014 02:12
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.3)  9 DEC 2014 02:22
 entering extended mode
 **C:/Users/Richardson/Documents/JDocs/School/CMU/2014*Fall/15-781*Machine*Learn
 ing/Project/git/YTVideoNaming/final/final.tex
@@ -510,7 +510,7 @@ ing\Project\git\YTVideoNaming\final\sec_experiments.aux"))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 72.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 72.
 Package rerunfilecheck Info: File `final.out' has not changed.
-(rerunfilecheck)             Checksum: C408ABF16581ED0114BDB7117E88D0CC;1275.
+(rerunfilecheck)             Checksum: 8588A4F29B382AFE33FB13B976B6881E;1263.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 72.
  ) 
 Here is how much of TeX's memory you used:
@@ -538,7 +538,7 @@ ype1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ype1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/
 times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr8
 a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final.pdf (9 pages, 238223 bytes).
+Output written on final.pdf (9 pages, 238218 bytes).
 PDF statistics:
  244 PDF objects out of 1000 (max. 8388607)
  54 named destinations out of 1000 (max. 500000)

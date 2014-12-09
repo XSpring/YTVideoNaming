@@ -311,7 +311,7 @@ public class FeatureController {
 	tf-=ratio;
 	//X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
 
-    //X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());
+    X_ij.getHmNumericFeatures().put(5, (1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount())*ratio);
 	return X_ij;
     }
     

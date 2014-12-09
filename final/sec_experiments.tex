@@ -1,7 +1,7 @@
 \subsection{Dataset}
-	We implemented our own crawler in Java, and collected video information from October 1st to November 5th, 2014, with several stops and updates.  We then crawled the corresponding uploader data. Our crawling strategy was to initialize the crawler with several random "seed" videos, which mostly are in the \textit{Movie} and \textit{Music} category, and to recursively explore all other videos that YouTube suggests are related to that videos. For each video, we extract all of its metadata such as title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as a list of around 30 videos YouTube recommends as being similar.  The data crawling was a very significant part of our project.
+	We implemented our own crawler in Java, and collected video information from October 1st to November 5th, 2014, with several stops and updates.  We then crawled the corresponding uploader data. The crawling strategy is akin to bread-first search. First we initialize the crawler with several random "seed" videos, which mostly are in the \textit{Movie} and \textit{Music} category, and recursively explore all other videos that YouTube suggests are related to those videos. For each video, we extract all of its metadata such as title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as a list of around 30 videos YouTube recommends as being similar.  The data crawling was a very significant part of our project.
 
-	\subsubsection{Preliminary Data Statistics}
+	\subsubsection{Data Statistics}
 		Although the crawler was suspended twice due to technical issues and upgrades, we have gathered a sizable amount of data, with tremendous  variation in the observed values:
 
 		\begin{itemize}
