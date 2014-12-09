@@ -242,7 +242,7 @@ public class FeatureController {
             ratio = 1.0;
         }
 
-        ratio *= 1.0;
+        ratio = 1.0;
     //System.out.println(scale1+" "+scale2+" "+ytVid1.getViewCount()+" "+ytVid2.getViewCount());
 	// 1. Numeric features
 	// 1.0 Intercept weight w_0
@@ -311,7 +311,7 @@ public class FeatureController {
 	tf-=ratio;
 	//X_ij.getHmChannelIDFeatures().put(ytVid2.getChannelID(), tf);
 
-    //X_ij.getHmNumericFeatures().put(5, 1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount());
+    X_ij.getHmNumericFeatures().put(5, (1.0*uploader1.getSubscriberCount() - uploader2.getSubscriberCount())*ratio);
 	return X_ij;
     }
     

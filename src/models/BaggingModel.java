@@ -17,9 +17,9 @@ import java.util.List;
  *
  * @author Loc Do
  */
-/*
+
 public class BaggingModel extends GenericModel {
-* 
+
     @Override
     public void run(List<Object> trainData, List<Object> testData, String whereSaveModel) {
         // HAS NOT IMPLEMENTED YET
@@ -52,7 +52,7 @@ public class BaggingModel extends GenericModel {
             hmVideoBins.put(video.getHowLongAgoUploaded(), lstBin);
         }
 
-        HashMap<Long, List<Double>> results = new HashMap<Long, List<Double>>();
+        HashMap<Long, List<confusionMatrix>> results = new HashMap<Long, List<confusionMatrix>>();
 
         for (int fold=1; fold<6; fold++) {
             System.out.println("Training with fold " + fold);
@@ -103,9 +103,9 @@ public class BaggingModel extends GenericModel {
                         List<Object> test = cv.getTestingDataInFold(fold);
                         //List<Object> test = cv.getTrainingDataInFold(fold);
 
-                        List<Double> resultFold = results.get(age);
+                        List<confusionMatrix> resultFold = results.get(age);
                         if (resultFold == null)
-                            resultFold = new ArrayList<Double>();
+                            resultFold = new ArrayList<confusionMatrix>();
 
                         resultFold.add(test(ensemble, test, age));
 
@@ -121,19 +121,34 @@ public class BaggingModel extends GenericModel {
         System.out.println("Writing the results...");
         for (Long age:results.keySet()) {
             bw.write("Bin "+age+" ");
-            for (Double error:results.get(age)) {
-                bw.write(error+" ");
+
+            double avgAcc = 0.0;
+            double avgF1 = 0.0;
+            int counter = 0;
+
+            for (confusionMatrix result:results.get(age)) {
+                bw.write(result.getAccuracy()+" "+result.getF1Score()+" ");
+                counter++;
+                avgAcc += result.getAccuracy();
+                avgF1 += result.getF1Score();
             }
+
+            avgAcc /= counter;
+            avgF1 /= counter;
+
+            bw.write(avgAcc+" "+avgF1);
             bw.write("\n");
             bw.flush();
         }
     }
 
-    public double test(HashMap<Long, FeatureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
+    public confusionMatrix test(HashMap<Long, FeatureController> ensemble, List<Object> testData, Long selectedAge) throws Exception {
         Object[] arr = testData.toArray();
 
         int correct = 0;
         int count = 0;
+
+        confusionMatrix result = new confusionMatrix();
 
         int labelType = Configuration.getInstance().getLabelType();
 
@@ -199,18 +214,58 @@ public class BaggingModel extends GenericModel {
                     //}
                 }
 
-                //System.out.println("Stop");
-                if ((dataController.getHmVideo().get(item1).getViewCount() -
-                        dataController.getHmVideo().get(item2).getViewCount()) * (label_1 - label_0) >= 0.0) {
-                    correct++;
-                }
+                boolean trueLabel = false;
+                boolean predictLabel = false;
 
-                //System.out.println(label_0+" "+label_1);
+
+                if (dataController.getHmVideo().get(item1).getViewCount() -
+                        dataController.getHmVideo().get(item2).getViewCount() > 0.0)
+                    trueLabel = true;
+
+                if (label_1 - label_0 >= 0.0)
+                    predictLabel = true;
+
+                if (trueLabel && predictLabel)
+                    result.tp++;
+
+                if (!trueLabel && !predictLabel)
+                    result.tn++;
+
+                if (trueLabel && !predictLabel)
+                    result.fn++;
+
+                if (!trueLabel && predictLabel)
+                    result.fp++;
             }
 
-        double errorRatio = correct*1.0 / count;
-        //System.out.println(errorRatio);
-        return errorRatio;
+        return result;
     }
+
+    class confusionMatrix {
+        public int tp = 0;
+        public int fp = 0;
+        public int tn = 0;
+        public int fn = 0;
+
+        public int getTotal() {
+            return tp + tn + fp + fn;
+        }
+
+        public double getAccuracy() {
+            return 1.0*(tp + tn) / getTotal();
+        }
+
+        public double getPrecision() {
+            return 1.0*tp/(tp+fp);
+        }
+
+        public double getRecall() {
+            return 1.0*tp/(fn + tp);
+        }
+
+        public double getF1Score() {
+            return 2*getPrecision()*getRecall()/(getPrecision()+getRecall());
+        }
+    }
+
 }
-*/
