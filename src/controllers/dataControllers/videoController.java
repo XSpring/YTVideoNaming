@@ -50,7 +50,7 @@ public class videoController {
         }
 
         //FileWriter fw = new FileWriter("results/DirectGrad.csv");
-        FileWriter fw = new FileWriter("results/LRSGA_Weighted.txt");
+        FileWriter fw = new FileWriter("LRSGA_Bagging_Both.txt");
         BufferedWriter bw = new BufferedWriter(fw);
 
         /*
