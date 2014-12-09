@@ -1,5 +1,3 @@
-\section{Ranking by Regression}
-\label{sec:regression}
 Another approach to the ranking problem is to predict the number of views for each video and then compare that, rather than comparing two videos directly. Finding the number of views can be treated as a simple linear regression problem. Our linear function assumes that are labels come from our input $X_u$ plus some noise $\epsilon$:
 \begin{equation}
 Y_u = X_u \beta + \epsilon
@@ -10,14 +8,19 @@ f(X) = X \beta
 \end{equation}
 and attempt to minimize the mean squared error loss function, giving
 \begin{equation}
-\beta = arg min_\beta 1/n (A \beta - Y)^T(A \beta - Y)
+	\hat{\beta} = \operatorname*{arg\,min}_{\textbf{$\beta$}} 1/n (A \beta - Y)^T(A \beta - Y)
 \end{equation}
 where
 \begin{equation}
-A = [X_1 ... X_n]^T, Y = [Y_1 ... Y_n]^T
+	A = [X_1 ... X_n]^T
 \end{equation}
+\begin{equation}
+	Y = [Y_1 ... Y_n]^T
+\end{equation}
+
+We anticipated that this method will perform worse than logistic regression at the ranking problem.  However, this method, if successful, would have the added utility of allowing predictions on a video without needing to compare it to another.
   
-We can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
+In order to solve this problem, we can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
 \begin{equation}
 \beta^{t+1} = \beta^t - \eta A^T (A \beta^t - Y)
 \end{equation}
@@ -33,6 +36,10 @@ After the learning stage is complete, the predicted ranking can be done as follo
 \end{equation}
 where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
 
-Directly predicting the actual popularity is not strictly necessary for our ranking problem, however, and we can instead predict anything with the same ranking properties.  In order to help deal with enormous variance in the number of views, we also attempted replace $Y$ with $log(Y)$ and perform least-squares to predict that instead.  Since order of magnitude is more significant than the actual number of views, this is a reasonable substitution.
+\subsection{Comparing Order-of-Magnitude}
+\label{sec:orderofmagnitude}
+	It is important to decide what we will consider as being "close to correct".  We use least-squared regression, where we minimize the total of the squares of the differences between our prediction and the true value.  However, we must deal with the gigantic variance in our observed data.
 
-We anticipated that direct ranking with logistic regression would be more accurate than first performing regression on popularity.  Comparing the two methods is one of the goals of this project.
+	Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000 views.  This will prevent petty variations among the most popular videos from drowning out the differences in all others.
+
+	We therefore deal with the number of views in log scale for the regression (though we also tried running our analysis without using log scale).  One anticipated effect of this is that features will be expected to contribute multiplicatively, rather than additively, to the popularity of a video.

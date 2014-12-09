@@ -1,121 +1,113 @@
-\section{Ranking by Classification}
-\label{sec:ranking}	
-	Our goal is to construct a prediction rule $f$ that can rank the videos w.r.t. their popularity using their meta-data as feature inputs. Since there are only two outcomes in ranking two videos, we choose to model the output of $f$ as a binary class label. Hence, we can formulate the ranking problem as a binary classification problem as in Section \ref{subsec:probFormulation}. This approach poses two problems. First, it does not take into account the magnitude in the ranking, meaning there is no difference between pairs of videos which are significantly different in their viewerships and pairs which are just slightly different. We address this problem by borrowing ideas of re-weighted training set from the Boosting technique in Section \ref{subsec:ext1}. Second, video viewership also depends on the video's "age", i.e. number of days passed since it was uploaded to YouTube to the day it was crawled. It is comparable to rank popularity of a video uploaded years ago with recent ones. Therefore, we bin videos according to their "age", and learn a distinct classifier $f$ for each group. We also construct an ensemble of these time-specific classifiers in order to enhance the overall predictive performance. All are described in Section \ref{subsec:ext2}.
+Our goal is to construct a prediction rule $f$ that can rank the videos with respect to their popularity using their meta-data as feature inputs. Since there are only two outcomes in ranking two videos, we choose to model the output of $f$ as a binary class label. Hence, we can formulate the ranking problem as a binary classification problem as in Section \ref{subsec:probFormulation}. This approach poses two problems. First, it does not take into account the magnitude in the ranking, meaning there is no difference between pairs of videos which are significantly different in their viewerships and pairs which are just slightly different. We address this problem by borrowing ideas of re-weighted training set from the Boosting technique in Section \ref{subsec:ext1}. Second, video viewership also depends on the video's "age", i.e. number of days passed since it was uploaded to YouTube to the day it was crawled. It is comparable to rank popularity of a video uploaded years ago with recent ones. Therefore, we bin videos according to their "age", and learn a distinct classifier $f$ for each group. We also construct an ensemble of these time-specific classifiers in order to enhance the overall predictive performance. All are described in Section \ref{subsec:ext2}.
 
 \subsection{Problem Formulation}
 \label{subsec:probFormulation}
-We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two videos $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
-	\begin{equation}
-	Y_{ij} = \begin{cases}
-			   1, & \text{if } \text{\#\_of\_views\_i} \geq \text{\#\_of\_views\_j} \\
-			   0, & \text{otherwise}
-			\end{cases} 
-	\label{eqn:binaryLabel}			
-	\end{equation}	
+	We can reformulate the ranking prediction problem between two videos as a binary classification problem. To be specific, let $X_i \in \mathbb{R}^D$ and $X_j \in \mathbb{R}^D$ be feature vectors of two videos $i$ and $j$ correspondingly. Each video pair $(i, j)$ is associated with a binary label $Y_{ij}$ defined as follows
+		\begin{equation}
+		Y_{ij} = \begin{cases}
+				   1, & \text{if } \text{\#\_of\_views\_i} \geq \text{\#\_of\_views\_j} \\
+				   0, & \text{otherwise}
+				\end{cases} 
+		\label{eqn:binaryLabel}			
+		\end{equation}	
 
-We can form a representative vector of the pair $(i, j)$ as follows
-	\begin{equation}
-		\mathcal{X}_{ij} = k (X_i, X_j),
-	\end{equation}
-where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feature transformation function. There are several options for $k$. 
-\begin{itemize}
-	\item Difference between two feature vectors: $\mathcal{X}_{ij} = X_i - X_j$
-	\item Concatenation of two feature vectors:  $\mathcal{X}_{ij} = [X_i, X_j]$ (Matlab notation)
-	\item Kernel functions, e.g. $\mathcal{X}_{ij} = || X_i - X_j ||^2$
-\end{itemize}
-At the moment, we cannot find any theories/signals to indicate which form of $k$ is the most appropriate. For the scope of the project, we choose to represent $X_{ij}$ as difference between $X_i$ and $X_j$, meaning $D = D'$. The kernelized version is left in future work. 
+	We can form a representative vector of the pair $(i, j)$ as follows
+		\begin{equation}
+			\mathcal{X}_{ij} = k (X_i, X_j),
+		\end{equation}
+	where $k: (\mathcal{R}^D, \mathcal{R}^D) \rightarrow \mathcal{R}^{D'}$ is a feature transformation function. There are several options for $k$. 
+	\begin{itemize}
+		\item Difference between two feature vectors: $\mathcal{X}_{ij} = X_i - X_j$
+		\item Concatenation of two feature vectors:  $\mathcal{X}_{ij} = [X_i, X_j]$ (Matlab notation)
+		\item Kernel functions, e.g. $\mathcal{X}_{ij} = || X_i - X_j ||^2$
+	\end{itemize}
+	At the moment, we cannot find any theories/signals to indicate which form of $k$ is the most appropriate. For the scope of the project, we choose to represent $X_{ij}$ as difference between $X_i$ and $X_j$, meaning $D = D'$. The kernelized version is left in future work. 
 
-The function form of classifier $P(Y_{ij}|\mathcal{X}_{ij}, \textbf{w})$ as follows
-	 \begin{equation}
-	 P(Y_{ij}=1|\mathcal{X}_{ij}, \textbf{w}) = \frac{1}{1 + \exp ( w_0 + \sum_d w_d \mathcal{X}_{ij}^d )} = \frac{1}{1 + \exp (\textbf{w}^T \mathcal{X}_{ij})}
-	 \end{equation}
- 
-The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learnt using MAP.
-	\begin{align}
-	\label{eqn:objFuncLR}
-	\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
-	&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
-	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) + ln P(\textbf{w}) \\ \notag
-	&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) - \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
-	\end{align}
+	The function form of classifier $P(Y_{ij}|\mathcal{X}_{ij}, \textbf{w})$ as follows
+		 \begin{equation}
+		 P(Y_{ij}=1|\mathcal{X}_{ij}, \textbf{w}) = \frac{1}{1 + \exp ( w_0 + \sum_d w_d \mathcal{X}_{ij}^d )} = \frac{1}{1 + \exp (\textbf{w}^T \mathcal{X}_{ij})}
+		 \end{equation}
+	 
+	The model parameters $\textbf{w} \in \mathbb{R}^D$ can be learned using MAP.
+		\begin{align}
+		\label{eqn:objFuncLR}
+		\hat{\textbf{w}}_{MAP} &= \operatorname*{arg\,max}_{\textbf{w}} \prod_{(i,j)} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($P(\textbf{w}) \sim \mathcal{N} (0, \tau^2 I) $)}\\ \notag
+		&= \operatorname*{arg\,max}_{\textbf{w}} \prod_{\{(i,j)|Y_{ij}=1\}} P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) P(\textbf{w}) \hspace{1 cm} \text{($Y_{ij} + Y_{ji} = 1, \mathcal{X}_{ij} = - \mathcal{X}_{ji}$)}\\ \notag
+		&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ln P(Y_{ij}| \mathcal{X}_{ij}, \textbf{w}) + ln P(\textbf{w}) \\ \notag
+		&= \operatorname*{arg\,max}_{\textbf{w}} \sum_{\{(i,j)|Y_{ij}=1\}} ( (1 - Y_{ij})\textbf{w}^T\mathcal{X}_{ij} - ln(1 + \exp(\textbf{w}^T\mathcal{X}_{ij}))) - \lambda_w \|\textbf{w} \|^2_2 = l(\textbf{w})
+		\end{align}
 
-We can optimise Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent algorithm with the following update rule
-	\begin{equation}
-	w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \eta (\sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
-	\end{equation}
+	We can optimize Equation \ref{eqn:objFuncLR} (a concave function) using Gradient Ascent algorithm with the following update rule
+		\begin{equation}
+		w^{t+1}_d \leftarrow w^t_d + \eta \frac{\partial l(\textbf{w})}{\partial w_d} = w^t_d + \eta (\sum_{\{(i,j)|Y_{ij}=1\}} \mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
+		\end{equation}
 
-Since the size of training set is less than the number of features, we opt to using Stochastic Gradient Ascent algorithm with L2-regularization.
-	\begin{equation}
-	\label{eqn:stoGradAscUpdateFunc}
-	w^{t+1}_d = w^t_d + \eta (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
-	\end{equation}
+	Since the size of training set is less than the number of features, we opt to using Stochastic Gradient Ascent algorithm with L2-regularization.
+		\begin{equation}
+		\label{eqn:stoGradAscUpdateFunc}
+		w^{t+1}_d = w^t_d + \eta (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
+		\end{equation}
 
-\begin{algorithm}[h]\small
-Initialize $\textbf{w}$ as zero-valued vector.\\
-Initialize $epoch = 1$.\\
-Initialize $\lambda = 0.01$.\\
-Initialize $\eta = 1$.\\
-
-\While {epoch $<$ maxIter} {
-	\For {$\forall i, j$} {
-		Update $\textbf{w}$ using Equation \ref{eqn:stoGradAscUpdateFuncGeneric}
-	}    
-	epoch++;
-}
-
-Return $\textbf{w}$.
-\caption{Stochastic Gradient Ascent Algorithm} \label{algo:stoGradAsc}
-\end{algorithm}
+	\begin{algorithm}[h]\small
+		Initialize $\textbf{w}$ as zero-valued vector.\\
+		Initialize $epoch = 1$.\\
+		Initialize $\lambda = 0.01$.\\
+		Initialize $\eta = 1$.\\
+		\While {epoch $<$ maxIter} {
+			\For {$\forall i, j$} {
+				Update $\textbf{w}$ using Equation \ref{eqn:stoGradAscUpdateFuncGeneric}
+			}    
+			epoch++;
+		}
+		Return $\textbf{w}$.
+		\caption{Stochastic Gradient Ascent Algorithm} \label{algo:stoGradAsc}
+	\end{algorithm}
 
 \subsection{Extension 1: Re-weighting the features}
 \label{subsec:ext1}
-By definition in Equation \ref{eqn:binaryLabel}, $Y_{ij}$ can only capture which video has more viewerships, but not how much their viewerships differ. Hence, the classifier $f$ cannot weight correctly important features in determining video's popularity. Assume that we have three YouTube videos $v_1$, $v_2$ and $v_3$, each attracted $1000$, $10$ and $1$ views after one day since they were uploaded to the web. Also assume that we only use bag-of-word features and there are five words in our dictionary $\{w_1, w_2, w_3, w_4, w_5\}$.The following table contains all necessary information for this example.
+	By definition in Equation \ref{eqn:binaryLabel}, $Y_{ij}$ can only capture which video has more viewerships, but not how much their viewerships differ. Hence, the classifier $f$ cannot weight correctly important features in determining video's popularity. Assume that we have three YouTube videos $v_1$, $v_2$ and $v_3$, each attracted $1000$, $10$ and $1$ views after one day since they were uploaded to the web. Also assume that we only use bag-of-word features and there are five words in our dictionary $\{w_1, w_2, w_3, w_4, w_5\}$.The following table contains all necessary information for this example.
 
-	\begin{center}
-		\begin{tabular}{| l | c | c | c |}
-    			\hline
-			Video & Title & Number of views & Bag of word features \\ \hline
-			$v_1$ & $\{w_1, w_2, w_3\}$ &	1000 & $\{1, 1, 1, 0 ,0 \}$	\\ \hline
-			$v_2$ & $\{w_2, w_3, w_4\}$ & 10 & $\{0, 1, 1, 1 ,0 \}$	\\ \hline
-			$v_3$ & $\{w_3, w_4, w_5\}$ & 1 & $\{0, 0, 1, 1 ,1 \}$	\\ \hline
-		\end{tabular}
-	\end{center}
+		\begin{center}
+			\begin{tabular}{| l | c | c | c |}
+					\hline
+				Video & Title & Number of views & Bag of word features \\ \hline
+				$v_1$ & $\{w_1, w_2, w_3\}$ &	1000 & $\{1, 1, 1, 0 ,0 \}$	\\ \hline
+				$v_2$ & $\{w_2, w_3, w_4\}$ & 10 & $\{0, 1, 1, 1 ,0 \}$	\\ \hline
+				$v_3$ & $\{w_3, w_4, w_5\}$ & 1 & $\{0, 0, 1, 1 ,1 \}$	\\ \hline
+			\end{tabular}
+		\end{center}
 
-As the above scheme in Section \ref{subsec:probFormulation}, we can represent the pair $(v_1, v_2)$ and $(v_2, v_3)$ with feature vectors $\mathcal{X}_{12}=\{1, 0, 0, -1, 0\}$ and $\mathcal{X}_{23}=\{0, 1, 0, 0 , -1 \}$. When training a classifier $f$ on these two vectors with both $Y_{12}$ and $Y_{23}$ equal to $1$, we can see no differences between the weights (i.e. model parameters) on feature $w_1$ and $w_2$, $w_4$ and $w_5$. Hence, $f$ cannot correctly rank a pair of videos with titles of $\{w_1, w_4\}$ and $\{w_2, w_5\}$ correspondingly.
+	As the above scheme in Section \ref{subsec:probFormulation}, we can represent the pair $(v_1, v_2)$ and $(v_2, v_3)$ with feature vectors $\mathcal{X}_{12}=\{1, 0, 0, -1, 0\}$ and $\mathcal{X}_{23}=\{0, 1, 0, 0 , -1 \}$. When training a classifier $f$ on these two vectors with both $Y_{12}$ and $Y_{23}$ equal to $1$, we can see no differences between the weights (i.e. model parameters) on feature $w_1$ and $w_2$, $w_4$ and $w_5$. Hence, $f$ cannot correctly rank a pair of videos with titles of $\{w_1, w_4\}$ and $\{w_2, w_5\}$ correspondingly.
 
-A general idea to solve this problem is to incorporate the magnitude in difference between two videos' number of views into $f$. Basically, we want to have more weights on features that are frequently attached with popular videos. In this work we propose two ad-hoc solutions: 1) Augmenting the representative feature vectors $\mathcal{X}_{ij}$ and 2) Re-weighting the gradient.
+	A general idea to solve this problem is to incorporate the magnitude in difference between two videos' number of views into $f$. Basically, we want to have more weights on features that are frequently attached with popular videos. In this work we propose two ad-hoc solutions: 1) Augmenting the representative feature vectors $\mathcal{X}_{ij}$ and 2) Re-weighting the gradient.
 
-\subsubsection{Augmenting the representative feature vectors $\mathcal{X}_{ij}$}
-In this approach, we scale the representative feature vectors $\mathcal{X}_{ij}$ for pairs of videos $(i, j)$ in the training set, and train a classifier $f$ on these augmented features. The scaling factor is determined based on the ratio of numbers of views of the corresponding video pair $i$ and $j$. To avoid the overflow problem caused by high variance in number of views (2 billions versus 10), we transform the number of views into log space before computing the ratio. Let consider the pair $\mathcal{X}_{12}$ in the above example. The scaling factor is computed as follow: $\alpha = \frac{\log 1000}{\log 10} = 3$. Hence the augmented representative features $\mathcal{X}_{12} = \{3, 0, 0, -3, 0\}$. 
+	\subsubsection{Augmenting the representative feature vectors}
+		In this approach, we scale the representative feature vectors $\mathcal{X}_{ij}$ for pairs of videos $(i, j)$ in the training set, and train a classifier $f$ on these augmented features. The scaling factor is determined based on the ratio of numbers of views of the corresponding video pair $i$ and $j$. To avoid the overflow problem caused by high variance in number of views (2 billions versus 10), we transform the number of views into log space before computing the ratio. Let consider the pair $\mathcal{X}_{12}$ in the above example. The scaling factor is computed as follow: $\alpha = \frac{\log 1000}{\log 10} = 3$. Hence the augmented representative features $\mathcal{X}_{12} = \{3, 0, 0, -3, 0\}$. 
 
-There are other various options to compute the scaling factor $\alpha$ such as using a different log base, or normalise all the view counts, etc. However, all these approaches are akin to the proposed one, and hence do not have a theoretical guarantee on the overall performance. We demonstrate one way of using ratio of log base 10 in this work.
+		There are other various options to compute the scaling factor $\alpha$ such as using a different log base, or normalise all the view counts, etc. However, all these approaches are akin to the proposed one, and hence do not have a theoretical guarantee on the overall performance. We demonstrate one way of using ratio of log base 10 in this work.
 
-\subsubsection{Re-weighting the gradient}
-Another way to tackle the above problem is to re-weighting the gradient. Similarly as the first approach, we also compute a scaling factor $\alpha$ from the two videos' number of views. The only difference is instead of augmenting the representative feature vectors $\mathcal{X}_{ij}$, we re-weight the gradient in Equation \ref{eqn:stoGradAscUpdateFunc} as follows
+	\subsubsection{Re-weighting the gradient}
+		Another way to tackle the above problem is to re-weighting the gradient. Similarly as the first approach, we also compute a scaling factor $\alpha$ from the two videos' number of views. The only difference is instead of augmenting the representative feature vectors $\mathcal{X}_{ij}$, we re-weight the gradient in Equation \ref{eqn:stoGradAscUpdateFunc} as follows
 
-	\begin{equation}
-	w^{t+1}_d = w^t_d + \eta \alpha (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
-	\label{eqn:stoGradAscUpdateFuncGeneric}
-	\end{equation}
+		\begin{equation}
+		w^{t+1}_d = w^t_d + \eta \alpha (\mathcal{X}_{ij}^d ( (1 - Y_{ij}) - \frac{\exp(\textbf{w}^T\mathcal{X}_{ij})}{1 + \exp(\textbf{w}^T\mathcal{X}_{ij})})  - \lambda_w w_d)
+		\label{eqn:stoGradAscUpdateFuncGeneric}
+		\end{equation}
 
-	The idea is borrowed from the AdaBoost technique by re-weighting the training data points. However, the difference is that AdaBoost keeps updating weights for every iteration, meanwhile we fix the weight. Our goal is to stress the importance of pairs having high variance in their viewerships by forcing the corresponding parameters to update more gradients of these pairs. 
+		The idea is borrowed from the AdaBoost technique by re-weighting the training data points. However, the difference is that AdaBoost keeps updating weights for every iteration, meanwhile we fix the weight. Our goal is to stress the importance of pairs having high variance in their viewerships by forcing the corresponding parameters to update more gradients of these pairs. 
 	 
 \subsection{Extension 2: Ensemble of time-specific classifiers}
 \label{subsec:ext2}
-Number of views of a video also depends on time passed since it was first uploaded to YouTube. It is more comparable to measure the popularity between videos sharing the same passed days. Such videos are clustered into a bin and a distinct classifier $f$ is trained on them. For the above example, we have 3 different bins, $B_{1000}=\{v_1\}$, $B_{10}=\{v_2\}$ and $B_{1}=\{v_3\}$, with corresponding classifiers $f_{1000}$, $f_{10}$ and $f_{1}$. Given a new video pair $v_4$ and $v_5$, we first find the bin that both videos belong to according to their age, and use the corresponding classifier to compare their popularity. 
+	Number of views of a video also depends on time passed since it was first uploaded to YouTube. It is more comparable to measure the popularity between videos sharing the same passed days. Such videos are clustered into a bin and a distinct classifier $f$ is trained on them. For the above example, we have 3 different bins, $B_{1000}=\{v_1\}$, $B_{10}=\{v_2\}$ and $B_{1}=\{v_3\}$, with corresponding classifiers $f_{1000}$, $f_{10}$ and $f_{1}$. Given a new video pair $v_4$ and $v_5$, we first find the bin that both videos belong to according to their age, and use the corresponding classifier to compare their popularity. 
 
-This approach has a drawback which makes the learning model suffers from data sparseness. Since our data is a one-month sample from YouTube repository, it is possible to have keywords do not exist in the observed video pairs of a bin. To overcome this issue, we suggest to construct an ensemble of all bins' classifier to enhance the predictive performance. 
+	This approach has a drawback which makes the learning model suffers from data sparseness. Since our data is a one-month sample from YouTube repository, it is possible to have keywords do not exist in the observed video pairs of a bin. To overcome this issue, we suggest to construct an ensemble of all bins' classifier to enhance the predictive performance. 
 
-According to [4], ensemble methods are learning algorithms that blend results from different hypotheses to perform some prediction tasks on new data points. There are two main reasons behind these methods. First is statistical. Basically, we often do not have sufficient data to identify the best, but equally accurate, hypotheses. By taking the majority votes or average results of these hypothesis, we can reduce the risk of choosing the wrong hypothesis. Secondly, different hypotheses may have different starting points and explore different local optima. Hence an ensemble of these hypotheses can give a better approximation than any of individual hypothesis.
-Bagging and Boosting are common ensemble algorithms. 
+	According to [4], ensemble methods are learning algorithms that blend results from different hypotheses to perform some prediction tasks on new data points. There are two main reasons behind these methods. First is statistical. Basically, we often do not have sufficient data to identify the best, but equally accurate, hypotheses. By taking the majority votes or average results of these hypothesis, we can reduce the risk of choosing the wrong hypothesis. Secondly, different hypotheses may have different starting points and explore different local optima. Hence an ensemble of these hypotheses can give a better approximation than any of individual hypothesis.
+	Bagging and Boosting are common ensemble algorithms. 
 
-The above two reasons motive us to construct an ensemble of bin-specific classifiers with selection of the majority weighted voting scheme. First, it is possible to have a keyword $w$ does not exist in an arbitrary bin's training data, but can occur in other bins. Hence we can borrow information from those bins to weight $w$. Second, to incorporate the fact that the video's popularity will be diminishing over time, the weights from bins further away from the selected bin must have smaller impact to its neighbouring bins. We therefore introduce a majority weighted voting scheme as follow. Let $f_t$ be the classifier trained on data of bin $B_t$, containing videos of t-days old. Assume that we have T such bins. For a pair of videos $i, j$ in the bin $B_t$'s testing set, we compute the probability of ranking as follows
-	\begin{align}
-		P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T) &= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_{t'}) \\ \notag 
-		&= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, \textbf{w}^{t'})
-	\end{align}
-	We can compute $P(Y_{ij}^t = 0 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T)$ similarly. The class with higher probability is selected as final prediction. 
-	
-
-
-
+	The above two reasons motive us to construct an ensemble of bin-specific classifiers with selection of the majority weighted voting scheme. First, it is possible to have a keyword $w$ does not exist in an arbitrary bin's training data, but can occur in other bins. Hence we can borrow information from those bins to weight $w$. Second, to incorporate the fact that the video's viewcount growth rate will be diminishing over time, the weights from bins further away from the selected bin must have smaller impact to its neighbouring bins. We therefore introduce a majority weighted voting scheme as follow. Let $f_t$ be the classifier trained on data of bin $B_t$, containing videos of t-days old. Assume that we have T such bins. For a pair of videos $i, j$ in the bin $B_t$'s testing set, we compute the probability of ranking as follows
+		\begin{align}
+			P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T) &= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, f_{t'}) \\ \notag 
+			&= \sum_{t'} \frac{1}{1+|t - t'|} P(Y_{ij}^t = 1 | \mathcal{X}_{ij}^t, \textbf{w}^{t'})
+		\end{align}
+		We can compute $P(Y_{ij}^t = 0 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T)$ similarly. The class with higher probability is selected as final prediction. 

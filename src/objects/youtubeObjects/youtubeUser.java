@@ -267,7 +267,7 @@ public class youtubeUser {
 	    youtubeUser user = new youtubeUser("");
 	    String[] pieces = is.readLine().split(";");
 	    user.setKey(pieces[0]);
-	    user.setViewCount(Long.parseLong(pieces[1]));
+	    user.setSubscriberCount(Long.parseLong(pieces[1]));
 	    user.setViewCount(Long.parseLong(pieces[2]));
 	    java.util.ArrayList<String> uploadedVids = new java.util.ArrayList<String>();
 	    uploadedVids.addAll(Arrays.asList(pieces).subList(3, pieces.length));
