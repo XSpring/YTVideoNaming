@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0b24814-d444-4b83-b094-a31b4559b4e9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.pdf" afterPath="$PROJECT_DIR$/final/final.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.synctex.gz" afterPath="$PROJECT_DIR$/final/final.synctex.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.aux" afterPath="$PROJECT_DIR$/final/final.aux" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.log" afterPath="$PROJECT_DIR$/final/final.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.out" afterPath="$PROJECT_DIR$/final/final.out" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/sec_results.tex" afterPath="$PROJECT_DIR$/final/sec_results.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/BaggingModel.java" afterPath="$PROJECT_DIR$/src/models/BaggingModel.java" />
     </list>
     <ignored path="YTVideoNaming.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,26 +25,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BaggingModel.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="BaggingModel.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/models/BaggingModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2358" max-vertical-offset="4005">
-              <caret line="187" column="41" selection-start-line="187" selection-start-column="41" selection-end-line="187" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.44217688" vertical-offset="1590" max-vertical-offset="4215">
+              <caret line="119" column="51" selection-start-line="119" selection-start-column="51" selection-end-line="119" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#688#708#0" expanded="true" />
                 <element signature="e#1228#1257#0" expanded="true" />
                 <element signature="e#1520#1545#0" expanded="true" />
-                <element signature="e#8752#8753#0" expanded="true" />
-                <element signature="e#8800#8801#0" expanded="true" />
-                <element signature="e#8839#8840#0" expanded="true" />
-                <element signature="e#8896#8897#0" expanded="true" />
-                <element signature="e#8936#8937#0" expanded="true" />
-                <element signature="e#8981#8982#0" expanded="true" />
-                <element signature="e#9018#9019#0" expanded="true" />
-                <element signature="e#9065#9066#0" expanded="true" />
-                <element signature="e#9103#9104#0" expanded="true" />
-                <element signature="e#9191#9192#0" expanded="true" />
+                <element signature="e#9413#9414#0" expanded="true" />
+                <element signature="e#9461#9462#0" expanded="true" />
+                <element signature="e#9500#9501#0" expanded="true" />
+                <element signature="e#9557#9558#0" expanded="true" />
+                <element signature="e#9597#9598#0" expanded="true" />
+                <element signature="e#9642#9643#0" expanded="true" />
+                <element signature="e#9679#9680#0" expanded="true" />
+                <element signature="e#9726#9727#0" expanded="true" />
+                <element signature="e#9764#9765#0" expanded="true" />
+                <element signature="e#9852#9853#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,10 +100,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mainController.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="mainController.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39647576" vertical-offset="75" max-vertical-offset="1065">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
               <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding />
             </state>
@@ -201,8 +195,8 @@
         <option value="$PROJECT_DIR$/src/controllers/dataControllers/videoController.java" />
         <option value="$PROJECT_DIR$/src/controllers/dataControllers/FeatureController.java" />
         <option value="$PROJECT_DIR$/src/models/LRStoGradAscModel.java" />
-        <option value="$PROJECT_DIR$/src/models/BaggingModel.java" />
         <option value="$PROJECT_DIR$/src/controllers/mainController.java" />
+        <option value="$PROJECT_DIR$/src/models/BaggingModel.java" />
       </list>
     </option>
   </component>
@@ -641,16 +635,16 @@
             <element signature="e#688#708#0" expanded="true" />
             <element signature="e#1228#1257#0" expanded="true" />
             <element signature="e#1520#1545#0" expanded="true" />
-            <element signature="e#8752#8753#0" expanded="true" />
-            <element signature="e#8800#8801#0" expanded="true" />
-            <element signature="e#8839#8840#0" expanded="true" />
-            <element signature="e#8896#8897#0" expanded="true" />
-            <element signature="e#8936#8937#0" expanded="true" />
-            <element signature="e#8981#8982#0" expanded="true" />
-            <element signature="e#9018#9019#0" expanded="true" />
-            <element signature="e#9065#9066#0" expanded="true" />
-            <element signature="e#9103#9104#0" expanded="true" />
-            <element signature="e#9191#9192#0" expanded="true" />
+            <element signature="e#9413#9414#0" expanded="true" />
+            <element signature="e#9461#9462#0" expanded="true" />
+            <element signature="e#9500#9501#0" expanded="true" />
+            <element signature="e#9557#9558#0" expanded="true" />
+            <element signature="e#9597#9598#0" expanded="true" />
+            <element signature="e#9642#9643#0" expanded="true" />
+            <element signature="e#9679#9680#0" expanded="true" />
+            <element signature="e#9726#9727#0" expanded="true" />
+            <element signature="e#9764#9765#0" expanded="true" />
+            <element signature="e#9852#9853#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -823,29 +817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/BaggingModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2358" max-vertical-offset="4005">
-          <caret line="187" column="41" selection-start-line="187" selection-start-column="41" selection-end-line="187" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#688#708#0" expanded="true" />
-            <element signature="e#1228#1257#0" expanded="true" />
-            <element signature="e#1520#1545#0" expanded="true" />
-            <element signature="e#8752#8753#0" expanded="true" />
-            <element signature="e#8800#8801#0" expanded="true" />
-            <element signature="e#8839#8840#0" expanded="true" />
-            <element signature="e#8896#8897#0" expanded="true" />
-            <element signature="e#8936#8937#0" expanded="true" />
-            <element signature="e#8981#8982#0" expanded="true" />
-            <element signature="e#9018#9019#0" expanded="true" />
-            <element signature="e#9065#9066#0" expanded="true" />
-            <element signature="e#9103#9104#0" expanded="true" />
-            <element signature="e#9191#9192#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/dataControllers/videoController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="4635">
@@ -878,6 +849,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/LRAdaGradModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="206" max-vertical-offset="1260">
+          <caret line="30" column="43" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/utilities/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2325">
@@ -903,19 +890,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/LRAdaGradModel.java">
+    <entry file="file://$PROJECT_DIR$/src/models/BaggingModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="206" max-vertical-offset="1260">
-          <caret line="30" column="43" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/mainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39647576" vertical-offset="75" max-vertical-offset="1065">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
+        <state vertical-scroll-proportion="0.44217688" vertical-offset="1590" max-vertical-offset="4215">
+          <caret line="119" column="51" selection-start-line="119" selection-start-column="51" selection-end-line="119" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#688#708#0" expanded="true" />
+            <element signature="e#1228#1257#0" expanded="true" />
+            <element signature="e#1520#1545#0" expanded="true" />
+            <element signature="e#9413#9414#0" expanded="true" />
+            <element signature="e#9461#9462#0" expanded="true" />
+            <element signature="e#9500#9501#0" expanded="true" />
+            <element signature="e#9557#9558#0" expanded="true" />
+            <element signature="e#9597#9598#0" expanded="true" />
+            <element signature="e#9642#9643#0" expanded="true" />
+            <element signature="e#9679#9680#0" expanded="true" />
+            <element signature="e#9726#9727#0" expanded="true" />
+            <element signature="e#9764#9765#0" expanded="true" />
+            <element signature="e#9852#9853#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
