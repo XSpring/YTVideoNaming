@@ -68,7 +68,7 @@ public class BaggingModel extends GenericModel {
                         GenericModel model = new LRStoGradAscModel(train, null);
 			            model.modelParams = new FeatureController();
 			            model.setBw(bw);
-                        model.train();
+                        //model.train();
 
                         ensemble.put(age, model.getModelParams());
                     }
@@ -116,10 +116,13 @@ public class BaggingModel extends GenericModel {
             int counter = 0;
 
             for (confusionMatrix result:results.get(age)) {
-                bw.write(result.getAccuracy()+" "+result.getF1Score()+" ");
+                //bw.write(result.getAccuracy()+" "+result.getF1Score()+" ");
+                bw.write(result.tp+" "+result.tn+" ");
                 counter++;
-                avgAcc += result.getAccuracy();
-                avgF1 += result.getF1Score();
+                //avgAcc += result.getAccuracy();
+                //avgF1 += result.getF1Score();
+                avgAcc += 1.0*result.tp/(result.tp+result.tn);
+                avgF1 += 1.0*result.tn/(result.tp+result.tn);
             }
 
             avgAcc /= counter;
@@ -161,6 +164,7 @@ public class BaggingModel extends GenericModel {
 
                     FeatureController weight = ensemble.get(age);
 
+                    /*
                     // Create representative feature vector
                     youtubeVideo v1 = dataController.getHmVideo().get(item1);
                     youtubeVideo v2 = dataController.getHmVideo().get(item2);
@@ -202,8 +206,10 @@ public class BaggingModel extends GenericModel {
                             //label_0 += Math.exp(-Math.abs(age - selectedAge));
                             label_0 += 1.0 / (1.0 + Math.abs(age - selectedAge));
                     //}
+                    */
                 }
 
+                /*
                 boolean trueLabel = false;
                 boolean predictLabel = false;
 
@@ -226,6 +232,14 @@ public class BaggingModel extends GenericModel {
 
                 if (!trueLabel && predictLabel)
                     result.fp++;
+                */
+                if (dataController.getHmVideo().get(item1).getViewCount() -
+                        dataController.getHmVideo().get(item2).getViewCount() > 0.0)
+                    result.tp++;
+
+                if (dataController.getHmVideo().get(item1).getViewCount() -
+                        dataController.getHmVideo().get(item2).getViewCount() < 0.0)
+                    result.tn++;
             }
 
         return result;
