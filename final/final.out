@@ -8,15 +8,3 @@
 \BOOKMARK [1][-]{section.3}{Ranking by Regression}{}% 8
 \BOOKMARK [2][-]{subsection.3.1}{Problem Formulation}{section.3}% 9
 \BOOKMARK [2][-]{subsection.3.2}{Comparing Order-of-Magnitude}{section.3}% 10
-\BOOKMARK [1][-]{section.4}{Experimental study}{}% 11
-\BOOKMARK [2][-]{subsection.4.1}{Dataset}{section.4}% 12
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Data Statistics}{subsection.4.1}% 13
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Feature extraction}{subsection.4.1}% 14
-\BOOKMARK [2][-]{subsection.4.2}{Evaluation Metrics}{section.4}% 15
-\BOOKMARK [3][-]{subsubsection.4.2.1}{Classification}{subsection.4.2}% 16
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Regression}{subsection.4.2}% 17
-\BOOKMARK [2][-]{subsection.4.3}{Results}{section.4}% 18
-\BOOKMARK [3][-]{subsubsection.4.3.1}{Classification Results}{subsection.4.3}% 19
-\BOOKMARK [3][-]{subsubsection.4.3.2}{Regression Results}{subsection.4.3}% 20
-\BOOKMARK [1][-]{section.5}{Related work}{}% 21
-\BOOKMARK [1][-]{section.6}{Conclusion}{}% 22
