@@ -111,4 +111,4 @@ Our goal is to construct a prediction rule $f$ that can rank the videos with res
 		\end{align}
 		We can compute $P(Y_{ij}^t = 0 | \mathcal{X}_{ij}^t, f_1, \ldots, f_T)$ similarly. The class with higher probability is selected as final prediction. 
 
-	The two above extensions are workarounds to the Logistic Regression approach to incorporate the magnitude in video rankings. Since we rank the videos based on their view counts, it may be more efficient if we directly model the number of views instead of the orders. This can be treated as a simple regression problem, as described in the next section.  
+	The two above extensions are workarounds for the Classification approach to incorporate the magnitude in video rankings. Since we rank the videos based on their view counts, it may be more efficient if we directly model the number of views instead of the orders. This can be treated as a simple regression problem, as described in the next section.  
