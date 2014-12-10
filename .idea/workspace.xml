@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b0b24814-d444-4b83-b094-a31b4559b4e9" name="Default" comment="" />
+    <list default="true" id="b0b24814-d444-4b83-b094-a31b4559b4e9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.pdf" afterPath="$PROJECT_DIR$/final/final.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.synctex.gz" afterPath="$PROJECT_DIR$/final/final.synctex.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.aux" afterPath="$PROJECT_DIR$/final/final.aux" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/final.log" afterPath="$PROJECT_DIR$/final/final.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/sec_experiments.tex" afterPath="$PROJECT_DIR$/final/sec_experiments.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="YTVideoNaming.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
