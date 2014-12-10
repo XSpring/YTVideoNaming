@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  9 DEC 2014 23:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  10 DEC 2014 00:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -439,19 +439,18 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 52.
  [3])
 (./sec_regression.tex [4]) (./sec_experiments.tex [5]
-<DistributionOfViews.png, id=154, 430.60875pt x 341.77687pt>
-File: DistributionOfViews.png Graphic file (type png)
+<distributions.pdf, id=154, 1829.83624pt x 603.25375pt>
+File: distributions.pdf Graphic file (type pdf)
 
-<use DistributionOfViews.png>
-Package pdftex.def Info: DistributionOfViews.png used on input line 22.
-(pdftex.def)             Requested size: 198.7425pt x 157.74599pt.
- [6 <./DistributionOfViews.png>])
-(./sec_results.tex [7]
+<use distributions.pdf>
+Package pdftex.def Info: distributions.pdf used on input line 23.
+(pdftex.def)             Requested size: 397.48499pt x 131.04094pt.
+ [6 <./distributions.pdf>]) (./sec_results.tex [7]
 
 LaTeX Warning: File `logistic regression training.png' not found on input line 
 20.
 
-<logistic regression training.png, id=174, 237.88875pt x 134.00063pt>
+<logistic regression training.png, id=183, 237.88875pt x 134.00063pt>
 File: logistic regression training.png Graphic file (type png)
 
 <use logistic regression training.png>
@@ -463,7 +462,7 @@ Package pdftex.def Info: logistic regression training.png used on input line 20
 LaTeX Warning: File `logistic regression testing.png' not found on input line 2
 8.
 
-<logistic regression testing.png, id=176, 237.88875pt x 132.495pt>
+<logistic regression testing.png, id=185, 237.88875pt x 132.495pt>
 File: logistic regression testing.png Graphic file (type png)
 
 <use logistic regression testing.png>
@@ -487,9 +486,9 @@ Package rerunfilecheck Info: File `final.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 72.
  ) 
 Here is how much of TeX's memory you used:
- 7928 strings out of 493117
- 113961 string characters out of 6135433
- 230034 words of memory out of 5000000
+ 7927 strings out of 493117
+ 113925 string characters out of 6135433
+ 230186 words of memory out of 5000000
  11209 multiletter control sequences out of 15000+600000
  29904 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -512,10 +511,10 @@ ist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-dist/font
 s/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on final.pdf (9 pages, 217168 bytes).
+Output written on final.pdf (9 pages, 264682 bytes).
 PDF statistics:
- 265 PDF objects out of 1000 (max. 8388607)
- 228 compressed objects within 3 object streams
+ 274 PDF objects out of 1000 (max. 8388607)
+ 234 compressed objects within 3 object streams
  57 named destinations out of 1000 (max. 500000)
  202 words of extra memory for PDF output out of 10000 (max. 10000000)
 

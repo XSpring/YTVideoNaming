@@ -15,14 +15,15 @@
 			\item Range of number of dislikes: $[1 \ldots 4,184,769]$.
 		\end{itemize}
 
-		We plot in Figure \ref{fig:logNoOfViews} the distribution of number of views in our current data. Interestingly, the distribution is in the shape of Gaussians, instead of following the Power Law distribution as frequently observed in social networks. We guess this observation is due to the way we sampled the data, by following the recommended links. It is intuitive since videos with high view counts are usually recommended together. 
+		We plot in Figure \ref{fig:histograms} different histograms reflecting characteristics of our data. In the red-colorer histogram, we look for the distributions of videos and their view counts. Interestingly, the distribution is in the shape of Gaussians, instead of following the Power Law distribution as frequently observed in social networks. We guess this observation is due to the way we sampled the data, by following the recommended links. It is intuitive since videos with high view counts are usually recommended together. The Gaussian distribution also encourages us to perform some standardisation on the data, such as subtracting the label to the mean of the Gaussian and predict the left amount. 
+		
 
 		\begin{figure}[!h]
 			\begin{center}
-				\includegraphics[width=.5\textwidth,clip]{DistributionOfViews.png}
+				\includegraphics[width=1.0\textwidth,clip]{distributions.pdf}
 			\end{center}
-			\caption{Histogram on the distribution of number of views (in log-scale).}
-			\label{fig:logNoOfViews}
+			\caption{Red-colored histogram: Distribution of videos over view counts. Blue-colored histogram: Distribution of uploaders over number of uploaded videos. Green-colored histogram: Distribution of number of videos in each bin.}
+			\label{fig:histograms}
 		\end{figure}
 	
 		As the statistics show, we have a large magnitude in ranges of number of view, likes and dislikes. This motivates us to do some preprocessing on data, such as feature normalization or data standardization, to ensure the numerical stability and good speed of convergence on the learning algorithm for logistic regression. We discuss more on this step in the Section \ref{sec:orderofmagnitude}.
