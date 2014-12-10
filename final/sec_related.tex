@@ -1,12 +1,3 @@
-\begin{itemize}
-	\item Local Collaborative Ranking [1]
-	\item Logits model for sets of ranked items [2]
-	\item AdaRank [3]
-\end{itemize}
+Our problem is a special case of the more general \textbf{Learning to rank} problem, which is widely used in many applications such as Information Retrieval, Data Mining, etc. [1] gives a short survey of state-of-the-art approaches to the problem of ranking documents relevant to user queries. Most of them are implemented in Ranklib\footnote{http://people.cs.umass.edu/~vdang/ranklib.html}.
 
-\textbf{Ordinal Regression}
-Ranking learning or ordinal regression is a learning task of predicting class values possessing a natural order. For example, students' exam paper are often graded in scale of $F < D < C < B < A$. There are several approaches in Machine Learning have been proposed to tackle this problem. 
-
-\begin{itemize}
-	\item Frank and Hall (2001) transformed the K-class ordinal problem into K-1 binary classification problems.
-\end{itemize}
+Another form of the problem is ordinal classification (a.k.a. ordinal regression). There are several approaches, mostly adapted from classification techniques, such as Support Vector [2], Gaussian Processes [3], etc. Although two problems are related to predicting the objects' orders, they do have some similarities and differences. First, both of them are considered as supervised learning tasks, meaning from the given features and labels, trying to predict the orderings of testing objects. The difference is in the level of orderings. As [1] discussed, Learning to rank cares more about the accurate ordering of objects, while the latter focuses on the ordered categorization. For example, a list of top-K relevant documents retrieved from a Learning to rank algorithm would be sorted according to the relevance to a given query. Meanwhile, ordinal regression would try to categorize movies into one out of five stars, reflecting how much the movies match with users' preferences. There are no specific rankings of movies receiving same stars.

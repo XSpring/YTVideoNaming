@@ -13,14 +13,8 @@ and attempt to minimize the mean squared error loss function, giving
 \begin{equation}
 	\hat{\beta} = \operatorname*{arg\,min}_{\textbf{$\beta$}} 1/n (A \beta - Y)^T(A \beta - Y)
 \end{equation}
-where
-\begin{equation}
-	A = [X_1 ... X_n]^T
-\end{equation}
-\begin{equation}
-	Y = [Y_1 ... Y_n]^T
-\end{equation}
-  
+where $A = [X_1 ... X_n]^T$ and $Y = [Y_1 ... Y_n]^T$, n is the number of training data points.
+
 %We anticipated that this method will perform worse than logistic regression at the ranking problem.  However, this method, if successful, would have the added utility of allowing predictions on a video without needing to compare it to another.
 
 In order to solve this problem, we can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
