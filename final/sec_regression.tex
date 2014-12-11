@@ -1,11 +1,11 @@
-Another approach to the ranking problem is to predict the number of views for each video and then rank the videos based on predicted values, rather than comparing two videos directly. This approach has two advantages over the above approach of classification. First, it can take into account the magnitude of difference between two videos' viewership. Secondly, we can use it to predict a number of views of a video for a specific time in future given their current status. We treat this problem as an ordinary linear regression problem. 
+Another approach to the ranking problem is to predict the number of views for each video and then rank the videos based on predicted values, rather than comparing two videos directly.  We anticipated that this method will perform worse than logistic regression at the ranking problem (since our logistic regression pertains precicely to that problem), but has two advantages: Firstly, it can more easily take into account the magnitude of difference between two videos' viewcounts. Secondly, this method has the added utility of allowing predictions on a video without needing to compare it to another, allowing us to directly anticipate popularity for some specific time in future given only a video's current status.
 
 \subsection{Problem Formulation}
 Our linear function assumes that are labels $Y_i$ come from our input $X_i$ plus some noise $\epsilon$:
 \begin{equation}
 Y_u = X_u \beta + \epsilon,
 \end{equation}
-where $Y_i$ is the number of views of video $i$, $X_i$ is the associated feature vector. We therefore seek a function of the form
+where $Y_i$ is the number of views of video $i$ and $X_i$ is the associated feature vector. We therefore seek a function of the form
 \begin{equation}
 f(X) = X \beta
 \end{equation}
@@ -15,28 +15,26 @@ and attempt to minimize the mean squared error loss function, giving
 \end{equation}
 where $A = [X_1 ... X_n]^T$ and $Y = [Y_1 ... Y_n]^T$, n is the number of training data points.
 
-%We anticipated that this method will perform worse than logistic regression at the ranking problem.  However, this method, if successful, would have the added utility of allowing predictions on a video without needing to compare it to another.
-
 In order to solve this problem, we can use either the closed form or Gradient Descent to learn the $\beta$ parameters.  However, since our feature space may be quite large, we opt for the latter.  We therefore initialize $\beta^0$ to 0, and thereafter use the update step
 \begin{equation}
 \beta^{t+1} = \beta^t - \eta A^T (A \beta^t - Y)
 \end{equation}
  
-Since our context is a bad conditioning problem, similarly to the Classification approach, we opt to Stochastic Gradient Descent with L2-Regularization. The new update function
+Because the conditioning is poor, we opt to use Stochastic Gradient Descent with L2-Regularization, just as we did in the classification-based version. The new update function is
 	\begin{equation}
 		\beta^{t+1} = \beta^t - \eta (x_i (x_i\beta^t - Y_i) + \beta^t)
 	\end{equation}
 
-After the learning stage is complete, the predicted ranking can be done as follows
+After the learning stage is complete, the predicted ranking can be easily obtained from our regression problem via the equation
 \begin{equation}
 \hat{Y}_{uv} = \mathbb{I}(\beta X_u > \beta X_v),
 \end{equation}
-where $\mathbb{I}$ is the indicator function, return 1 if the expression as argument is true, and 0 otherwise.
+where $\mathbb{I}$ is the indicator function, which return 1 if the expression argument is true and 0 otherwise.
 
 \subsection{Comparing Order-of-Magnitude}
 \label{sec:orderofmagnitude}
 	It is important to decide what we will consider as being "close to correct".  We use least-squared regression, where we minimize the total of the squares of the differences between our prediction and the true value.  However, we must deal with the gigantic variance in our observed data.
 
-	Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000 views.  This will prevent petty variations among the most popular videos from drowning out the differences in all others.
+	Ideally, we wish to consider orders of magnitude rather than direct counts, and for this we will set our loss function equal to the square of the difference between the log of our prediction and the log of the observed value.  The motivation is that we wish to reflect the human intuition that there is more difference between the popularities of two videos with 10 and 1,000 views (respectively) than between two videos with 1,000,000 and 1,001,000 views.  This will prevent less important (and yet larger in magnitude) variations among the most popular videos from drowning out the differences in all others.
 
-	We therefore deal with the number of views in log scale for the regression (though we also tried running our analysis without using log scale).  One anticipated effect of this is that features will be expected to contribute multiplicatively, rather than additively, to the popularity of a video.
+	We therefore deal with the number of views in log scale for the regression.  One anticipated effect of this is that features will be expected to contribute multiplicatively, rather than additively, to the popularity of a video.  As an aside, it must be noted that we also tried running our analysis without using log scale, and we failed to observe the differences we anticipated between the two techniques.

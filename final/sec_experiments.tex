@@ -1,5 +1,5 @@
 \subsection{Dataset}
-	We crawled and extracted our data from YouTube for one month (Oct - Nov, 2015). The crawling strategy is akin to bread-first search. First we initialize the crawler with several random "seed" videos, which mostly are in the \textit{Movie} and \textit{Music} category, and recursively explore all other related videos recommended by YouTube recommendation systems. For each video, we extract all of its metadata such as title, uploader and his number of subscriptions, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as a list of around 30 videos YouTube recommends as being similar. 
+	We crawled and extracted our data from YouTube for one month (Oct - Nov, 2015). The crawling strategy was a bread-first search, with the crawler initialized to several random "seed" videos, which mostly are in the \textit{Movie} and \textit{Music} categories.  New videos to explore were found by following all likes to related videos, as recommended by YouTube's standard recommendation system. For each video, we extract all of its metadata such as title, uploader, description, upload date, number of views/likes/dislikes, video length, and a number of other attributes, as well as a list of around 30 videos YouTube recommends as being similar.  We later crawled the channel data for all channels that uploaded videos we had crawled, in order to obtain the number of subscriptions.
 
 	\subsubsection{Data Statistics}
 		Although the crawler was suspended twice due to technical issues and upgrades, we have gathered a sizeable amount of data, with tremendous variation in the observed values:
@@ -9,28 +9,28 @@
 			\item Number of uploaders: 628,072
 			\item Number of "bag of word" features (extracted from the titles): 2,447,603 entries
 			\item Video length: $[1 \ldots 107,373]$ (seconds)
-			\item Range of number of day passed since uploaded: $[1 \ldots 3423]$ (days)
+			\item Range of number of day passed since upload: $[1 \ldots 3423]$ (days)
 			\item Range of number of views: $[7 \ldots 2,104,518,656]$.
 			\item Range of number of likes: $[1 \ldots 8,639,650]$.
 			\item Range of number of dislikes: $[1 \ldots 4,184,769]$.
 		\end{itemize}
 
-		We plot in Figure \ref{fig:histograms} different histograms reflecting characteristics of our data. In the red-colored histogram, we look for the distributions of videos and their view counts. Interestingly, the distribution is in the shape of Gaussians, instead of following the Power Law distribution as frequently observed in social networks. We guess this observation is due to the way we sampled the data, by following the recommended links. It is intuitive since videos with high view counts are usually recommended together. 
+		We plot in Figure \ref{fig:histograms} different histograms reflecting characteristics of our data. In the red-colored histogram, we look for the distributions of videos and their view counts. Interestingly, the distribution is in the shape of a Gaussian in log scale, instead of following the Power Law distribution that is frequently observed in social networks. We guess this observation is due to the way we sampled the data, by following the recommended links. It is intuitive since videos with similar view counts are usually recommended together. 
 		
-		The green-colored histogram presents the distribution of uploaders and their number of uploaded videos. Most of the YouTube users upload around 158 videos. A small portion of them have uploaded more than 3,000 videos. The blue-colored histogram shows the number of videos over bins. As mentioned above, we picked the first 30 bins, which accumulate a significant enough number of videos. One of our stretch goals, hence, would be to run through the whole dataset. 
+		The green-colored histogram presents the distribution of uploaders and their number of uploaded videos. Most of the YouTube users upload around 158 videos. A small portion of them have uploaded more than 3,000 videos. The blue-colored histogram shows the number of videos in each of our  bins. As mentioned above, we picked the first 30 bins, which accumulate a significant enough number of videos. One of our stretch goals would be to run through the whole dataset at a future time; however, given our current results, we believe that some technique alterations may be more useful than having additional data. 
 		
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=1.0\textwidth,clip]{distributions.pdf}
 			\end{center}
-			\caption{Red-colored histogram: Distribution of videos over view counts. Blue-colored histogram: Distribution of uploaders over number of uploaded videos. Green-colored histogram: Distribution of number of videos in each bin.}
+			\caption{Histograms indicating the distribution vedeos and uploaders with respect to viewcount, upload count, and bin number.}
 			\label{fig:histograms}
 		\end{figure}
 	
-		As the statistics show, we have a large magnitude in ranges of number of view, likes and dislikes. This motivates us to do some preprocessing on data, such as feature normalization or data standardization, to ensure the numerical stability and good speed of convergence on the learning algorithm for logistic regression. For example, the Gaussian distribution (red-colored histogram) also encourages us to perform some standardisation on the data, such as subtracting the label to the mean of the Gaussian and predict the left amount. We discuss more on this step in the Section \ref{sec:orderofmagnitude}.
+		As can be easily seen, we have very large ranges of number of views, and we measured large variations in the number of likes and dislikes as well. This motivated us to do some preprocessing on data, such as feature normalization or data standardization, to ensure the numerical stability and good speed of convergence on the learning algorithm for logistic regression. One example of a decision influenced by this can be seen in Section \ref{sec:orderofmagnitude}.
 						
 	\subsubsection{Feature extraction}
-		In this section we discuss the feature engineering process in the project. First, we build a dictionary mapping the uploader to the number of videos they have uploaded and the total number of views there videos have. We also take care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video's publishing is ever used, we temporarily reduce these number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
+		In this section we discuss the feature engineering process in the project. First, we built a dictionary mapping each uploader to the number of videos they have uploaded and the total number of views for their videos. We also took care to prevent "cheating":  In order to ensure that our predictor has only such information as would be available before the video is published, we temporarily reduce the number of video-views and the total number of video uploads for the uploader according to the publish date of the video under current consideration.
 
 		We considered many features, which ultimately include:
 		\begin{itemize}
@@ -39,9 +39,9 @@
 			\item
 			The number of videos uploaded by the uploader prior to the current video's upload date.  Because of our desire for caution against "cheating", we count only those videos that we have crawled.
 			\item
-			The total number of views for the uploader due to videos released prior to the current video's upload date.  Again, we count only those videos that we have crawled.  This date-conscious counting is particularly important because there are many cases where there is only one video crawled for a given uploader, meaning that this feature would become a nearly perfect predictor.
+			The total number of views for the uploader due to videos released prior to the current video's upload date.  Again, we count only those videos that we have crawled.  This date-conscious counting is particularly important because there are many cases where there is only one video crawled for a given uploader, meaning that this feature would become a nearly perfect predictor for such videos.
 			\item
-			The number of subscribers for the uploader.  We lack sufficient data to know how subscribers changed over time, so we simply had to keep this constant.
+			The number of subscribers for the uploader.  We lack sufficient data to know how subscription counts changed over time, so we simply had to keep this constant.
 			\item
 			The runtime of the video, in seconds.
 			\item
@@ -65,7 +65,7 @@
 	
 	$F_1$-score is defined as follows
 	\begin{equation}
-		F_1 = 2\frac{precision . recall}{precision + recall}, 
+		F_1 = 2\frac{precision * recall}{precision + recall}, 
 	\end{equation}
 	where 
 	\begin{align}
@@ -74,4 +74,11 @@
 	\end{align}
 	
 	\subsubsection{Regression}
-	To Joseph: Can you put your least square formula here ? The first few paragraphs in section 4.3.2 can be put here. And show the equations as well.
+	The linear regression can be evaluated in more than one way.
+	
+	The first way to measure our results is to look at its predictions directly.  Our RMSE can be found via
+	\begin{equation}
+		RMSE = \sqrt{\frac{\sum_{i} (Y_i-X_i)^2}{n}}
+	\end{equation}
+	
+	The second form of evaluation is to compare the results for each pair of videos and then use the \textbf{0-1 loss function}, so that results can be compared to the logistic regression results.

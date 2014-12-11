@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.3)  10 DEC 2014 15:19
-=======
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.7.31)  10 DEC 2014 12:21
->>>>>>> 21780fabcadf0955c9b0dfa8a07dac94693be4b5
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.3)  10 DEC 2014 19:33
 entering extended mode
 **C:/Users/Richardson/Documents/JDocs/School/CMU/2014*Fall/15-781*Machine*Learn
 ing/Project/git/YTVideoNaming/final/final.tex
@@ -429,7 +425,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 
 ("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
 ing\Project\git\YTVideoNaming\final\sec_ranking.tex"
-Underfull \vbox (badness 2142) has occurred while \output is active []
+Underfull \vbox (badness 5548) has occurred while \output is active []
 
  [1
 
@@ -449,35 +445,75 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 ing\Project\git\YTVideoNaming\final\sec_regression.tex" [4])
 ("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
 ing\Project\git\YTVideoNaming\final\sec_experiments.tex" [5]
+<distributions.pdf, id=157, 1829.83624pt x 603.25375pt>
+File: distributions.pdf Graphic file (type pdf)
 
-LaTeX Warning: File `distributions.pdf' not found on input line 24.
+<use distributions.pdf>
+Package pdftex.def Info: distributions.pdf used on input line 24.
+(pdftex.def)             Requested size: 397.48499pt x 131.04094pt.
 
 
-! Package pdftex.def Error: File `distributions.pdf' not found.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.24 ...dth=1.0\textwidth,clip]{distributions.pdf}
-                                                  
-? 
-! Emergency stop.
- ...                                              
-                                                  
-l.24 ...dth=1.0\textwidth,clip]{distributions.pdf}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+[6] [7 <C:/Users/Richardson/Documents/JDocs/School/CMU/2014 Fall/15-781 Machine
+ Learning/Project/git/YTVideoNaming/final/distributions.pdf>])
+("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
+ing\Project\git\YTVideoNaming\final\sec_results.tex"
 
- 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8] <regression.pdf, id=197, 1708.3825pt x 833.1125pt>
+File: regression.pdf Graphic file (type pdf)
+ <use regression.pdf>
+Package pdftex.def Info: regression.pdf used on input line 53.
+(pdftex.def)             Requested size: 298.11374pt x 145.37737pt.
+)
+("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
+ing\Project\git\YTVideoNaming\final\sec_related.tex" [9 <C:/Users/Richardson/Do
+cuments/JDocs/School/CMU/2014 Fall/15-781 Machine Learning/Project/git/YTVideoN
+aming/final/regression.pdf>])
+("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
+ing\Project\git\YTVideoNaming\final\sec_references.tex")
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
+
+("C:\Users\Richardson\Documents\JDocs\School\CMU\2014 Fall\15-781 Machine Learn
+ing\Project\git\YTVideoNaming\final\final.aux")
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 77.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 77.
+Package rerunfilecheck Info: File `final.out' has not changed.
+(rerunfilecheck)             Checksum: E23B4872874C0CD1BE7E03AA48D40FA8;1560.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 77.
+ ) 
 Here is how much of TeX's memory you used:
- 7765 strings out of 493921
- 112844 string characters out of 3144862
- 225101 words of memory out of 3000000
- 10911 multiletter control sequences out of 15000+200000
- 28768 words of font info for 63 fonts, out of 3000000 for 9000
+ 7808 strings out of 493921
+ 114129 string characters out of 3144862
+ 225001 words of memory out of 3000000
+ 10924 multiletter control sequences out of 15000+200000
+ 29904 words of font info for 64 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 37i,16n,39p,1450b,438s stack positions out of 5000i,500n,10000p,200000b,50000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 37i,16n,39p,1420b,438s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
+1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/
+times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr8
+a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on final.pdf (10 pages, 367360 bytes).
+PDF statistics:
+ 292 PDF objects out of 1000 (max. 8388607)
+ 63 named destinations out of 1000 (max. 500000)
+ 199 words of extra memory for PDF output out of 10000 (max. 10000000)
+
